@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginTop="12dp">
+
+
+        <ImageView
+            android:id="@+id/mIvPic"
+            android:layout_width="0dp"
+            android:layout_height="160dp"
+            android:background="#fcfcfc"
+            android:scaleType="centerInside"
+            android:src="@drawable/ic_documents_thumbnail"
+            app:layout_constraintBottom_toTopOf="@+id/mTitle"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintHorizontal_chainStyle="packed"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+
+        <WebView
+            android:id="@+id/myWebView"
+            android:layout_width="0dp"
+            android:layout_height="140dp"
+            android:background="#fcfcfc"
+            android:scaleType="centerInside"
+            app:layout_constraintBottom_toTopOf="@+id/mTitle"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintHorizontal_chainStyle="packed"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+
+        <TextView
+            android:id="@+id/mTitle"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="@dimen/_10sdp"
+            android:layout_marginLeft="@dimen/_10sdp"
+            android:fontFamily="@font/normal_poppins"
+            android:gravity="center|center_vertical"
+            android:maxLines="2"
+            android:text=""
+            android:textColor="@color/black_color"
+            android:textSize="@dimen/_11sdp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/myWebView" />
+
+        <CheckBox
+            android:visibility="gone"
+            android:id="@+id/mCheckBox"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="8dp"
+            android:checked="false"
+            android:background="@drawable/ic_checkbox_bg"
+            app:layout_constraintEnd_toEndOf="@id/myWebView"
+            app:layout_constraintTop_toTopOf="@id/myWebView" />
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

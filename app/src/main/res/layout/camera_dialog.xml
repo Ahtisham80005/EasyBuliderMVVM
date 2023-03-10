@@ -1,0 +1,174 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@android:color/transparent">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_margin="8dp"
+        android:background="@drawable/box_less_rounded_bg"
+        android:backgroundTint="@color/white_color"
+        android:paddingBottom="5dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <TextView
+            android:id="@+id/titleHeader"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:text="Select One"
+            android:textAllCaps="true"
+            android:textColor="@color/black_color"
+            android:textSize="14sp"
+            android:textStyle="bold"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <View
+            android:id="@+id/view3"
+            android:layout_width="0dp"
+            android:layout_height="1dp"
+            android:layout_marginTop="8dp"
+            android:background="@color/green_color"
+            app:layout_constraintEnd_toEndOf="@+id/titleHeader"
+            app:layout_constraintStart_toStartOf="@+id/titleHeader"
+            app:layout_constraintTop_toBottomOf="@+id/titleHeader" />
+
+        <TextView
+            android:id="@+id/titleGallery"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="10dp"
+            android:layout_marginTop="10dp"
+            android:gravity="center"
+            android:padding="10dp"
+            android:text="Gallery"
+            android:textColor="@color/blue"
+            android:textSize="18sp"
+            android:textStyle="bold"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/view3"
+            android:layout_marginLeft="10dp" />
+
+        <View
+            android:id="@+id/view2"
+            android:layout_width="0dp"
+            android:layout_height="1dp"
+            android:layout_marginTop="1dp"
+            android:background="@color/grey_color_as_silver"
+            app:layout_constraintEnd_toEndOf="@+id/titleGallery"
+            app:layout_constraintStart_toStartOf="@+id/titleGallery"
+            app:layout_constraintTop_toBottomOf="@+id/titleGallery" />
+
+        <TextView
+            android:id="@+id/titleCamera"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="10dp"
+            android:layout_marginTop="10dp"
+            android:gravity="center"
+            android:padding="10dp"
+            android:text="Camera"
+            android:textColor="@color/blue"
+            android:textSize="18sp"
+            android:textStyle="bold"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/view2"
+            android:layout_marginLeft="10dp" />
+
+        <View
+            android:id="@+id/view1"
+            android:layout_width="0dp"
+            android:layout_height="1dp"
+            android:layout_marginTop="1dp"
+            android:background="@color/grey_color_as_silver"
+            app:layout_constraintEnd_toEndOf="@+id/titleCamera"
+            app:layout_constraintStart_toStartOf="@+id/titleCamera"
+            app:layout_constraintTop_toBottomOf="@+id/titleCamera" />
+
+        <TextView
+            android:id="@+id/titleCameraGallary"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="10dp"
+            android:layout_marginTop="10dp"
+            android:gravity="center"
+            android:padding="10dp"
+            android:text="Gallery / Camera"
+            android:textColor="@color/blue"
+            android:textSize="18sp"
+            android:textStyle="bold"
+            android:visibility="gone"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/view1"
+            android:layout_marginLeft="10dp" />
+
+        <View
+            android:id="@+id/view5"
+            android:layout_width="0dp"
+            android:layout_height="1dp"
+            android:layout_marginTop="1dp"
+            android:visibility="gone"
+            android:background="@color/grey_color_as_silver"
+            app:layout_constraintEnd_toEndOf="@+id/titleGallery"
+            app:layout_constraintStart_toStartOf="@+id/titleGallery"
+            app:layout_constraintTop_toBottomOf="@+id/titleCameraGallary" />
+        <TextView
+            android:id="@+id/titleDoc"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="10dp"
+            android:layout_marginTop="10dp"
+            android:gravity="center"
+            android:padding="10dp"
+            android:text="Document"
+            android:textColor="@color/blue"
+            android:textSize="18sp"
+            android:textStyle="bold"
+            android:visibility="gone"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/view5"
+            android:layout_marginLeft="10dp" />
+
+        <View
+            android:id="@+id/view11"
+            android:layout_width="0dp"
+            android:layout_height="1dp"
+            android:layout_marginTop="1dp"
+            android:visibility="gone"
+            android:background="@color/grey_color_as_silver"
+            app:layout_constraintEnd_toEndOf="@+id/titleDoc"
+            app:layout_constraintStart_toStartOf="@+id/titleDoc"
+            app:layout_constraintTop_toBottomOf="@+id/titleDoc" />
+
+        <TextView
+            android:id="@+id/titleCancel"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="10dp"
+            android:layout_marginTop="10dp"
+            android:gravity="center"
+            android:padding="10dp"
+            android:text="Cancel"
+            android:textColor="@color/red_color"
+            android:textSize="18sp"
+            android:textStyle="bold"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/view11"
+            android:layout_marginLeft="10dp" />
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

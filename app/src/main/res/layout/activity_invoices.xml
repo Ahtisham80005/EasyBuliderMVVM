@@ -1,0 +1,812 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        tools:context=".activity.proposalModule.InvoicesActivity">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/constraintLayout2"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+
+            <TextView
+                android:id="@+id/textView6"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:layout_marginLeft="8dp"
+                android:layout_marginTop="16dp"
+                android:layout_marginBottom="16dp"
+                android:fontFamily="@font/medium_poppins"
+                android:text="Create Invoice"
+                android:textColor="@color/black_color"
+                android:textSize="@dimen/text_mediumLarge"
+                android:textStyle="bold"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/mIvBack"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <ImageView
+                android:id="@+id/mIvBack"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:layout_marginLeft="16dp"
+                android:layout_marginTop="8dp"
+                android:padding="@dimen/margin_1x"
+                android:src="@drawable/ic_back_black"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintVertical_bias="0.272" />
+
+            <ImageView
+                android:id="@+id/mIvAdd"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="16dp"
+                android:layout_marginRight="16dp"
+                android:padding="@dimen/margin_1x"
+                android:visibility="invisible"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:srcCompat="@drawable/ic_plus_leads"
+                tools:ignore="VectorDrawableCompat" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+        <ScrollView
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_marginStart="6dp"
+            android:layout_marginLeft="6dp"
+            android:layout_marginEnd="6dp"
+            android:layout_marginRight="6dp"
+            android:fillViewport="true"
+            android:scrollbars="none"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/constraintLayout2">
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/inner"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/white_transparent"
+                android:paddingBottom="64dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent">
+
+
+                <TextView
+                    android:id="@+id/mTvClientName"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="0dp"
+                    android:layout_marginLeft="16dp"
+                    android:layout_marginEnd="16dp"
+                    android:layout_marginRight="16dp"
+                    android:layout_marginTop="4dp"
+                    android:visibility="gone"
+                    android:fontFamily="@font/medium_poppins"
+                    android:hint="Client Name"
+                    android:textColor="@color/black_color"
+                    android:textSize="@dimen/text_mediumLarge"
+                    app:layout_constraintStart_toStartOf="@+id/mLAddClient"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+
+                <LinearLayout
+                    android:id="@+id/mLAddClient"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="12dp"
+                    android:layout_marginTop="16dp"
+                    android:layout_marginEnd="12dp"
+                    android:background="@drawable/round_shape_outlined"
+                    android:orientation="vertical"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/mTvClientName">
+
+                    <TextView
+                        android:id="@+id/textView46"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:drawableStart="@drawable/ic_addorangess"
+                        android:drawableLeft="@drawable/ic_addsales"
+                        android:fontFamily="@font/normal_poppins"
+                        android:gravity="center_vertical"
+                        android:padding="@dimen/margin_2x"
+                        android:text="Add Client"
+                        android:textColor="@color/colorAccent"
+                        android:textSize="@dimen/text_medium" />
+
+                </LinearLayout>
+
+                <TextView
+                    android:id="@+id/textView48"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="16dp"
+                    android:fontFamily="@font/medium_poppins"
+                    android:text="Information"
+                    android:textColor="@color/black_color"
+                    android:textSize="@dimen/text_mediumLarge"
+                    app:layout_constraintStart_toStartOf="@+id/mLAddClient"
+                    app:layout_constraintTop_toBottomOf="@+id/mLAddClient" />
+
+
+                <ImageView
+                    android:id="@+id/imageView178"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="16dp"
+                    android:padding="@dimen/margin_2x"
+                    app:layout_constraintStart_toStartOf="@+id/textView48"
+                    app:layout_constraintTop_toBottomOf="@+id/textView48"
+                    app:srcCompat="@drawable/ic_calendarleads"
+                    tools:ignore="VectorDrawableCompat" />
+
+                <TextView
+                    android:id="@+id/textView17"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="16dp"
+                    android:layout_marginLeft="16dp"
+                    android:layout_marginTop="16dp"
+                    android:fontFamily="@font/normal_poppins"
+                    android:text="Date"
+                    android:textColor="@color/hint_color"
+                    android:textSize="@dimen/text_medium"
+                    app:layout_constraintStart_toEndOf="@+id/imageView178"
+                    app:layout_constraintTop_toBottomOf="@+id/textView48" />
+
+                <TextView
+                    android:id="@+id/mTvDates"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:background="@android:color/transparent"
+                    android:fontFamily="@font/normal_poppins"
+                    android:gravity="center_vertical"
+                    android:hint="Select date..."
+                    android:inputType="textPersonName"
+                    android:paddingTop="@dimen/margin_1_1x"
+                    android:paddingBottom="@dimen/margin_1_1x"
+                    android:singleLine="true"
+                    android:textColor="@color/text_color"
+                    android:textSize="@dimen/text_medium"
+                    app:layout_constraintEnd_toStartOf="@+id/mIvCalendar"
+                    app:layout_constraintHorizontal_bias="0.54"
+                    app:layout_constraintStart_toStartOf="@+id/textView17"
+                    app:layout_constraintTop_toBottomOf="@+id/textView17" />
+
+                <ImageView
+                    android:id="@+id/mIvCalendar"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="16dp"
+                    android:layout_marginRight="16dp"
+                    android:background="@drawable/ic_rectangle_round"
+                    android:padding="@dimen/margin_1x"
+                    app:layout_constraintBottom_toBottomOf="@+id/imageView178"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="@+id/imageView178"
+                    app:srcCompat="@drawable/ic_calendarleads"
+                    tools:ignore="VectorDrawableCompat" />
+
+                <View
+                    android:id="@+id/divider7"
+                    android:layout_width="0dp"
+                    android:layout_height="1dp"
+                    android:layout_marginTop="2dp"
+                    android:background="@color/light_gray_color_new_lighter"
+                    app:layout_constraintEnd_toEndOf="@+id/mIvCalendar"
+                    app:layout_constraintStart_toStartOf="@+id/imageView178"
+                    app:layout_constraintTop_toBottomOf="@+id/mTvDates" />
+
+
+                <ImageView
+                    android:id="@+id/imageView11"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="16dp"
+                    android:padding="@dimen/margin_2x"
+                    android:visibility="gone"
+                    app:layout_constraintStart_toStartOf="@+id/imageView178"
+                    app:layout_constraintTop_toBottomOf="@+id/divider7"
+                    app:srcCompat="@drawable/ic_calculators"
+                    tools:ignore="VectorDrawableCompat" />
+
+                <TextView
+                    android:id="@+id/textView181"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="16dp"
+                    android:layout_marginLeft="16dp"
+                    android:layout_marginTop="16dp"
+                    android:fontFamily="@font/normal_poppins"
+                    android:text="Estimate"
+                    android:visibility="gone"
+                    android:textColor="@color/hint_color"
+                    android:textSize="@dimen/text_medium"
+                    app:layout_constraintStart_toEndOf="@+id/imageView11"
+                    app:layout_constraintTop_toBottomOf="@+id/divider7" />
+
+                <EditText
+                    android:id="@+id/mEtEstimates"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="16dp"
+                    android:layout_marginLeft="16dp"
+                    android:background="@android:color/transparent"
+                    android:fontFamily="@font/normal_poppins"
+                    android:gravity="center_vertical"
+                    android:hint="Write here..."
+                    android:visibility="gone"
+                    android:inputType="textCapSentences"
+                    android:paddingTop="@dimen/margin_1_1x"
+                    android:paddingBottom="@dimen/margin_1_1x"
+                    android:singleLine="true"
+                    android:textColor="@color/text_color"
+                    android:textSize="@dimen/text_medium"
+                    app:layout_constraintEnd_toStartOf="@+id/imageView151"
+                    app:layout_constraintStart_toEndOf="@+id/imageView11"
+                    app:layout_constraintTop_toBottomOf="@+id/textView181" />
+
+                <ImageView
+                    android:id="@+id/imageView151"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:padding="@dimen/margin_3x"
+                    android:visibility="gone"
+                    app:layout_constraintBottom_toBottomOf="@+id/imageView11"
+                    app:layout_constraintEnd_toEndOf="@+id/mIvCalendar"
+                    app:layout_constraintTop_toTopOf="@+id/imageView11"
+                    app:srcCompat="@drawable/ic_editpen"
+                    tools:ignore="VectorDrawableCompat" />
+
+                <View
+                    android:id="@+id/divider1"
+                    android:layout_width="0dp"
+                    android:layout_height="1dp"
+                    android:visibility="gone"
+                    android:background="@color/light_gray_color_new_lighter"
+                    app:layout_constraintEnd_toEndOf="@+id/imageView151"
+                    app:layout_constraintStart_toStartOf="@+id/imageView11"
+                    app:layout_constraintTop_toBottomOf="@+id/mEtEstimates" />
+
+
+                <ImageView
+                    android:id="@+id/imageView112"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="16dp"
+                    android:padding="@dimen/margin_2x"
+                    android:visibility="visible"
+                    app:layout_constraintStart_toStartOf="@+id/imageView11"
+                    app:layout_constraintTop_toBottomOf="@+id/divider1"
+                    app:srcCompat="@drawable/ic_receipt_disscount"
+                    tools:ignore="VectorDrawableCompat" />
+
+                <TextView
+                    android:id="@+id/textView1812"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="16dp"
+                    android:layout_marginTop="16dp"
+                    android:fontFamily="@font/normal_poppins"
+                    android:text="Tax Rate %"
+                    android:textColor="@color/hint_color"
+                    android:textSize="@dimen/text_medium"
+                    android:visibility="visible"
+                    app:layout_constraintStart_toEndOf="@+id/imageView112"
+                    app:layout_constraintTop_toBottomOf="@+id/divider1" />
+
+                <EditText
+                    android:id="@+id/mEtTaxes"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="16dp"
+                    android:background="@android:color/transparent"
+                    android:digits="0123456789"
+                    android:fontFamily="@font/normal_poppins"
+                    android:gravity="center_vertical"
+                    android:hint="Write here..."
+                    android:inputType="number"
+                    android:focusable="false"
+                    android:maxLength="2"
+                    android:paddingTop="@dimen/margin_1_1x"
+                    android:paddingBottom="@dimen/margin_1_1x"
+                    android:singleLine="true"
+                    android:text="10"
+                    android:textColor="@color/text_color"
+                    android:textSize="@dimen/text_medium"
+                    android:visibility="visible"
+                    app:layout_constraintEnd_toStartOf="@+id/imageView1512"
+                    app:layout_constraintStart_toEndOf="@+id/imageView112"
+                    app:layout_constraintTop_toBottomOf="@+id/textView1812" />
+
+                <ImageView
+                    android:id="@+id/imageView1512"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="8dp"
+                    android:padding="@dimen/margin_3x"
+                    android:visibility="gone"
+                    app:layout_constraintBottom_toBottomOf="@+id/imageView112"
+                    app:layout_constraintEnd_toStartOf="@+id/mIvChangeDefault"
+                    app:layout_constraintTop_toTopOf="@+id/imageView112"
+                    app:srcCompat="@drawable/ic_editpen"
+                    tools:ignore="VectorDrawableCompat" />
+
+                <View
+                    android:id="@+id/divider12"
+                    android:layout_width="0dp"
+                    android:layout_height="1dp"
+                    android:background="@color/light_gray_color_new_lighter"
+                    android:visibility="gone"
+                    app:layout_constraintEnd_toEndOf="@+id/imageView1512"
+                    app:layout_constraintStart_toStartOf="@+id/imageView11"
+                    app:layout_constraintTop_toBottomOf="@+id/mEtTaxes" />
+
+                <ImageView
+                    android:id="@+id/mIvChangeDefault"
+                    android:layout_width="160dp"
+                    android:layout_height="wrap_content"
+                    android:visibility="gone"
+                    app:layout_constraintEnd_toEndOf="@+id/imageView151"
+                    app:layout_constraintTop_toTopOf="@+id/imageView112"
+                    app:srcCompat="@drawable/ic_changetodefault"
+                    tools:ignore="VectorDrawableCompat" />
+
+                <TextView
+                    android:id="@+id/textView49"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="16dp"
+                    android:fontFamily="@font/medium_poppins"
+                    android:text="Item"
+                    android:textColor="@color/black_color"
+                    android:textSize="@dimen/text_mediumLarge"
+                    app:layout_constraintStart_toStartOf="@+id/imageView178"
+                    app:layout_constraintTop_toBottomOf="@+id/divider12" />
+
+
+                <LinearLayout
+                    android:id="@+id/llItemInflater"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_marginTop="16dp"
+                    android:orientation="vertical"
+                    app:layout_constraintEnd_toEndOf="@+id/mLAddClient"
+                    app:layout_constraintStart_toStartOf="@+id/textView49"
+                    app:layout_constraintTop_toBottomOf="@+id/textView49" />
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/rvInflateItem"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_marginTop="16dp"
+                    android:orientation="vertical"
+                    android:visibility="visible"
+                    tools:itemCount="2"
+                    tools:listitem="@layout/row_item_porposalitems"
+                    app:layout_constraintEnd_toEndOf="@+id/mLAddClient"
+                    app:layout_constraintStart_toStartOf="@+id/textView49"
+                    app:layout_constraintTop_toBottomOf="@+id/textView49" />
+
+                <LinearLayout
+                    android:id="@+id/mLItemAdd"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="16dp"
+                    android:background="@drawable/round_shape_outlined"
+                    android:orientation="vertical"
+                    app:layout_constraintEnd_toEndOf="@+id/mLAddClient"
+                    app:layout_constraintStart_toStartOf="@+id/mLAddClient"
+                    app:layout_constraintTop_toBottomOf="@+id/rvInflateItem">
+
+                    <TextView
+                        android:id="@+id/textView463"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:drawableStart="@drawable/ic_addorangess"
+                        android:drawableLeft="@drawable/ic_addsales"
+                        android:fontFamily="@font/normal_poppins"
+                        android:gravity="center_vertical"
+                        android:padding="@dimen/margin_2x"
+                        android:text="Add Item"
+                        android:textColor="@color/colorAccent"
+                        android:textSize="@dimen/text_medium" />
+
+                </LinearLayout>
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:id="@+id/constraintLayout7"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="16dp"
+                    android:background="@drawable/light_orange_rounded"
+                    app:layout_constraintEnd_toEndOf="@+id/mLItemAdd"
+                    app:layout_constraintStart_toStartOf="@+id/mLItemAdd"
+                    app:layout_constraintTop_toBottomOf="@+id/mLItemAdd">
+
+                    <TextView
+                        android:id="@+id/textView50"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="8dp"
+                        android:layout_marginLeft="8dp"
+                        android:layout_marginTop="8dp"
+                        android:fontFamily="@font/normal_poppins"
+                        android:gravity="start|center_vertical"
+                        android:text="Subtotal"
+                        android:textColor="@color/black_color"
+                        android:textSize="@dimen/text_medium"
+                        app:layout_constraintEnd_toStartOf="@+id/mTvSubTotal"
+                        app:layout_constraintHorizontal_bias="0.5"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <TextView
+                        android:id="@+id/textView51"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="8dp"
+                        android:layout_marginLeft="8dp"
+                        android:layout_marginEnd="8dp"
+                        android:layout_marginRight="8dp"
+                        android:fontFamily="@font/normal_poppins"
+                        android:gravity="start|center_vertical"
+                        android:text="Tax"
+                        android:textColor="@color/black_color"
+                        android:textSize="@dimen/text_medium"
+                        app:layout_constraintEnd_toStartOf="@+id/mTvTax"
+                        app:layout_constraintHorizontal_bias="0.5"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/textView50" />
+
+                    <TextView
+                        android:id="@+id/textView52"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="8dp"
+                        android:layout_marginLeft="8dp"
+                        android:layout_marginEnd="8dp"
+                        android:layout_marginRight="8dp"
+                        android:layout_marginBottom="8dp"
+                        android:fontFamily="@font/normal_poppins"
+                        android:gravity="start|center_vertical"
+                        android:text="Total"
+                        android:textColor="@color/black_color"
+                        android:textSize="@dimen/text_medium"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toStartOf="@+id/mTvTotals"
+                        app:layout_constraintHorizontal_bias="0.5"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/textView51" />
+
+                    <TextView
+                        android:id="@+id/mTvSubTotal"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="8dp"
+                        android:layout_marginLeft="8dp"
+                        android:layout_marginTop="8dp"
+                        android:layout_marginEnd="8dp"
+                        android:layout_marginRight="8dp"
+                        android:fontFamily="@font/normal_poppins"
+                        android:gravity="end|center_vertical"
+                        android:hint="$00.00"
+                        android:textColor="@color/colorAccent"
+                        android:textSize="@dimen/text_medium"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintHorizontal_bias="0.5"
+                        app:layout_constraintStart_toEndOf="@+id/textView50"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <TextView
+                        android:id="@+id/mTvTax"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="8dp"
+                        android:layout_marginRight="8dp"
+                        android:fontFamily="@font/normal_poppins"
+                        android:gravity="end|center_vertical"
+                        android:hint="$00.00"
+                        android:textColor="@color/colorAccent"
+                        android:textSize="@dimen/text_medium"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintHorizontal_bias="0.5"
+                        app:layout_constraintStart_toEndOf="@+id/textView51"
+                        app:layout_constraintTop_toTopOf="@+id/textView51" />
+
+                    <TextView
+                        android:id="@+id/mTvTotals"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="8dp"
+                        android:layout_marginRight="8dp"
+                        android:fontFamily="@font/normal_poppins"
+                        android:gravity="end|center_vertical"
+                        android:hint="$00.00"
+                        android:textColor="@color/colorAccent"
+                        android:textSize="@dimen/text_medium"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintHorizontal_bias="0.5"
+                        app:layout_constraintStart_toEndOf="@+id/textView52"
+                        app:layout_constraintTop_toTopOf="@+id/textView52" />
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+                <TextView
+                    android:id="@+id/textView56"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="16dp"
+                    android:fontFamily="@font/medium_poppins"
+                    android:text="Image"
+                    android:visibility="gone"
+                    android:textColor="@color/black_color"
+                    android:textSize="@dimen/text_mediumLarge"
+                    app:layout_constraintStart_toStartOf="@+id/constraintLayout7"
+                    app:layout_constraintTop_toBottomOf="@+id/constraintLayout7" />
+
+                <ImageView
+                    android:id="@+id/mIvMainImage"
+                    android:layout_width="0dp"
+                    android:layout_height="200dp"
+                    android:layout_marginTop="16dp"
+                    android:visibility="gone"
+                    android:background="@drawable/dotted_drawable"
+                    android:src="@drawable/light_orange_rounded"
+                    app:layout_constraintEnd_toEndOf="@+id/constraintLayout7"
+                    app:layout_constraintStart_toStartOf="@+id/textView56"
+                    app:layout_constraintTop_toBottomOf="@+id/textView56" />
+
+                <ImageView
+                    android:id="@+id/mIvAddImage"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:visibility="gone"
+                    app:layout_constraintBottom_toBottomOf="@+id/mIvMainImage"
+                    app:layout_constraintEnd_toEndOf="@+id/mIvMainImage"
+                    app:layout_constraintStart_toStartOf="@+id/mIvMainImage"
+                    app:layout_constraintTop_toTopOf="@+id/mIvMainImage"
+                    app:srcCompat="@drawable/ic_addimage"
+                    tools:ignore="VectorDrawableCompat" />
+
+
+                <ImageView
+                    android:id="@+id/imageView1783"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="16dp"
+                    android:padding="@dimen/margin_2x"
+                    app:layout_constraintStart_toStartOf="@+id/constraintLayout7"
+                    app:layout_constraintTop_toBottomOf="@+id/mIvMainImage"
+                    app:srcCompat="@drawable/ic_note_twos"
+                    tools:ignore="VectorDrawableCompat" />
+
+                <TextView
+                    android:id="@+id/textView173"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginLeft="8dp"
+                    android:layout_marginTop="16dp"
+                    android:fontFamily="@font/normal_poppins"
+                    android:text="Extra Information"
+                    android:textColor="@color/hint_color"
+                    android:textSize="@dimen/text_medium"
+                    app:layout_constraintStart_toEndOf="@+id/imageView1783"
+                    app:layout_constraintTop_toBottomOf="@+id/mIvMainImage" />
+
+                <EditText
+                    android:id="@+id/mEtExtraInfo"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="12dp"
+                    android:background="@android:color/transparent"
+                    android:fontFamily="@font/normal_poppins"
+                    android:gravity="center_vertical"
+                    android:hint="Enter here..."
+                    android:inputType="textCapSentences|textMultiLine"
+                    android:paddingTop="@dimen/margin_1_1x"
+                    android:paddingBottom="@dimen/margin_1_1x"
+                    android:singleLine="false"
+                    android:maxLines="4"
+                    android:textColor="@color/text_color"
+                    android:textSize="@dimen/text_medium"
+                    app:layout_constraintEnd_toStartOf="@+id/imageView183"
+                    app:layout_constraintHorizontal_bias="0.54"
+                    app:layout_constraintStart_toStartOf="@+id/textView173"
+                    app:layout_constraintTop_toBottomOf="@+id/textView173" />
+
+                <ImageView
+                    android:id="@+id/imageView183"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="16dp"
+                    android:padding="@dimen/margin_1x"
+                    android:visibility="gone"
+                    app:layout_constraintBottom_toBottomOf="@+id/imageView1783"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="@+id/imageView1783"
+                    app:srcCompat="@drawable/ic_editpen"
+                    tools:ignore="VectorDrawableCompat" />
+
+                <View
+                    android:id="@+id/divider73"
+                    android:layout_width="0dp"
+                    android:layout_height="1dp"
+                    android:layout_marginTop="2dp"
+                    android:background="@color/light_gray_color_new_lighter"
+                    app:layout_constraintEnd_toEndOf="@+id/mIvCalendar"
+                    app:layout_constraintStart_toStartOf="@+id/imageView178"
+                    app:layout_constraintTop_toBottomOf="@+id/mEtExtraInfo" />
+
+                <TextView
+                    android:id="@+id/textView57"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="16dp"
+                    android:fontFamily="@font/medium_poppins"
+                    android:text="Contract"
+                    android:visibility="gone"
+                    android:textColor="@color/black_color"
+                    android:textSize="@dimen/text_mediumLarge"
+                    app:layout_constraintStart_toStartOf="@+id/imageView1783"
+                    app:layout_constraintTop_toBottomOf="@+id/divider73" />
+
+
+                <LinearLayout
+                    android:id="@+id/linearLayout3"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="16dp"
+                    android:background="@drawable/round_shape_outlined"
+                    android:orientation="vertical"
+                    android:visibility="gone"
+                    app:layout_constraintEnd_toEndOf="@+id/mIvMainImage"
+                    app:layout_constraintStart_toStartOf="@+id/mIvMainImage"
+                    app:layout_constraintTop_toBottomOf="@+id/textView57">
+
+                    <TextView
+                        android:id="@+id/textView4632"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:drawableStart="@drawable/ic_addorangess"
+                        android:drawableLeft="@drawable/ic_addsales"
+                        android:fontFamily="@font/normal_poppins"
+                        android:gravity="center_vertical"
+                        android:padding="@dimen/margin_2x"
+                        android:text="Add Contract"
+                        android:textColor="@color/colorAccent"
+                        android:textSize="@dimen/text_medium" />
+
+                </LinearLayout>
+
+                <TextView
+                    android:id="@+id/textView58"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="16dp"
+                    android:fontFamily="@font/medium_poppins"
+                    android:text="Sign Off Information"
+                    android:textColor="@color/black_color"
+                    android:textSize="@dimen/text_mediumLarge"
+                    android:visibility="gone"
+                    app:layout_constraintStart_toStartOf="@+id/imageView1783"
+                    app:layout_constraintTop_toBottomOf="@+id/linearLayout3" />
+
+                <TextView
+                    android:visibility="gone"
+                    android:id="@+id/textView59"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="16dp"
+                    android:fontFamily="@font/normal_poppins"
+                    android:text="Include Signature"
+                    android:textColor="@color/black_color"
+                    android:textSize="@dimen/text_medium"
+                    app:layout_constraintStart_toStartOf="@+id/textView58"
+                    app:layout_constraintTop_toBottomOf="@+id/textView58" />
+
+
+                <LinearLayout
+
+                    android:id="@+id/mIvAddSig"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="16dp"
+                    android:background="@drawable/round_shape_outlined"
+                    android:orientation="vertical"
+                    android:visibility="gone"
+                    app:layout_constraintEnd_toEndOf="@+id/mEtExtraInfo"
+                    app:layout_constraintStart_toStartOf="@+id/imageView1783"
+                    app:layout_constraintTop_toBottomOf="@+id/textView59">
+
+                    <TextView
+                        android:id="@+id/textView464"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:drawableStart="@drawable/ic_addorangess"
+                        android:drawableLeft="@drawable/ic_addsales"
+                        android:fontFamily="@font/normal_poppins"
+                        android:gravity="center_vertical"
+                        android:padding="@dimen/margin_2x"
+                        android:text="Add Signature"
+                        android:textColor="@color/colorAccent"
+                        android:textSize="@dimen/text_medium" />
+
+                </LinearLayout>
+
+                <Switch
+                    android:id="@+id/switch1"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:visibility="invisible"
+                    app:layout_constraintEnd_toEndOf="@+id/mEtExtraInfo"
+                    app:layout_constraintTop_toBottomOf="@+id/textView58" />
+
+                <Button
+                    android:id="@+id/mBtnPreview"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="60dp"
+                    android:layout_marginTop="16dp"
+                    android:layout_marginEnd="60dp"
+                    android:background="@drawable/button_rounded_shape"
+                    android:fontFamily="@font/medium_poppins"
+                    android:text="Preview &amp; Send"
+                    android:textAllCaps="false"
+                    android:textColor="@color/white_color"
+                    android:textSize="@dimen/text_mediumLarge"
+                    app:layout_constraintEnd_toEndOf="@+id/mLItemAdd"
+                    app:layout_constraintStart_toStartOf="@+id/mLItemAdd"
+                    app:layout_constraintTop_toBottomOf="@+id/mIvAddSig" />
+
+
+                <Button
+                    android:id="@+id/mBtnSave"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="16dp"
+                    android:background="@drawable/button_rounded_shape"
+                    android:fontFamily="@font/medium_poppins"
+                    android:text="Save"
+                    android:textAllCaps="false"
+                    android:textColor="@color/white_color"
+                    android:textSize="@dimen/text_mediumLarge"
+                    app:layout_constraintEnd_toEndOf="@+id/mBtnPreview"
+                    app:layout_constraintStart_toStartOf="@+id/mBtnPreview"
+                    app:layout_constraintTop_toBottomOf="@+id/mBtnPreview" />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+        </ScrollView>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="purple_200">#F68D29</color>
+    <color name="purple_500">#F68D29</color>
+    <color name="purple_700">#F68D29</color>
+    <color name="teal_200">#FF03DAC5</color>
+    <color name="teal_700">#FF018786</color>
+    <color name="black">#FF000000</color>
+    <color name="white">#FFFFFFFF</color>
+
+    <color name="colorPrimary">#F68D29</color>
+    <color name="colorPrimaryDark">#F68D29</color>
+    <color name="colorAccent">#F68D29</color>
+    <color name="lightercolorAccent">#DAF68D29</color>
+    <color name="colorAccent_alpha">#43F68D29</color>
+    <color name="edit_bg_color">#EBECF0</color>
+    <color name="status_bar">#EBECF0</color>
+    <color name="white_color">#FFFFFF</color>
+    <color name="green_color">#8CC541</color>
+    <color name="darkgreen_color">#34B778</color>
+    <color name="pink_color">#B04072</color>
+
+    <color name="gold_color">#ffb404</color>
+    <color name="text_color">#3D3D3D</color>
+    <color name="hint_color">#CD3D3D3D</color>
+    <color name="leads_color">#ABAFB3</color>
+    <color name="button_color">#DA354E</color>
+    <color name="button_light_orange_color">#14F68D29</color>
+    <color name="analyticsblue">#0D96EF</color>
+    <!--    <color name="button_light_orange_color">#F68D29</color>-->
+
+    <color name="white_transparent">#00FFFFFF</color>
+    <color name="whites_transparent">#00F6F6F6</color>
+    <color name="black_color">#000000</color>
+    <color name="blue">#0A67F1</color>
+    <color name="hint_login_text_color">#686869</color>
+    <color name="hint_register_text_color">#363636</color>
+    <color name="hint_forgot_text_color">#9BA1AF</color>
+    <color name="sign_in_btn_color1">#78DC2A</color>
+    <color name="sign_in_btn_color2">#4FBB10</color>
+    <color name="chat_btn_color1">#E2E6E9</color>
+    <color name="chat_btn_color2">#D1D6D9</color>
+    <color name="chat_btn_color3">#D8DCDF</color>
+    <color name="tab_selected_color">#5FCA1C</color>
+    <color name="tab_unselected_color">#BFBFBF</color>
+    <color name="view_color">#f2f2f2</color>
+    <color name="high_value_color">#FFB901</color>
+    <color name="yellow_color">#F81807</color>
+    <color name="urgent_color">#F36523</color>
+    <color name="red_color">#f40612</color>
+    <color name="featured_color">#4774B7</color>
+
+    <color name="dark_gray_color">#7D7D7D</color>
+    <color name="light_gray_color">#A3A4A6</color>
+    <color name="grey_color_as_silver">#BDBCBC</color>
+    <color name="light_gray_colors">#dbdddf</color>
+    <color name="light_gray_color_new">#e4e5e6</color>
+    <color name="light_gray_color_new_lighter">#61E4E5E6</color>
+    <color name="light_white_color">#19E4E5E6</color>
+    <color name="light_white_colortwo">#FFFFFF</color>
+
+    <color name="first_progress_bar_color">#7DB343</color>
+    <color name="second_progress_bar_color">#3398B6</color>
+    <color name="third_progress_bar_color">#EEA65E</color>
+    <color name="fourth_progress_bar_color">#EFBB81</color>
+
+    <color name="event_toolbar_color_one">#CF3098</color>
+    <color name="event_toolbar_color_two">#A139A8</color>
+    <color name="event_toolbar_color_three">#7240BB</color>
+
+    <color name="blue_color">#0A67F1</color>
+    <color name="blue_color_dark">#043F7A</color>
+    <color name="blue_color_new">#2196F3</color>
+    <color name="news_toolbar_color">#3D1BB8</color>
+    <color name="news_statusbar_color">#4A28C7</color>
+    <color name="lyt_pink_color">#ECDDE9</color>
+    <color name="lyt_green_color">#D2F3A7</color>
+
+    <color name="play_start_color">#DA3F6E</color>
+    <color name="play_middle_color">#E87C46</color>
+    <color name="play_end_color">#FCB51F</color>
+
+    <color name="menu_background">#F4F4F4</color>
+    <color name="email_start_color">#64DFBA</color>
+    <color name="email_mid_color">#48B4C6</color>
+    <color name="email_end_color">#2E8CD0</color>
+
+    <color name="phone_start_color">#97CB7F</color>
+    <color name="phone_mid_color">#99E3A6</color>
+    <color name="phone_end_color">#6FC5A4</color>
+    <color name="header_start_color">#D44969</color>
+    <color name="header_mid_color">#C53A6C</color>
+    <color name="header_end_color">#D04C6C</color>
+
+
+    <color name="silver_start_color">#B6B7B7</color>
+    <color name="silver_mid_color">#B3B3B4</color>
+    <color name="silver_end_color">#7B7C7E</color>
+
+
+    <color name="yllowcolor">#EFC01B</color>
+
+    <color name="grey_500">#9E9E9E</color>
+    <color name="grey_600">#757575</color>
+</resources>

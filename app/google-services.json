@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "705322482180",
+    "project_id": "tradesk-d4490",
+    "storage_bucket": "tradesk-d4490.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:705322482180:android:0403650719840140905351",
+        "android_client_info": {
+          "package_name": "com.tradesk"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "705322482180-7sk6ku995q01ke2ng6ctv98ac7pi9fev.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCgtvijh_HVKN8tEeQsMgARfZ_FG55BNp8"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "705322482180-7sk6ku995q01ke2ng6ctv98ac7pi9fev.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

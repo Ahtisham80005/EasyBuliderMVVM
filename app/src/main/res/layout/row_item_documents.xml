@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/clParent"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:padding="@dimen/margin_1x">
+
+        <ImageView
+            android:id="@+id/mIvDocs"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:srcCompat="@mipmap/ic_launcher" />
+
+        <TextView
+            android:id="@+id/tvDocument"
+            android:layout_width="92dp"
+            android:layout_height="92dp"
+            android:visibility="visible"
+            android:drawableTop="@drawable/ic_icon_files"
+            android:gravity="center"
+            android:maxLines="2"
+            android:minLines="2"
+            android:text="fgfdgfdgdfgdf.png"
+            android:textStyle="bold"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/mIvDocs" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

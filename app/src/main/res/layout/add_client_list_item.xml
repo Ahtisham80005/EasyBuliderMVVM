@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <data>
+
+    </data>
+
+    <RelativeLayout
+        android:layout_width="300sp"
+        android:padding="5dp"
+        android:layout_height="wrap_content">
+
+        <de.hdodenhof.circleimageview.CircleImageView xmlns:app="http://schemas.android.com/apk/res-auto"
+            android:id="@+id/circle_image_view"
+            android:layout_width="25dp"
+            android:layout_height="25dp"
+            android:src="@drawable/anauser" />
+
+        <TextView
+            android:id="@+id/name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="7dp"
+            android:layout_toRightOf="@id/circle_image_view"
+            android:fontFamily="@font/medium_poppins"
+            android:text="Name"
+            android:textColor="@color/black"
+            android:textSize="@dimen/_11sdp" />
+
+        <ImageView
+            android:id="@+id/cross"
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="15sp"
+            android:src="@drawable/cross" />
+    </RelativeLayout>
+</layout>

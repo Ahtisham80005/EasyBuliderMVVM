@@ -1,0 +1,393 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_margin="@dimen/_10sdp"
+    android:background="@color/white_color"
+    android:orientation="vertical"
+    android:paddingVertical="@dimen/_20sdp">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentLeft="true"
+                android:layout_marginTop="16dp"
+                android:visibility="gone"
+                android:padding="@dimen/margin_2x"
+                app:srcCompat="@drawable/ic_callsalesphone"
+                tools:ignore="VectorDrawableCompat" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="bottom"
+                android:orientation="vertical">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="16dp"
+                    android:layout_marginLeft="16dp"
+                    android:fontFamily="@font/normal_poppins"
+                    android:text="Item Name"
+                    android:textColor="@color/hint_color"
+                    android:textSize="@dimen/text_medium" />
+
+                <EditText
+                    android:id="@+id/etName"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="16dp"
+                    android:layout_marginLeft="16dp"
+                    android:background="@android:color/transparent"
+                    android:focusable="true"
+                    android:focusableInTouchMode="true"
+                    android:fontFamily="@font/normal_poppins"
+                    android:gravity="center_vertical"
+                    android:hint="Write here..."
+                    android:inputType="text"
+                    android:paddingTop="@dimen/margin_1_1x"
+                    android:paddingBottom="@dimen/margin_1_1x"
+                    android:singleLine="true"
+                    android:textColor="@color/text_color"
+                    android:textSize="@dimen/text_medium" />
+            </LinearLayout>
+        </LinearLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_marginTop="2dp"
+            android:background="@color/light_gray_color_new_lighter"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/mEtEmail" />
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/_10sdp"
+            android:orientation="horizontal">
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentLeft="true"
+                android:layout_marginTop="16dp"
+                android:visibility="gone"
+                android:padding="@dimen/margin_2x"
+                app:srcCompat="@drawable/ic_email"
+                tools:ignore="VectorDrawableCompat" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="bottom"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/textView2"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="16dp"
+                    android:layout_marginLeft="16dp"
+                    android:fontFamily="@font/normal_poppins"
+                    android:text="Description"
+                    android:textColor="@color/hint_color"
+                    android:textSize="@dimen/text_medium" />
+
+                <EditText
+                    android:id="@+id/etDesc"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="16dp"
+                    android:layout_marginLeft="16dp"
+                    android:background="@android:color/transparent"
+                    android:focusable="true"
+                    android:focusableInTouchMode="true"
+                    android:fontFamily="@font/normal_poppins"
+                    android:gravity="center_vertical"
+                    android:hint="Write here..."
+                    android:inputType="textPersonName"
+                    android:paddingTop="@dimen/margin_1_1x"
+                    android:paddingBottom="@dimen/margin_1_1x"
+                    android:singleLine="true"
+                    android:textColor="@color/text_color"
+                    android:textSize="@dimen/text_medium" />
+            </LinearLayout>
+        </LinearLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_marginTop="2dp"
+            android:background="@color/light_gray_color_new_lighter"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/mEtEmail" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/_10sdp"
+            android:orientation="horizontal">
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentLeft="true"
+                android:layout_marginTop="16dp"
+                android:visibility="gone"
+                android:padding="@dimen/margin_2x"
+                app:srcCompat="@drawable/ic_callsalesphone"
+                tools:ignore="VectorDrawableCompat" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="bottom"
+                android:orientation="vertical">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="16dp"
+                    android:layout_marginLeft="16dp"
+                    android:fontFamily="@font/normal_poppins"
+                    android:text="Amount ($)"
+                    android:textColor="@color/hint_color"
+                    android:textSize="@dimen/text_medium" />
+
+                <EditText
+                    android:id="@+id/etCost"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="16dp"
+                    android:layout_marginLeft="16dp"
+                    android:background="@android:color/transparent"
+                    android:digits="1234567890()- "
+                    android:focusable="true"
+                    android:focusableInTouchMode="true"
+                    android:fontFamily="@font/normal_poppins"
+                    android:gravity="center_vertical"
+                    android:hint="Write here..."
+                    android:inputType="phone"
+                    android:paddingTop="@dimen/margin_1_1x"
+                    android:paddingBottom="@dimen/margin_1_1x"
+                    android:singleLine="true"
+                    android:textColor="@color/text_color"
+                    android:textSize="@dimen/text_medium" />
+            </LinearLayout>
+
+        </LinearLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_marginTop="2dp"
+            android:background="@color/light_gray_color_new_lighter"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/mEtEmail" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/_10sdp"
+        android:orientation="horizontal">
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_marginTop="16dp"
+            android:visibility="gone"
+            android:padding="@dimen/margin_2x"
+            app:srcCompat="@drawable/ic_callsalesphone"
+            tools:ignore="VectorDrawableCompat" />
+
+
+    </LinearLayout>
+
+
+    <Switch
+        android:visibility="visible"
+        android:id="@+id/isTaxable"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/margin_2x"
+        android:layout_marginLeft="@dimen/margin_2x"
+        android:layout_marginTop="@dimen/margin_2x"
+        android:layout_marginEnd="@dimen/margin_3x"
+        android:layout_marginRight="@dimen/margin_3x"
+        android:text="Item taxable"
+        android:textColor="@color/hint_color"
+        android:textSize="@dimen/text_mediumLarge"
+        tools:ignore="UseSwitchCompatOrMaterialXml" />
+
+    <LinearLayout
+        android:visibility="gone"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/margin_3x"
+        android:orientation="horizontal">
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/margin_2x"
+            android:layout_marginEnd="@dimen/margin_2x"
+            android:layout_weight="1"
+            android:text="Sub Total"
+            android:textColor="@color/hint_color"
+            android:textSize="@dimen/text_mediumLarge"
+            tools:ignore="UseSwitchCompatOrMaterialXml" />
+
+        <TextView
+            android:id="@+id/subTotal"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/margin_2x"
+            android:layout_marginEnd="@dimen/margin_2x"
+            android:layout_weight="1"
+            android:gravity="end"
+            android:text="0.00"
+            android:textColor="@color/hint_color"
+            android:textSize="@dimen/text_mediumLarge"
+            tools:ignore="UseSwitchCompatOrMaterialXml" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:visibility="gone"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/margin_3x"
+        android:orientation="horizontal">
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/margin_2x"
+            android:layout_marginEnd="@dimen/margin_2x"
+            android:layout_weight="1"
+            android:text="Item Tax"
+            android:textColor="@color/hint_color"
+            android:textSize="@dimen/text_mediumLarge"
+            tools:ignore="UseSwitchCompatOrMaterialXml" />
+
+        <TextView
+            android:id="@+id/itemTax"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/margin_2x"
+            android:layout_marginEnd="@dimen/margin_2x"
+            android:layout_weight="1"
+            android:gravity="end"
+            android:text="0.00"
+            android:textColor="@color/hint_color"
+            android:textSize="@dimen/text_mediumLarge"
+            tools:ignore="UseSwitchCompatOrMaterialXml" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:visibility="gone"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/margin_3x"
+        android:layout_marginBottom="@dimen/margin_1x"
+        android:orientation="horizontal">
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/margin_2x"
+            android:layout_marginEnd="@dimen/margin_2x"
+            android:layout_weight="1"
+            android:text="Total"
+            android:textColor="@color/hint_color"
+            android:textSize="@dimen/text_mediumLarge"
+            tools:ignore="UseSwitchCompatOrMaterialXml" />
+
+        <TextView
+            android:id="@+id/total"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/margin_2x"
+            android:layout_marginEnd="@dimen/margin_2x"
+            android:layout_weight="1"
+            android:gravity="end"
+            android:text="0.00"
+            android:textColor="@color/hint_color"
+            android:textSize="@dimen/text_mediumLarge"
+            tools:ignore="UseSwitchCompatOrMaterialXml" />
+
+    </LinearLayout>
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginLeft="16dp"
+        android:layout_marginTop="12dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginRight="16dp"
+        android:background="@color/white_color"
+        android:gravity="center_vertical"
+        android:minHeight="54dp"
+        android:visibility="gone"
+        app:passwordToggleEnabled="false">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/etQty"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/normal_poppins"
+            android:gravity="center_vertical"
+            android:hint="Quantity"
+            android:text="1"
+            android:digits="0123456789"
+            android:inputType="number"
+            android:paddingStart="@dimen/margin_2x"
+            android:paddingLeft="@dimen/margin_2x"
+            android:imeOptions="actionNext"
+            android:textColor="@color/text_color"
+            android:textSize="@dimen/text_mediumLarge" />
+    </com.google.android.material.textfield.TextInputLayout>
+
+
+
+
+
+
+
+            <Button
+                android:id="@+id/btnDone"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/_20sdp"
+                android:layout_marginHorizontal="@dimen/_30sdp"
+                android:background="@drawable/button_rounded_shape"
+                android:backgroundTint="@color/colorAccent"
+                android:fontFamily="@font/normal_poppins"
+                android:text="Done"
+                android:textAllCaps="false"
+                android:textColor="@color/white_color"
+                android:textSize="@dimen/text_mediumLarge"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.5"
+                app:layout_constraintStart_toEndOf="@+id/button3"
+                app:layout_constraintTop_toBottomOf="@+id/mEtNotes" />
+
+
+
+
+</LinearLayout>

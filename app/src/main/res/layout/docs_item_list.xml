@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <data>
+
+    </data>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:id="@+id/parent"
+        android:layout_height="wrap_content">
+
+        <LinearLayout
+            android:id="@+id/selectedDocLayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:visibility="visible"
+            android:weightSum="3">
+
+            <TextView
+                android:id="@+id/docName"
+                android:layout_width="0dp"
+                android:layout_marginLeft="@dimen/_2sdp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/_5sdp"
+                android:layout_weight="2.5"
+                android:fontFamily="@font/normal_poppins"
+                android:text="doc"
+                android:textColor="@color/colorPrimary"
+                android:textSize="@dimen/text_medium" />
+
+            <ImageView
+                android:id="@+id/crossDoc"
+                android:layout_width="0dp"
+                android:layout_height="@dimen/_15sdp"
+                android:layout_marginTop="@dimen/_5sdp"
+                android:layout_weight=".5"
+                android:drawableStart="@drawable/ic_addorangess"
+                android:fontFamily="@font/normal_poppins"
+                android:gravity="end"
+                android:paddingRight="@dimen/_5sdp"
+                android:src="@drawable/cross"
+                android:textColor="@color/colorPrimary"
+                android:textSize="@dimen/text_medium" />
+        </LinearLayout>
+
+    </RelativeLayout>
+</layout>

@@ -1,0 +1,252 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+<!--        <variable-->
+<!--            name="model"-->
+<!--            type="com.tradesk.Model.LeadsData" />-->
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <TextView
+            android:id="@+id/mTvDate"
+            android:minWidth="100dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginLeft="8dp"
+            android:layout_marginTop="8dp"
+            android:background="@drawable/round_shape_coloredleads"
+            android:fontFamily="@font/medium_poppins"
+            android:paddingStart="@dimen/margin_2x"
+            android:paddingTop="4dp"
+            android:paddingEnd="@dimen/margin_2x"
+            android:paddingBottom="4dp"
+            android:text="Follow Up"
+            android:gravity="center"
+            android:textColor="@color/white_color"
+            android:textSize="@dimen/text_small"
+            android:textAllCaps="true"
+            app:layout_constraintStart_toStartOf="@+id/parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <androidx.cardview.widget.CardView
+            android:id="@+id/parent"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="12dp"
+            android:layout_marginLeft="12dp"
+            android:layout_marginEnd="12dp"
+            android:layout_marginRight="12dp"
+            android:layout_marginBottom="5dp"
+            android:elevation="@dimen/margin_2x"
+            app:cardCornerRadius="@dimen/margin_2x"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/mTvDate">
+
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <TextView
+                    android:id="@+id/mTvName"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginLeft="8dp"
+                    android:layout_marginTop="4dp"
+                    android:fontFamily="@font/normal_poppins"
+                    android:text="Jakolin Lina"
+                    android:textColor="@color/black_color"
+                    android:textSize="@dimen/text_medium"
+                    app:layout_constraintEnd_toStartOf="@+id/mClNavigate"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <TextView
+                    android:id="@+id/mTvTitle"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="4dp"
+                    android:fontFamily="@font/normal_poppins"
+                    android:gravity="center_vertical"
+                    android:padding="@dimen/margin_1_1x"
+                    android:text="Bathroom Model"
+                    android:textColor="@color/leads_color"
+                    android:textSize="@dimen/text_very_small"
+                    app:layout_constraintEnd_toStartOf="@+id/mTvAddress9"
+                    app:layout_constraintHorizontal_bias="0.5"
+                    app:layout_constraintStart_toStartOf="@+id/mTvName"
+                    app:layout_constraintTop_toBottomOf="@+id/mTvName" />
+
+
+                <TextView
+                    android:id="@+id/textView9"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:drawableStart="@drawable/ic_clocklist"
+                    android:drawableLeft="@drawable/ic_clocklist"
+                    android:drawablePadding="@dimen/margin_1x"
+                    android:fontFamily="@font/normal_poppins"
+                    android:gravity="center_vertical"
+                    android:padding="@dimen/margin_1_1x"
+                    android:text="June 17,2021 |10:40 PM"
+                    android:textColor="@color/leads_color"
+                    android:textSize="@dimen/text_medium"
+                    android:visibility="gone"
+                    app:layout_constraintEnd_toEndOf="@+id/mTvTitle"
+                    app:layout_constraintStart_toStartOf="@+id/mTvTitle"
+                    app:layout_constraintTop_toBottomOf="@+id/mTvTitle" />
+
+                <TextView
+                    android:id="@+id/mTvPhone"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/normal_poppins"
+                    android:gravity="center_vertical"
+                    android:padding="@dimen/margin_1_1x"
+                    android:text="+1 (231) 324-7785"
+                    android:textColor="@color/black_color"
+                    android:textSize="@dimen/text_small"
+                    app:layout_constraintEnd_toEndOf="@+id/mTvAddress8"
+                    app:layout_constraintStart_toStartOf="@+id/mTvAddress8"
+                    app:layout_constraintTop_toBottomOf="@+id/mTvAddress8" />
+
+                <TextView
+                    android:id="@+id/mTvAddress"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/normal_poppins"
+                    android:gravity="start"
+                    android:padding="@dimen/margin_1_1x"
+                    android:text="32 Rock Street, NY Street"
+                    android:textColor="@color/black_color"
+                    android:textSize="@dimen/text_small"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="@+id/mClNavigate"
+                    app:layout_constraintStart_toStartOf="@+id/mTvAddress9"
+                    app:layout_constraintTop_toBottomOf="@+id/mTvAddress9" />
+
+                <TextView
+                    android:id="@+id/mTvAddress8"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="4dp"
+                    android:fontFamily="@font/normal_poppins"
+                    android:padding="@dimen/margin_1_1x"
+                    android:text="Phone"
+                    android:textColor="@color/leads_color"
+                    android:textSize="@dimen/text_very_small"
+                    app:layout_constraintEnd_toEndOf="@+id/mTvTitle"
+                    app:layout_constraintStart_toStartOf="@+id/mTvTitle"
+                    app:layout_constraintTop_toBottomOf="@+id/mTvTitle" />
+
+
+                <TextView
+                    android:id="@+id/mTvAddress9"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/normal_poppins"
+                    android:padding="@dimen/margin_1_1x"
+                    android:text="Address"
+                    android:textColor="@color/leads_color"
+                    android:textSize="@dimen/text_very_small"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_bias="0.5"
+                    app:layout_constraintStart_toEndOf="@+id/mTvTitle"
+                    app:layout_constraintTop_toTopOf="@+id/mTvTitle" />
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:id="@+id/textView7"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:layout_marginEnd="8dp"
+                    android:layout_marginRight="8dp"
+                    android:background="@drawable/light_orange_rounded"
+                    android:visibility="gone"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="parent">
+
+                    <TextView
+                        android:id="@+id/tvStatus"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="8dp"
+                        android:layout_marginLeft="8dp"
+                        android:layout_marginTop="2dp"
+                        android:layout_marginEnd="8dp"
+                        android:layout_marginRight="8dp"
+                        android:layout_marginBottom="2dp"
+                        android:fontFamily="@font/normal_poppins"
+                        android:text="Follow Up"
+                        android:textColor="@color/colorAccent"
+                        android:textSize="@dimen/text_medium"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:id="@+id/mClNavigate"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="6dp"
+                    android:layout_marginRight="6dp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="@+id/mTvName">
+
+                    <ImageView
+                        android:id="@+id/mIvNavigate"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="4dp"
+                        android:layout_marginBottom="4dp"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:srcCompat="@drawable/ic_compass_newicon"
+                        tools:ignore="VectorDrawableCompat" />
+
+                    <ImageView
+                        android:id="@+id/mIvEmail"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="4dp"
+                        android:layout_marginBottom="4dp"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toStartOf="@+id/mIvNavigate"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:srcCompat="@drawable/ic_group_email"
+                        tools:ignore="VectorDrawableCompat" />
+
+                    <ImageView
+                        android:id="@+id/mIvCall"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="4dp"
+                        android:layout_marginEnd="4dp"
+                        android:layout_marginBottom="4dp"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toStartOf="@+id/mIvEmail"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:srcCompat="@drawable/ic_group_call"
+                        tools:ignore="VectorDrawableCompat" />
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+        </androidx.cardview.widget.CardView>
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

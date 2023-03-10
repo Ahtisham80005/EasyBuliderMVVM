@@ -1,0 +1,53 @@
+<resources>
+    <!-- Default screen margins, per the Android Design guidelines. -->
+    <dimen name="activity_horizontal_margin">16dp</dimen>
+    <dimen name="activity_vertical_margin">16dp</dimen>
+
+    <!--dimens-->
+    <dimen name="margin_1x">6dp</dimen>
+    <dimen name="margin_2x">12dp</dimen>
+    <dimen name="margin_3x">15dp</dimen>
+    <dimen name="margin_4x">20dp</dimen>
+    <dimen name="margin_5x">23dp</dimen>
+    <dimen name="margin_6x">29dp</dimen>
+    <dimen name="margin_7x">33dp</dimen>
+    <dimen name="margin_8x">38dp</dimen>
+    <dimen name="margin_10x">45dp</dimen>
+    <dimen name="margin_15x">78dp</dimen>
+    <dimen name="margin_12x">64dp</dimen>
+    <dimen name="margin_16x">85dp</dimen>
+
+    <dimen name="margin_18x">95dp</dimen>
+    <dimen name="margin_20x">105dp</dimen>
+    <!--text size-->
+    <dimen name="text_too_small">9sp</dimen>
+    <dimen name="text_very_small">12sp</dimen>
+    <dimen name="text_small">14sp</dimen>
+    <dimen name="text_medium">16sp</dimen>
+    <dimen name="text_mediumLarge">17sp</dimen>
+    <dimen name="text_large">18sp</dimen>
+    <dimen name="text_xlarge">20sp</dimen>
+    <dimen name="text_xxlarge">22sp</dimen>
+    <dimen name="text_xxxlarge">23sp</dimen>
+    <dimen name="text_xxxxlarge">25sp</dimen>
+    <dimen name="text_xxxxxlarge">27sp</dimen>
+    <dimen name="text_xxxxxxlarge">37sp</dimen>
+
+    <dimen name="text_tabxlarge">32sp</dimen>
+    <dimen name="text_tabxxlarge">35sp</dimen>
+    <dimen name="text_tabxxxlarge">38sp</dimen>
+    <dimen name="text_tabxxxxlarge">41sp</dimen>
+    <dimen name="text_tabxxxxxlarge">44sp</dimen>
+    <!--extra dimen-->
+    <dimen name="rounder_corner">4dp</dimen>
+    <dimen name="progress_dimen">160dp</dimen>
+
+    <!--image height-->
+    <dimen name="imageview_dimen">150dp</dimen>
+    <dimen name="profile_image_dimen">195dp</dimen>
+    <dimen name="linespace_1x">1.1dp</dimen>
+    <dimen name="tab_height">65dp</dimen>
+    <dimen name="rounded_dimnesion">90dp</dimen>
+
+    <dimen name="mini_carousal_height">90dp</dimen>
+</resources>

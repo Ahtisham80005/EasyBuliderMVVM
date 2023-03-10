@@ -1,0 +1,262 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/light_gray_color_new_lighter"
+    android:paddingTop="@dimen/margin_2x"
+    android:paddingBottom="@dimen/margin_2x">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/top"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="2dp"
+        android:layout_marginRight="2dp"
+        android:layout_marginBottom="8dp"
+        android:background="@drawable/shadow_border_bg_more_rounded"
+        android:backgroundTint="@color/white_color"
+        android:paddingBottom="5dp"
+        app:layout_constraintBottom_toTopOf="@+id/tvDone"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent">
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/guidelineStart"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layout_constraintGuide_begin="10dp" />
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/guidelineEnd"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layout_constraintGuide_end="10dp" />
+
+
+        <View
+            android:id="@+id/divider1"
+            android:layout_width="0dp"
+            android:layout_height="1dp"
+            android:layout_marginTop="24dp"
+            android:background="?android:attr/listDivider"
+            android:visibility="gone"
+            app:layout_constraintEnd_toStartOf="@+id/guidelineEnd"
+            app:layout_constraintStart_toStartOf="@+id/guidelineStart"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/mTvSpam"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:drawablePadding="@dimen/margin_1x"
+            android:fontFamily="@font/medium_poppins"
+            android:gravity="center_vertical"
+            android:minWidth="160dp"
+            android:padding="@dimen/margin_2x"
+            android:text="What would you like to setup?"
+            android:textColor="@color/black_color"
+            android:textSize="@dimen/text_mediumLarge"
+            app:layout_constraintEnd_toStartOf="@+id/guidelineEnd"
+            app:layout_constraintStart_toStartOf="@+id/guidelineStart"
+            app:layout_constraintTop_toBottomOf="@+id/divider1" />
+
+        <View
+            android:id="@+id/divider5"
+            android:layout_width="0dp"
+            android:layout_height="1dp"
+            android:layout_marginStart="24dp"
+            android:layout_marginLeft="24dp"
+            android:layout_marginEnd="24dp"
+            android:layout_marginRight="24dp"
+            android:background="@color/light_gray_color_new_lighter"
+            android:visibility="invisible"
+            app:layout_constraintEnd_toStartOf="@+id/guidelineEnd"
+            app:layout_constraintStart_toStartOf="@+id/guidelineStart"
+            app:layout_constraintTop_toBottomOf="@+id/mTvSpam" />
+
+
+        <TextView
+            android:id="@+id/mTvCallReminder"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:drawablePadding="@dimen/margin_1x"
+            android:fontFamily="@font/normal_poppins"
+            android:gravity="center_vertical"
+            android:padding="@dimen/margin_2x"
+            android:text="Phone call reminder."
+            android:textColor="@color/black_color"
+            android:textSize="@dimen/text_medium"
+            android:textStyle="normal"
+            app:layout_constraintEnd_toStartOf="@+id/guidelineEnd"
+            app:layout_constraintStart_toEndOf="@+id/imageView32"
+            app:layout_constraintTop_toBottomOf="@+id/divider5" />
+
+        <View
+            android:id="@+id/divider6"
+            android:layout_width="0dp"
+            android:layout_height="1dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginLeft="16dp"
+            android:layout_marginEnd="16dp"
+            android:layout_marginRight="16dp"
+            android:background="@color/light_gray_color_new_lighter"
+            app:layout_constraintEnd_toStartOf="@+id/guidelineEnd"
+            app:layout_constraintStart_toStartOf="@+id/guidelineStart"
+            app:layout_constraintTop_toBottomOf="@+id/mTvCallReminder" />
+
+        <TextView
+            android:id="@+id/mTvAppointReminder"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:drawablePadding="@dimen/margin_1x"
+            android:fontFamily="@font/normal_poppins"
+            android:gravity="center_vertical"
+            android:padding="@dimen/margin_2x"
+            android:text="Appointment reminder."
+            android:textColor="@color/black_color"
+            android:textSize="@dimen/text_medium"
+            android:textStyle="normal"
+            app:layout_constraintEnd_toStartOf="@+id/guidelineEnd"
+            app:layout_constraintStart_toEndOf="@+id/imageView34"
+            app:layout_constraintTop_toBottomOf="@+id/divider6" />
+
+        <View
+            android:id="@+id/divider7"
+            android:layout_width="0dp"
+            android:layout_height="1dp"
+            android:layout_marginStart="16dp"
+            android:background="?android:attr/listDivider"
+            android:visibility="visible"
+            app:layout_constraintEnd_toStartOf="@+id/guidelineEnd"
+            app:layout_constraintStart_toStartOf="@+id/guidelineStart"
+            app:layout_constraintTop_toBottomOf="@+id/mTvAppointReminder" />
+
+        <EditText
+            android:id="@+id/mEtDescription"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:fontFamily="@font/normal_poppins"
+            android:gravity="start"
+            android:hint="Reminder note"
+            android:inputType="textCapSentences|textMultiLine"
+            android:minLines="4"
+            android:textSize="@dimen/text_medium"
+            app:layout_constraintEnd_toStartOf="@+id/guidelineEnd"
+            app:layout_constraintStart_toStartOf="@+id/imageView34"
+            app:layout_constraintTop_toBottomOf="@+id/divider7" />
+
+        <ImageView
+            android:id="@+id/imageView51"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:visibility="gone"
+            app:layout_constraintBottom_toBottomOf="@+id/mTvSpam"
+            app:layout_constraintEnd_toEndOf="@+id/mTvSpam"
+            app:layout_constraintHorizontal_bias="0.25"
+            app:layout_constraintStart_toStartOf="@+id/guidelineStart"
+            app:layout_constraintTop_toTopOf="@+id/mTvSpam"
+            app:layout_constraintVertical_bias="0.45999998"
+            app:srcCompat="@drawable/ic_sendproposal"
+            tools:ignore="VectorDrawableCompat" />
+
+
+        <ImageView
+            android:id="@+id/imageView52"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:visibility="gone"
+            app:layout_constraintBottom_toBottomOf="@+id/mTvCallReminder"
+            app:layout_constraintEnd_toEndOf="@+id/mTvCallReminder"
+            app:layout_constraintHorizontal_bias="0.25"
+            app:layout_constraintStart_toStartOf="@+id/guidelineStart"
+            app:layout_constraintTop_toTopOf="@+id/mTvCallReminder"
+            app:layout_constraintVertical_bias="0.45999998"
+            app:srcCompat="@drawable/ic_sendinvoice"
+            tools:ignore="VectorDrawableCompat" />
+
+
+        <ImageView
+            android:id="@+id/imageView53"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:visibility="gone"
+            app:layout_constraintBottom_toBottomOf="@+id/mTvAppointReminder"
+            app:layout_constraintEnd_toEndOf="@+id/mTvAppointReminder"
+            app:layout_constraintHorizontal_bias="0.25"
+            app:layout_constraintStart_toStartOf="@+id/guidelineStart"
+            app:layout_constraintTop_toTopOf="@+id/mTvAppointReminder"
+            app:layout_constraintVertical_bias="0.45999998"
+            app:srcCompat="@drawable/ic_sendemailss"
+            tools:ignore="VectorDrawableCompat" />
+
+        <ImageView
+            android:id="@+id/imageView32"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="12dp"
+            android:layout_marginLeft="12dp"
+            android:background="@drawable/ic_rectangle_round"
+            android:padding="@dimen/margin_2x"
+            app:layout_constraintBottom_toTopOf="@+id/divider6"
+            app:layout_constraintStart_toStartOf="@+id/guidelineStart"
+            app:layout_constraintTop_toBottomOf="@+id/mTvSpam"
+            app:srcCompat="@drawable/ic_callphone"
+            tools:ignore="VectorDrawableCompat" />
+
+        <ImageView
+            android:id="@+id/imageView34"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/ic_rectangle_round"
+            android:padding="@dimen/margin_2x"
+            app:layout_constraintBottom_toTopOf="@+id/divider7"
+            app:layout_constraintStart_toStartOf="@+id/imageView32"
+            app:layout_constraintTop_toBottomOf="@+id/divider6"
+            app:srcCompat="@drawable/ic_calendarornagecolr"
+            tools:ignore="VectorDrawableCompat" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+    <TextView
+        android:id="@+id/tvCancel"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="10dp"
+        android:layout_marginEnd="8dp"
+        android:background="@drawable/shadow_border_bg_more_rounded"
+        android:fontFamily="@font/medium_poppins"
+        android:gravity="center"
+        android:padding="8dp"
+        android:text="Cancel"
+        android:textColor="@color/black_color"
+        android:textSize="18sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/tvDone"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <TextView
+        android:id="@+id/tvDone"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginEnd="10dp"
+        android:background="@drawable/shadow_border_bg_more_rounded"
+        android:fontFamily="@font/medium_poppins"
+        android:gravity="center"
+        android:padding="8dp"
+        android:text="Done"
+        android:textColor="@color/black_color"
+        android:textSize="18sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@+id/tvCancel" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

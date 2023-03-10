@@ -1,0 +1,168 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+<!--        <variable-->
+<!--            name="adapter"-->
+<!--            type="" />-->
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/white_color"
+        android:id="@+id/leadParent"
+        >
+
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/constraintLayout2"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+
+            <TextView
+                android:id="@+id/textView6"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:layout_marginLeft="16dp"
+                android:layout_marginTop="16dp"
+                android:layout_marginBottom="16dp"
+                android:fontFamily="@font/medium_poppins"
+                android:text="Leads"
+                android:textColor="@color/black_color"
+                android:textSize="@dimen/text_mediumLarge"
+                android:textStyle="bold"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <ImageView
+                android:id="@+id/mIvAddLead"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="8dp"
+                android:layout_marginRight="8dp"
+                android:padding="@dimen/margin_1x"
+                android:visibility="gone"
+                android:src="@drawable/ic_plus_leads"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <ImageView
+                android:id="@+id/mIvSettingsLead"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="8dp"
+                android:layout_marginRight="8dp"
+                android:padding="@dimen/margin_1x"
+                android:src="@drawable/ic_setting_newicon"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+
+            <TextView
+                android:visibility="gone"
+                android:id="@+id/tvStatuses"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@drawable/round_shape_rectangle"
+                android:drawableEnd="@drawable/ic_arrow_down"
+                android:drawableRight="@drawable/ic_arrow_down"
+                android:drawablePadding="@dimen/margin_1x"
+                android:fontFamily="@font/normal_poppins"
+                android:gravity="center"
+                android:paddingStart="@dimen/margin_5x"
+                android:paddingTop="@dimen/margin_1x"
+                android:paddingEnd="@dimen/margin_5x"
+                android:paddingBottom="@dimen/margin_1x"
+                android:text="All"
+                android:textColor="@color/colorAccent"
+                android:textSize="@dimen/text_small"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toStartOf="@+id/mIvAddLead"
+                app:layout_constraintStart_toEndOf="@+id/textView6"
+                app:layout_constraintTop_toTopOf="parent" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <EditText
+            android:id="@+id/mEtSearchName"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginEnd="8dp"
+            android:drawableStart="@drawable/ic_search"
+            android:drawableLeft="@drawable/ic_search"
+            android:drawablePadding="@dimen/margin_1x"
+            android:ems="10"
+            android:textCursorDrawable="@drawable/cursur_color"
+            android:backgroundTint="@color/light_gray_color"
+            android:fontFamily="@font/normal_poppins"
+            android:hint="Search..."
+            android:inputType="textPersonName"
+            android:padding="@dimen/margin_2x"
+            android:textSize="@dimen/text_medium"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/constraintLayout2" />
+
+        <com.google.android.material.tabs.TabLayout
+            android:id="@+id/simpleTabLayout"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/mEtSearchName"
+            app:tabGravity="fill"
+            app:tabMode="fixed"
+            style="@style/MyCustomTabLayout"
+            app:tabTextAppearance="@style/AppTabTextAppearance"
+            android:background="#00000000"
+            app:tabTextColor="@color/black_color" />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rvLeads"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_marginTop="8dp"
+            android:visibility="visible"
+
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/simpleTabLayout"
+            tools:itemCount="5"
+            tools:listitem="@layout/row_item_home_leadsnewupdate" />
+
+        <ImageView
+            android:id="@+id/mIvAdd"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="8dp"
+            android:layout_marginRight="8dp"
+            android:layout_marginBottom="8dp"
+            android:src="@drawable/ic_addorange_newicon"
+            app:layout_constraintBottom_toBottomOf="@+id/rvLeads"
+            app:layout_constraintEnd_toEndOf="parent" />
+
+        <TextView
+            android:id="@+id/de"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:text="TextView"
+            android:visibility="gone"
+            android:inputType="textMultiLine"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/rvLeads" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

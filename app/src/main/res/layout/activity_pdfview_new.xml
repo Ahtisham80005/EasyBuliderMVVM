@@ -1,0 +1,141 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        tools:context=".activity.proposalModule.PDFViewNewActivity">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/constraintLayout2"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+
+            <TextView
+                android:id="@+id/textView6"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:layout_marginLeft="8dp"
+                android:layout_marginTop="16dp"
+                android:layout_marginBottom="16dp"
+                android:fontFamily="@font/medium_poppins"
+                android:text="Estimate PDF"
+                android:textColor="@color/black_color"
+                android:textSize="@dimen/text_mediumLarge"
+                android:textStyle="bold"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/mIvBack"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <ImageView
+                android:id="@+id/mIvBack"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:layout_marginLeft="16dp"
+                android:layout_marginTop="8dp"
+                android:padding="@dimen/margin_1x"
+                android:src="@drawable/ic_back_black"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintVertical_bias="0.272" />
+
+            <ImageView
+                android:id="@+id/mIvEmailSend"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="16dp"
+                android:layout_marginRight="16dp"
+                android:padding="@dimen/margin_1x"
+                android:visibility="visible"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:srcCompat="@drawable/ic_mailicon"
+                tools:ignore="VectorDrawableCompat" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <Button
+            android:id="@+id/paidButton"
+            android:layout_width="match_parent"
+            android:text="Mark as Paid"
+            android:textColor="@color/colorPrimary"
+            android:textAllCaps="false"
+            android:visibility="gone"
+            android:fontFamily="@font/medium_poppins"
+            android:background="@drawable/button_rounded_only_stroke"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="@dimen/_10sdp"
+            android:layout_marginVertical="@dimen/_5sdp"
+            app:layout_constraintTop_toBottomOf="@+id/constraintLayout2" />
+
+        <LinearLayout
+            android:id="@+id/buttons"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:weightSum="2"
+            android:visibility="gone"
+            android:orientation="horizontal"
+            android:padding="@dimen/_5sdp"
+            app:layout_constraintTop_toBottomOf="@+id/paidButton">
+
+            <Button
+                android:id="@+id/markAsOngoing"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:textAllCaps="false"
+                android:textColor="@color/colorPrimary"
+                android:text="Mark as ongoing"
+                android:fontFamily="@font/medium_poppins"
+                android:background="@drawable/button_rounded_only_stroke"
+                android:layout_margin="@dimen/_5sdp"
+                android:layout_height="wrap_content" />
+
+            <Button
+                android:id="@+id/markAsComplete"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:textAllCaps="false"
+                android:fontFamily="@font/medium_poppins"
+                android:text="Mark as complete"
+                android:textColor="@color/colorPrimary"
+                android:background="@drawable/button_rounded_only_stroke"
+                android:layout_margin="@dimen/_5sdp"
+                android:layout_height="wrap_content" />
+        </LinearLayout>
+
+        <com.github.barteksc.pdfviewer.PDFView
+            android:id="@+id/idPDFView"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/buttons" />
+
+        <ProgressBar
+            android:id="@+id/pb_loadingpdf"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:layout_marginTop="0dp"
+            android:background="@drawable/loader_bg"
+            android:progressDrawable="@color/colorAccent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="@+id/idPDFView"
+            app:layout_constraintTop_toBottomOf="@+id/constraintLayout2" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

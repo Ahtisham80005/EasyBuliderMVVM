@@ -1,0 +1,2060 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+    </data>
+
+    <androidx.core.widget.NestedScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/white_color"
+        android:fillViewport="true"
+        tools:context=".activity.profileModule.MyProfileActivity">
+
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/constraintLayout2"
+                android:layout_width="match_parent"
+                android:layout_height="150dp"
+                android:background="@color/colorAccent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent">
+
+
+                <TextView
+                    android:id="@+id/textView6"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginLeft="8dp"
+                    android:layout_marginTop="16dp"
+                    android:fontFamily="@font/medium_poppins"
+                    android:text="My Profile"
+                    android:textColor="@color/white_color"
+                    android:textSize="@dimen/text_mediumLarge"
+                    android:textStyle="bold"
+                    app:layout_constraintStart_toEndOf="@+id/mIvBack"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <ImageView
+                    android:id="@+id/mIvBack"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="16dp"
+                    android:layout_marginLeft="16dp"
+                    android:layout_marginTop="0dp"
+                    android:padding="@dimen/margin_1x"
+                    app:layout_constraintBottom_toBottomOf="@+id/textView6"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="@+id/textView6"
+                    app:srcCompat="@drawable/ic_back_black"
+                    app:tint="@color/white_color"
+                    tools:ignore="VectorDrawableCompat" />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <View
+                android:id="@+id/view"
+                android:layout_width="0dp"
+                android:layout_height="10dp"
+                app:layout_constraintBottom_toBottomOf="@+id/constraintLayout2"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@drawable/round_shape_transparent"
+                android:fillViewport="true"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/view">
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:id="@+id/inner"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:elevation="@dimen/margin_2x"
+                    android:paddingStart="@dimen/margin_1x"
+                    android:paddingEnd="@dimen/margin_1x"
+                    android:paddingBottom="64dp"
+                    app:cardCornerRadius="@dimen/margin_2x"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent">
+
+                    <!--            <androidx.cardview.widget.CardView-->
+                    <!--                android:id="@+id/cardView"-->
+                    <!--                android:layout_width="match_parent"-->
+                    <!--                android:layout_height="wrap_content"-->
+
+                    <!--                android:elevation="@dimen/margin_2x"-->
+                    <!--                app:cardCornerRadius="@dimen/margin_2x"-->
+                    <!--                app:layout_constraintEnd_toEndOf="parent"-->
+                    <!--                app:layout_constraintStart_toStartOf="parent"-->
+                    <!--                app:layout_constraintTop_toTopOf="parent">-->
+
+                    <!--                <androidx.constraintlayout.widget.ConstraintLayout-->
+                    <!--                    android:layout_width="match_parent"-->
+                    <!--                    android:layout_height="match_parent">-->
+
+
+                    <!--                    <TextView-->
+                    <!--                        android:id="@+id/textView21"-->
+                    <!--                        android:layout_width="0dp"-->
+                    <!--                        android:layout_height="wrap_content"-->
+                    <!--                        android:layout_marginTop="8dp"-->
+                    <!--                        android:fontFamily="@font/normal_poppins"-->
+                    <!--                        android:text="Profile Picture"-->
+                    <!--                        android:textAlignment="center"-->
+                    <!--                        android:textColor="@color/black_color"-->
+                    <!--                        android:textSize="@dimen/text_mediumLarge"-->
+                    <!--                        app:layout_constraintEnd_toEndOf="parent"-->
+                    <!--                        app:layout_constraintHorizontal_bias="0.5"-->
+                    <!--                        app:layout_constraintStart_toEndOf="@+id/textView43"-->
+                    <!--                        app:layout_constraintTop_toTopOf="parent" />-->
+
+                    <!--                    <com.makeramen.roundedimageview.RoundedImageView-->
+
+                    <!--                        android:id="@+id/mIvPic"-->
+                    <!--                        android:layout_width="0dp"-->
+                    <!--                        android:layout_height="90dp"-->
+                    <!--                        android:layout_marginStart="16dp"-->
+                    <!--                        android:layout_marginTop="8dp"-->
+                    <!--                        android:layout_marginEnd="16dp"-->
+                    <!--                        android:src="@drawable/ic_home_one"-->
+                    <!--                        app:layout_constraintEnd_toEndOf="@+id/textView21"-->
+                    <!--                        app:layout_constraintStart_toStartOf="@+id/textView21"-->
+                    <!--                        app:layout_constraintTop_toBottomOf="@+id/textView21"-->
+                    <!--                        app:riv_border_color="@color/white_color"-->
+                    <!--                        app:riv_border_width="1dp"-->
+                    <!--                        app:riv_corner_radius="@dimen/margin_1x"-->
+                    <!--                        app:riv_oval="false" />-->
+
+
+                    <!--                    <ImageView-->
+                    <!--                        android:id="@+id/mIvEdit"-->
+                    <!--                        android:layout_width="wrap_content"-->
+                    <!--                        android:layout_height="wrap_content"-->
+                    <!--                        app:layout_constraintBottom_toBottomOf="@+id/mIvPic"-->
+                    <!--                        app:layout_constraintEnd_toEndOf="@+id/mIvPic"-->
+                    <!--                        app:layout_constraintStart_toStartOf="@+id/mIvPic"-->
+                    <!--                        app:layout_constraintTop_toBottomOf="@+id/mIvPic"-->
+                    <!--                        app:srcCompat="@drawable/ic_addsales"-->
+                    <!--                        tools:ignore="VectorDrawableCompat" />-->
+
+                    <!--                    <TextView-->
+                    <!--                        android:id="@+id/textView43"-->
+                    <!--                        android:layout_width="0dp"-->
+                    <!--                        android:layout_height="wrap_content"-->
+                    <!--                        android:layout_marginTop="8dp"-->
+                    <!--                        android:text="Company Logo"-->
+                    <!--                        android:fontFamily="@font/normal_poppins"-->
+                    <!--                        android:textColor="@color/hint_color"-->
+                    <!--                        android:textSize="@dimen/text_medium"-->
+                    <!--                        app:layout_constraintEnd_toStartOf="@+id/textView21"-->
+                    <!--                        app:layout_constraintHorizontal_bias="0.5"-->
+                    <!--                        app:layout_constraintStart_toStartOf="parent"-->
+                    <!--                        app:layout_constraintTop_toTopOf="parent" />-->
+
+                    <!--                   -->
+                    <!--                </androidx.constraintlayout.widget.ConstraintLayout>-->
+
+
+                    <!--            </androidx.cardview.widget.CardView>-->
+
+                    <TextView
+                        android:id="@+id/textView43"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="8dp"
+                        android:fontFamily="@font/normal_poppins"
+                        android:text="Company Logo"
+                        android:textColor="@color/hint_color"
+                        android:textSize="@dimen/text_medium"
+                        android:visibility="gone"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/textView30" />
+
+
+                    <ImageView
+                        android:id="@+id/mIvLogo"
+                        android:layout_width="120dp"
+                        android:layout_height="90dp"
+                        android:layout_marginTop="8dp"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toEndOf="@+id/textView30"
+                        app:layout_constraintTop_toBottomOf="@+id/divider2Phone"
+                        app:srcCompat="@mipmap/ic_launcher" />
+
+                    <ImageView
+                        android:id="@+id/mIvEditCompanyLogo"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        app:layout_constraintBottom_toBottomOf="@+id/mIvLogo"
+                        app:layout_constraintEnd_toEndOf="@+id/mIvLogo"
+                        app:layout_constraintStart_toStartOf="@+id/mIvLogo"
+                        app:layout_constraintTop_toBottomOf="@+id/mIvLogo"
+                        app:srcCompat="@drawable/ic_addsales"
+                        tools:ignore="VectorDrawableCompat" />
+
+                    <TextView
+                        android:id="@+id/textView30"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/medium_poppins"
+                        android:text="Company Info"
+                        android:textColor="@color/black_color"
+                        android:textSize="@dimen/text_mediumLarge"
+                        app:layout_constraintBottom_toBottomOf="@+id/mIvEditCompanyLogo"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="@+id/mIvLogo" />
+
+
+                    <ImageView
+                        android:id="@+id/imageView14"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:padding="@dimen/margin_3x"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/mIvEditCompanyLogo"
+                        app:srcCompat="@drawable/ic_add_userleads"
+                        tools:ignore="VectorDrawableCompat" />
+
+                    <TextView
+                        android:id="@+id/textView18"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="16dp"
+                        android:fontFamily="@font/normal_poppins"
+                        android:text="Name"
+                        android:textColor="@color/hint_color"
+                        android:textSize="@dimen/text_medium"
+                        app:layout_constraintStart_toEndOf="@+id/imageView14"
+                        app:layout_constraintTop_toBottomOf="@+id/mIvEditCompanyLogo" />
+
+                    <EditText
+                        android:id="@+id/mIvNameEdit"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="16dp"
+                        android:background="@android:color/transparent"
+                        android:focusable="true"
+                        android:focusableInTouchMode="true"
+                        android:fontFamily="@font/normal_poppins"
+                        android:gravity="center_vertical"
+                        android:hint="Write here..."
+                        android:inputType="textCapSentences"
+                        android:paddingTop="@dimen/margin_1_1x"
+                        android:paddingBottom="@dimen/margin_1_1x"
+                        android:singleLine="true"
+                        android:textColor="@color/text_color"
+                        android:textSize="@dimen/text_medium"
+                        app:layout_constraintEnd_toStartOf="@+id/mIvEditName"
+                        app:layout_constraintStart_toEndOf="@+id/imageView14"
+                        app:layout_constraintTop_toBottomOf="@+id/textView18" />
+
+                    <ImageView
+                        android:id="@+id/mIvEditName"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:padding="@dimen/margin_3x"
+                        android:visibility="invisible"
+                        app:layout_constraintBottom_toBottomOf="@+id/imageView14"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintTop_toTopOf="@+id/imageView14"
+                        app:srcCompat="@drawable/ic_editpen"
+                        tools:ignore="VectorDrawableCompat" />
+
+                    <View
+                        android:id="@+id/divider"
+                        android:layout_width="0dp"
+                        android:layout_height="1dp"
+                        android:background="@color/light_gray_color_new_lighter"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/mIvNameEdit" />
+
+
+                    <ImageView
+                        android:id="@+id/imageView8cEmail"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="16dp"
+                        android:padding="@dimen/margin_2x"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/divider"
+
+                        app:srcCompat="@drawable/ic_callsalesphone"
+                        tools:ignore="VectorDrawableCompat" />
+
+                    <TextView
+                        android:id="@+id/textView5cEmail"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="16dp"
+                        android:layout_marginLeft="16dp"
+                        android:layout_marginTop="16dp"
+                        android:fontFamily="@font/normal_poppins"
+                        android:text="Phone"
+                        android:textColor="@color/hint_color"
+                        android:textSize="@dimen/text_medium"
+                        app:layout_constraintStart_toEndOf="@+id/imageView8cEmail"
+                        app:layout_constraintTop_toBottomOf="@+id/divider" />
+
+                    <EditText
+                        android:id="@+id/mIvPhoneEdit"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="16dp"
+                        android:background="@android:color/transparent"
+                        android:digits="1234567890()- "
+                        android:focusable="true"
+                        android:focusableInTouchMode="true"
+                        android:fontFamily="@font/normal_poppins"
+                        android:gravity="center_vertical"
+                        android:hint="Write here..."
+                        android:inputType="phone"
+                        android:paddingTop="@dimen/margin_1_1x"
+                        android:paddingBottom="@dimen/margin_1_1x"
+                        android:singleLine="true"
+                        android:textColor="@color/text_color"
+                        android:textSize="@dimen/text_medium"
+
+                        app:layout_constraintEnd_toStartOf="@+id/imageView9cEmail"
+                        app:layout_constraintStart_toEndOf="@+id/imageView8cEmail"
+                        app:layout_constraintTop_toBottomOf="@+id/textView5cEmail" />
+
+                    <ImageView
+                        android:id="@+id/imageView9cEmail"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:padding="@dimen/margin_3x"
+                        android:visibility="invisible"
+                        app:layout_constraintBottom_toBottomOf="@+id/imageView8cEmail"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintTop_toTopOf="@+id/imageView8cEmail"
+                        app:srcCompat="@drawable/ic_editpen"
+                        tools:ignore="VectorDrawableCompat" />
+
+                    <View
+                        android:id="@+id/divider5cEmail"
+                        android:layout_width="0dp"
+                        android:layout_height="1dp"
+                        android:background="@color/light_gray_color_new_lighter"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/mIvPhoneEdit" />
+
+                    <ImageView
+                        android:id="@+id/imageView2"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="16dp"
+                        android:padding="@dimen/margin_2x"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/divider5cEmail"
+                        app:srcCompat="@drawable/ic_email"
+                        tools:ignore="VectorDrawableCompat" />
+
+                    <TextView
+                        android:id="@+id/textView2"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="16dp"
+                        android:layout_marginLeft="16dp"
+                        android:layout_marginTop="16dp"
+                        android:fontFamily="@font/normal_poppins"
+                        android:text="Email"
+                        android:textColor="@color/hint_color"
+                        android:textSize="@dimen/text_medium"
+                        app:layout_constraintStart_toEndOf="@+id/imageView14"
+                        app:layout_constraintTop_toBottomOf="@+id/divider5cEmail" />
+
+                    <EditText
+                        android:id="@+id/mIvSeccEmailEdit"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:background="@android:color/transparent"
+                        android:focusable="true"
+                        android:focusableInTouchMode="true"
+                        android:fontFamily="@font/normal_poppins"
+                        android:gravity="center_vertical"
+                        android:hint="Write here..."
+                        android:inputType="textEmailAddress"
+                        android:paddingTop="@dimen/margin_1_1x"
+                        android:paddingBottom="@dimen/margin_1_1x"
+                        android:singleLine="true"
+                        android:textColor="@color/text_color"
+                        android:textSize="@dimen/text_medium"
+                        app:layout_constraintEnd_toStartOf="@+id/mIvEditPhone"
+                        app:layout_constraintStart_toStartOf="@+id/textView2"
+                        app:layout_constraintTop_toBottomOf="@+id/textView2" />
+
+                    <ImageView
+                        android:id="@+id/mIvEditPhone"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:padding="@dimen/margin_3x"
+                        app:layout_constraintBottom_toBottomOf="@+id/imageView2"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintTop_toTopOf="@+id/imageView2"
+                        tools:ignore="VectorDrawableCompat" />
+
+                    <View
+                        android:id="@+id/divider2"
+                        android:layout_width="0dp"
+                        android:layout_height="1dp"
+                        android:background="@color/light_gray_color_new_lighter"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/mIvSeccEmailEdit" />
+
+
+                    <ImageView
+                        android:id="@+id/imageView2TradeCom"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="16dp"
+                        android:padding="@dimen/margin_2x"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/divider2"
+                        app:srcCompat="@drawable/ic_worktrade"
+                        tools:ignore="VectorDrawableCompat" />
+
+                    <TextView
+                        android:id="@+id/textView2TradeCom"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="16dp"
+                        android:layout_marginLeft="16dp"
+                        android:layout_marginTop="16dp"
+                        android:fontFamily="@font/normal_poppins"
+                        android:text="Trade"
+                        android:textColor="@color/hint_color"
+                        android:textSize="@dimen/text_medium"
+                        app:layout_constraintStart_toEndOf="@+id/imageView14"
+                        app:layout_constraintTop_toBottomOf="@+id/divider2" />
+
+                    <EditText
+                        android:id="@+id/mIvTradeEditCom"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:background="@android:color/transparent"
+                        android:focusable="true"
+                        android:focusableInTouchMode="true"
+                        android:fontFamily="@font/normal_poppins"
+                        android:gravity="center_vertical"
+                        android:hint="General Contractor"
+                        android:inputType="textCapSentences"
+                        android:paddingTop="@dimen/margin_1_1x"
+                        android:paddingBottom="@dimen/margin_1_1x"
+                        android:singleLine="true"
+                        android:textColor="@color/text_color"
+                        android:textColorHint="@color/grey_600"
+                        android:textSize="@dimen/text_medium"
+                        app:layout_constraintBottom_toBottomOf="@+id/imageView2TradeCom"
+                        app:layout_constraintEnd_toStartOf="@+id/mIvEditPhoneTradeCom"
+                        app:layout_constraintStart_toStartOf="@+id/textView2TradeCom"
+                        app:layout_constraintTop_toBottomOf="@+id/textView2TradeCom" />
+
+                    <ImageView
+                        android:id="@+id/mIvEditPhoneTradeCom"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:padding="@dimen/margin_3x"
+                        android:visibility="invisible"
+                        app:layout_constraintBottom_toBottomOf="@+id/imageView2TradeCom"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintTop_toTopOf="@+id/imageView2TradeCom"
+                        app:srcCompat="@drawable/ic_editpen"
+                        tools:ignore="VectorDrawableCompat" />
+
+                    <View
+                        android:id="@+id/divider2TradeCom"
+                        android:layout_width="0dp"
+                        android:layout_height="1dp"
+                        android:layout_marginTop="2dp"
+                        android:background="@color/light_gray_color_new_lighter"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/imageView2TradeCom" />
+
+
+                    <ImageView
+                        android:id="@+id/imageView4"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="16dp"
+                        android:padding="@dimen/margin_2x"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/divider2TradeCom"
+                        app:srcCompat="@drawable/ic_home_1"
+                        tools:ignore="VectorDrawableCompat" />
+
+                    <TextView
+                        android:id="@+id/textView3"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="16dp"
+                        android:layout_marginLeft="16dp"
+                        android:layout_marginTop="16dp"
+                        android:fontFamily="@font/normal_poppins"
+                        android:text="Address"
+                        android:textColor="@color/hint_color"
+                        android:textSize="@dimen/text_medium"
+                        app:layout_constraintStart_toEndOf="@+id/imageView4"
+                        app:layout_constraintTop_toBottomOf="@+id/divider2TradeCom" />
+
+                    <EditText
+                        android:id="@+id/mIvAddressEdit"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="16dp"
+                        android:background="@android:color/transparent"
+                        android:focusable="true"
+                        android:focusableInTouchMode="true"
+                        android:fontFamily="@font/normal_poppins"
+                        android:gravity="center_vertical"
+                        android:hint="Write here..."
+                        android:inputType="textCapSentences"
+                        android:paddingTop="@dimen/margin_1_1x"
+                        android:paddingBottom="@dimen/margin_1_1x"
+                        android:singleLine="true"
+                        android:textColor="@color/text_color"
+                        android:textSize="@dimen/text_medium"
+                        app:layout_constraintEnd_toStartOf="@+id/mIvEditAddress"
+                        app:layout_constraintStart_toEndOf="@+id/imageView4"
+                        app:layout_constraintTop_toBottomOf="@+id/textView3" />
+
+                    <ImageView
+                        android:id="@+id/mIvEditAddress"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:padding="@dimen/margin_3x"
+                        android:visibility="invisible"
+                        app:layout_constraintBottom_toBottomOf="@+id/imageView4"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintTop_toTopOf="@+id/imageView4"
+                        app:srcCompat="@drawable/ic_editpen"
+                        tools:ignore="VectorDrawableCompat" />
+
+                    <View
+                        android:id="@+id/divider3"
+                        android:layout_width="0dp"
+                        android:layout_height="1dp"
+                        android:background="@color/light_gray_color_new_lighter"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/mIvAddressEdit" />
+
+
+                    <ImageView
+                        android:id="@+id/imageView6"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="16dp"
+                        android:padding="@dimen/margin_2x"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/divider3"
+                        app:srcCompat="@drawable/ic_city"
+                        tools:ignore="VectorDrawableCompat" />
+
+                    <TextView
+                        android:id="@+id/textView4"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="16dp"
+                        android:layout_marginLeft="16dp"
+                        android:layout_marginTop="16dp"
+                        android:fontFamily="@font/normal_poppins"
+                        android:text="City"
+                        android:textColor="@color/hint_color"
+                        android:textSize="@dimen/text_medium"
+                        app:layout_constraintStart_toEndOf="@+id/imageView6"
+                        app:layout_constraintTop_toBottomOf="@+id/divider3" />
+
+                    <EditText
+                        android:id="@+id/mIvCityEdit"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="16dp"
+                        android:layout_marginLeft="16dp"
+                        android:background="@android:color/transparent"
+                        android:focusable="true"
+                        android:focusableInTouchMode="true"
+                        android:fontFamily="@font/normal_poppins"
+                        android:gravity="center_vertical"
+                        android:hint="Write here..."
+                        android:inputType="textCapSentences"
+                        android:paddingTop="@dimen/margin_1_1x"
+                        android:paddingBottom="@dimen/margin_1_1x"
+                        android:singleLine="true"
+                        android:textColor="@color/text_color"
+                        android:textSize="@dimen/text_medium"
+                        app:layout_constraintBottom_toBottomOf="@+id/imageView6"
+                        app:layout_constraintEnd_toStartOf="@+id/imageView7"
+                        app:layout_constraintStart_toEndOf="@+id/imageView6"
+                        app:layout_constraintTop_toBottomOf="@+id/textView4" />
+
+                    <ImageView
+                        android:id="@+id/imageView7"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:padding="@dimen/margin_3x"
+                        android:visibility="invisible"
+                        app:layout_constraintBottom_toBottomOf="@+id/imageView6"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintTop_toTopOf="@+id/imageView6"
+                        app:srcCompat="@drawable/ic_editpen"
+                        tools:ignore="VectorDrawableCompat" />
+
+                    <View
+                        android:id="@+id/divider4"
+                        android:layout_width="0dp"
+                        android:layout_height="1dp"
+                        android:layout_marginTop="2dp"
+                        android:background="@color/light_gray_color_new_lighter"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/imageView6" />
+
+
+                    <ImageView
+                        android:id="@+id/imageView8"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="16dp"
+                        android:padding="@dimen/margin_2x"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/divider4"
+                        app:srcCompat="@drawable/ic_state"
+                        tools:ignore="VectorDrawableCompat" />
+
+                    <TextView
+                        android:id="@+id/textView5"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="16dp"
+                        android:layout_marginLeft="16dp"
+                        android:layout_marginTop="16dp"
+                        android:fontFamily="@font/normal_poppins"
+                        android:text="State"
+                        android:textColor="@color/hint_color"
+                        android:textSize="@dimen/text_medium"
+                        app:layout_constraintStart_toEndOf="@+id/imageView8"
+                        app:layout_constraintTop_toBottomOf="@+id/divider4" />
+
+                    <EditText
+                        android:id="@+id/mIvStateEdit"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="16dp"
+                        android:layout_marginLeft="16dp"
+                        android:background="@android:color/transparent"
+                        android:focusable="true"
+                        android:focusableInTouchMode="true"
+                        android:fontFamily="@font/normal_poppins"
+                        android:gravity="center_vertical"
+                        android:hint="Write here..."
+                        android:inputType="textCapSentences"
+                        android:paddingTop="@dimen/margin_1_1x"
+                        android:paddingBottom="@dimen/margin_1_1x"
+                        android:singleLine="true"
+                        android:textColor="@color/text_color"
+                        android:textSize="@dimen/text_medium"
+                        app:layout_constraintBottom_toBottomOf="@+id/imageView8"
+                        app:layout_constraintEnd_toStartOf="@+id/imageView9"
+                        app:layout_constraintStart_toEndOf="@+id/imageView8"
+                        app:layout_constraintTop_toBottomOf="@+id/textView5" />
+
+                    <ImageView
+                        android:id="@+id/imageView9"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:padding="@dimen/margin_3x"
+                        android:visibility="invisible"
+                        app:layout_constraintBottom_toBottomOf="@+id/imageView8"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintTop_toTopOf="@+id/imageView8"
+                        app:srcCompat="@drawable/ic_editpen"
+                        tools:ignore="VectorDrawableCompat" />
+
+                    <View
+                        android:id="@+id/divider5"
+                        android:layout_width="0dp"
+                        android:layout_height="1dp"
+                        android:background="@color/light_gray_color_new_lighter"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/imageView8" />
+
+
+                    <ImageView
+                        android:id="@+id/imageView8Zip"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="16dp"
+                        android:padding="@dimen/margin_2x"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/divider5"
+                        app:srcCompat="@drawable/ic_zip"
+                        tools:ignore="VectorDrawableCompat" />
+
+                    <TextView
+                        android:id="@+id/textView5Zip"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="16dp"
+                        android:layout_marginLeft="16dp"
+                        android:layout_marginTop="16dp"
+                        android:fontFamily="@font/normal_poppins"
+                        android:text="Zip/Postal Code"
+                        android:textColor="@color/hint_color"
+                        android:textSize="@dimen/text_medium"
+                        app:layout_constraintStart_toEndOf="@+id/imageView8Zip"
+                        app:layout_constraintTop_toBottomOf="@+id/divider5" />
+
+                    <EditText
+                        android:id="@+id/mIvPostalEdit"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="16dp"
+                        android:layout_marginLeft="16dp"
+                        android:background="@android:color/transparent"
+                        android:focusable="true"
+                        android:focusableInTouchMode="true"
+                        android:fontFamily="@font/normal_poppins"
+                        android:gravity="center_vertical"
+                        android:hint="Write here..."
+                        android:inputType="number"
+                        android:maxLength="6"
+                        android:paddingTop="@dimen/margin_1_1x"
+                        android:paddingBottom="@dimen/margin_1_1x"
+                        android:singleLine="true"
+                        android:textColor="@color/text_color"
+                        android:textSize="@dimen/text_medium"
+                        app:layout_constraintBottom_toBottomOf="@+id/imageView8Zip"
+                        app:layout_constraintEnd_toStartOf="@+id/imageView9Zip"
+                        app:layout_constraintStart_toEndOf="@+id/imageView8Zip"
+                        app:layout_constraintTop_toBottomOf="@+id/textView5Zip" />
+
+                    <ImageView
+                        android:id="@+id/imageView9Zip"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:padding="@dimen/margin_3x"
+                        android:visibility="invisible"
+                        app:layout_constraintBottom_toBottomOf="@+id/imageView8Zip"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintTop_toTopOf="@+id/imageView8Zip"
+                        app:srcCompat="@drawable/ic_editpen"
+                        tools:ignore="VectorDrawableCompat" />
+
+                    <View
+                        android:id="@+id/divider6"
+                        android:layout_width="0dp"
+                        android:layout_height="1dp"
+                        android:background="@color/light_gray_color_new_lighter"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/imageView99Zip" />
+
+
+                    <ImageView
+                        android:id="@+id/iconFax"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="16dp"
+                        android:padding="@dimen/margin_2x"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/divider6"
+                        app:srcCompat="@drawable/ic_fax"
+                        tools:ignore="VectorDrawableCompat" />
+
+                    <TextView
+                        android:id="@+id/tvFax"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="16dp"
+                        android:layout_marginLeft="16dp"
+                        android:layout_marginTop="16dp"
+                        android:fontFamily="@font/normal_poppins"
+                        android:text="Fax"
+                        android:textColor="@color/hint_color"
+                        android:textSize="@dimen/text_medium"
+                        app:layout_constraintStart_toEndOf="@+id/iconFax"
+                        app:layout_constraintTop_toBottomOf="@+id/divider6" />
+
+                    <EditText
+                        android:id="@+id/faxEdit"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="16dp"
+                        android:layout_marginLeft="16dp"
+                        android:background="@android:color/transparent"
+                        android:focusable="true"
+                        android:focusableInTouchMode="true"
+                        android:fontFamily="@font/normal_poppins"
+                        android:gravity="center_vertical"
+                        android:hint="Write here..."
+                        android:paddingTop="@dimen/margin_1_1x"
+                        android:paddingBottom="@dimen/margin_1_1x"
+                        android:singleLine="true"
+                        android:textColor="@color/text_color"
+                        android:textSize="@dimen/text_medium"
+                        app:layout_constraintBottom_toBottomOf="@+id/iconFax"
+                        app:layout_constraintStart_toEndOf="@+id/iconFax"
+                        app:layout_constraintTop_toBottomOf="@+id/tvFax" />
+
+                    <ImageView
+                        android:id="@+id/imageView99Zip"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="4dp"
+                        android:padding="@dimen/margin_3x"
+                        android:visibility="invisible"
+                        app:layout_constraintBottom_toBottomOf="@+id/iconFax"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintTop_toTopOf="@+id/imageView8Zip"
+                        app:layout_constraintVertical_bias="0.0"
+                        app:srcCompat="@drawable/ic_editpen"
+                        tools:ignore="VectorDrawableCompat" />
+
+                    <View
+                        android:id="@+id/divider5Zip"
+                        android:layout_width="0dp"
+                        android:layout_height="1dp"
+                        android:background="@color/light_gray_color_new_lighter"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/iconFax" />
+
+                    <!--            <com.makeramen.roundedimageview.RoundedImageView-->
+                    <!--                android:id="@+id/mIvPic"-->
+                    <!--                android:layout_width="90dp"-->
+                    <!--                android:layout_height="90dp"-->
+                    <!--                android:layout_marginTop="8dp"-->
+                    <!--                android:src="@mipmap/ic_launcher"-->
+                    <!--                app:layout_constraintStart_toStartOf="@+id/imageView8Zip"-->
+                    <!--                app:layout_constraintTop_toBottomOf="@+id/divider5Zip"-->
+                    <!--                app:riv_border_color="@color/white_color"-->
+                    <!--                app:riv_border_width="1dp"-->
+                    <!--                app:riv_corner_radius="@dimen/margin_1x"-->
+                    <!--                app:riv_oval="false" />-->
+
+
+                    <!--            <ImageView-->
+                    <!--                android:id="@+id/mIvEdit"-->
+                    <!--                android:layout_width="wrap_content"-->
+                    <!--                android:layout_height="wrap_content"-->
+                    <!--                app:layout_constraintBottom_toBottomOf="@+id/mIvPic"-->
+                    <!--                app:layout_constraintEnd_toEndOf="@+id/mIvPic"-->
+                    <!--                app:layout_constraintStart_toStartOf="@+id/mIvPic"-->
+                    <!--                app:layout_constraintTop_toBottomOf="@+id/mIvPic"-->
+                    <!--                app:srcCompat="@drawable/ic_addsales"-->
+                    <!--                tools:ignore="VectorDrawableCompat" />-->
+
+
+                    <androidx.cardview.widget.CardView
+                        android:id="@+id/cardView1334"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="8dp"
+                        android:elevation="@dimen/margin_2x"
+                        app:cardCornerRadius="@dimen/margin_2x"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent">
+
+                        <androidx.constraintlayout.widget.ConstraintLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent">
+
+
+                            <TextView
+                                android:id="@+id/textView21"
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="8dp"
+                                android:fontFamily="@font/normal_poppins"
+                                android:gravity="center"
+                                android:text="Profile Picture"
+                                android:textColor="@color/hint_color"
+                                android:textSize="@dimen/text_medium"
+                                android:visibility="gone"
+                                app:layout_constraintEnd_toEndOf="parent"
+                                app:layout_constraintHorizontal_bias="0.5"
+                                app:layout_constraintStart_toStartOf="parent"
+                                app:layout_constraintTop_toTopOf="parent" />
+
+
+                            <androidx.constraintlayout.widget.ConstraintLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent">
+
+
+                                <de.hdodenhof.circleimageview.CircleImageView
+                                    android:id="@+id/mIvPic"
+                                    android:layout_width="110dp"
+                                    android:layout_height="110dp"
+                                    android:layout_marginStart="16dp"
+                                    android:layout_marginTop="16dp"
+                                    android:layout_marginBottom="16dp"
+                                    android:src="@drawable/ic_user_profile"
+                                    app:layout_constraintBottom_toBottomOf="parent"
+                                    app:layout_constraintStart_toStartOf="parent"
+                                    app:layout_constraintTop_toTopOf="parent"
+                                    app:riv_border_color="@color/white_color"
+                                    app:riv_border_width="1dp"
+                                    app:riv_corner_radius="@dimen/margin_1x"
+                                    app:riv_oval="false" />
+
+                                <ImageView
+                                    android:id="@+id/mIvEdit"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    app:layout_constraintBottom_toBottomOf="@+id/mIvPic"
+                                    app:layout_constraintEnd_toEndOf="@+id/mIvPic"
+                                    app:layout_constraintStart_toStartOf="@+id/mIvPic"
+                                    app:layout_constraintTop_toBottomOf="@+id/mIvPic"
+                                    app:srcCompat="@drawable/ic_addsales"
+                                    tools:ignore="VectorDrawableCompat" />
+
+                                <TextView
+                                    android:id="@+id/mTvName"
+                                    android:layout_width="0dp"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginStart="8dp"
+                                    android:layout_marginLeft="8dp"
+                                    android:layout_marginTop="8dp"
+                                    android:layout_marginEnd="8dp"
+                                    android:layout_marginRight="8dp"
+                                    android:fontFamily="@font/medium_poppins"
+                                    android:textColor="@color/black_color"
+                                    android:textSize="@dimen/text_mediumLarge"
+                                    app:layout_constraintEnd_toEndOf="parent"
+                                    app:layout_constraintStart_toEndOf="@+id/mIvPic"
+                                    app:layout_constraintTop_toTopOf="@+id/mIvPic" />
+
+                                <TextView
+                                    android:id="@+id/mTvType"
+                                    android:layout_width="0dp"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginStart="8dp"
+                                    android:layout_marginLeft="8dp"
+                                    android:gravity="center_vertical"
+                                    android:fontFamily="@font/normal_poppins"
+                                    android:text="Contractor"
+                                    android:textColor="@color/colorPrimary"
+                                    android:textSize="@dimen/text_small"
+                                    app:layout_constraintEnd_toEndOf="@+id/mTvName"
+                                    app:layout_constraintStart_toEndOf="@+id/mIvPic"
+                                    app:layout_constraintTop_toBottomOf="@+id/mTvName" />
+
+                                <TextView
+                                    android:id="@+id/mTvPhone"
+                                    android:layout_width="0dp"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginStart="8dp"
+                                    android:layout_marginLeft="8dp"
+                                    android:layout_marginEnd="8dp"
+                                    android:layout_marginRight="8dp"
+                                    android:drawableStart="@drawable/ic_callphone"
+                                    android:drawableLeft="@drawable/ic_callphone"
+                                    android:drawablePadding="@dimen/margin_1x"
+                                    android:fontFamily="@font/normal_poppins"
+                                    android:textColor="@color/text_color"
+                                    android:textSize="@dimen/text_very_small"
+                                    app:layout_constraintBottom_toTopOf="@+id/mTvEmail"
+                                    app:layout_constraintEnd_toEndOf="parent"
+                                    app:layout_constraintStart_toEndOf="@+id/mIvPic" />
+
+                                <TextView
+                                    android:id="@+id/mTvEmail"
+                                    android:layout_width="0dp"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginStart="8dp"
+                                    android:layout_marginEnd="8dp"
+                                    android:layout_marginBottom="8dp"
+                                    android:drawableStart="@drawable/ic_messageemail"
+                                    android:drawableLeft="@drawable/ic_messageemail"
+                                    android:drawablePadding="@dimen/margin_1x"
+                                    android:fontFamily="@font/normal_poppins"
+                                    android:gravity="center_vertical"
+                                    android:textColor="@color/text_color"
+                                    android:textSize="@dimen/text_very_small"
+                                    app:layout_constraintBottom_toBottomOf="@+id/mIvPic"
+                                    app:layout_constraintEnd_toEndOf="parent"
+                                    app:layout_constraintHorizontal_bias="0.0"
+                                    app:layout_constraintStart_toEndOf="@+id/mIvPic" />
+
+
+                            </androidx.constraintlayout.widget.ConstraintLayout>
+
+                            <!--                    <com.makeramen.roundedimageview.RoundedImageView-->
+
+                            <!--                        android:id="@+id/mIvPic"-->
+                            <!--                        android:layout_width="0dp"-->
+                            <!--                        android:layout_height="90dp"-->
+                            <!--                        android:layout_marginStart="16dp"-->
+                            <!--                        android:layout_marginTop="8dp"-->
+                            <!--                        android:layout_marginEnd="16dp"-->
+                            <!--                        android:src="@drawable/ic_home_one"-->
+                            <!--                        app:layout_constraintEnd_toEndOf="@+id/textView21"-->
+                            <!--                        app:layout_constraintStart_toStartOf="@+id/textView21"-->
+                            <!--                        app:layout_constraintTop_toBottomOf="@+id/textView21"-->
+                            <!--                        app:riv_border_color="@color/white_color"-->
+                            <!--                        app:riv_border_width="1dp"-->
+                            <!--                        app:riv_corner_radius="@dimen/margin_1x"-->
+                            <!--                        app:riv_oval="false" />-->
+
+
+                        </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+                    </androidx.cardview.widget.CardView>
+
+                    <TextView
+                        android:id="@+id/textView31"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="16dp"
+                        android:fontFamily="@font/medium_poppins"
+                        android:text="User Info"
+                        android:textColor="@color/black_color"
+                        android:textSize="@dimen/text_mediumLarge"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/cardView1334" />
+
+
+                    <ImageView
+                        android:id="@+id/imageView14U"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="8dp"
+                        android:padding="@dimen/margin_3x"
+                        android:scaleType="centerInside"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/textView31"
+                        app:srcCompat="@drawable/ic_add_userleads"
+                        tools:ignore="VectorDrawableCompat" />
+
+                    <TextView
+                        android:id="@+id/textView18U"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="16dp"
+                        android:layout_marginTop="8dp"
+                        android:fontFamily="@font/normal_poppins"
+                        android:text="Name"
+                        android:textColor="@color/hint_color"
+                        android:textSize="@dimen/text_medium"
+                        app:layout_constraintStart_toEndOf="@+id/imageView14U"
+                        app:layout_constraintTop_toBottomOf="@+id/textView31" />
+
+                    <EditText
+                        android:id="@+id/mIvUNameEdit"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="16dp"
+                        android:background="@android:color/transparent"
+                        android:focusable="true"
+                        android:focusableInTouchMode="true"
+                        android:fontFamily="@font/normal_poppins"
+                        android:gravity="center_vertical"
+                        android:hint="Write here..."
+                        android:inputType="textCapSentences"
+                        android:paddingTop="@dimen/margin_1_1x"
+                        android:paddingBottom="@dimen/margin_1_1x"
+                        android:singleLine="true"
+                        android:textColor="@color/text_color"
+                        android:textSize="@dimen/text_medium"
+                        app:layout_constraintEnd_toStartOf="@+id/mIvEditUName"
+                        app:layout_constraintStart_toEndOf="@+id/imageView14U"
+                        app:layout_constraintTop_toBottomOf="@+id/textView18U" />
+
+                    <ImageView
+                        android:id="@+id/mIvEditUName"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:padding="@dimen/margin_3x"
+                        android:visibility="invisible"
+
+                        app:layout_constraintBottom_toBottomOf="@+id/imageView14U"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintTop_toTopOf="@+id/imageView14U"
+                        app:srcCompat="@drawable/ic_editpen"
+                        tools:ignore="VectorDrawableCompat" />
+
+                    <View
+                        android:id="@+id/Uidivider"
+                        android:layout_width="0dp"
+                        android:layout_height="1dp"
+                        android:background="@color/light_gray_color_new_lighter"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/mIvUNameEdit" />
+
+                    <ImageView
+                        android:id="@+id/imageView8Email"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="16dp"
+                        android:padding="@dimen/margin_2x"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/Uidivider"
+                        app:srcCompat="@drawable/ic_callsalesphone"
+                        tools:ignore="VectorDrawableCompat" />
+
+                    <TextView
+                        android:id="@+id/textView5Email"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="16dp"
+                        android:layout_marginLeft="16dp"
+                        android:layout_marginTop="16dp"
+                        android:fontFamily="@font/normal_poppins"
+                        android:text="Mobile Number"
+                        android:textColor="@color/hint_color"
+                        android:textSize="@dimen/text_medium"
+                        app:layout_constraintStart_toEndOf="@+id/imageView8Email"
+                        app:layout_constraintTop_toBottomOf="@+id/Uidivider" />
+
+                    <!--                -->
+                    <EditText
+                        android:id="@+id/mIvHomePhoneEdit"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="16dp"
+                        android:background="@android:color/transparent"
+                        android:digits="1234567890()- "
+                        android:focusable="true"
+                        android:focusableInTouchMode="true"
+                        android:fontFamily="@font/normal_poppins"
+                        android:gravity="center_vertical"
+                        android:hint="Write here..."
+                        android:inputType="phone"
+                        android:paddingTop="@dimen/margin_1_1x"
+                        android:paddingBottom="@dimen/margin_1_1x"
+                        android:singleLine="true"
+                        android:textColor="@color/text_color"
+                        android:textSize="@dimen/text_medium"
+                        app:layout_constraintEnd_toStartOf="@+id/imageView9Email"
+                        app:layout_constraintStart_toEndOf="@+id/imageView8Email"
+                        app:layout_constraintTop_toBottomOf="@+id/textView5Email" />
+
+                    <ImageView
+                        android:id="@+id/imageView9Email"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:padding="@dimen/margin_3x"
+                        android:visibility="invisible"
+                        app:layout_constraintBottom_toBottomOf="@+id/imageView8Email"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintTop_toTopOf="@+id/imageView8Email"
+                        app:srcCompat="@drawable/ic_editpen"
+                        tools:ignore="VectorDrawableCompat" />
+
+                    <View
+                        android:id="@+id/divider5Email"
+                        android:layout_width="0dp"
+                        android:layout_height="1dp"
+                        android:background="@color/light_gray_color_new_lighter"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/mIvHomePhoneEdit" />
+
+
+                    <ImageView
+                        android:id="@+id/imageView2Phone"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="16dp"
+                        android:padding="@dimen/margin_2x"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:srcCompat="@drawable/ic_email"
+                        app:layout_constraintTop_toBottomOf="@+id/divider5Email"
+
+                        tools:ignore="VectorDrawableCompat" />
+
+                    <TextView
+                        android:id="@+id/textView2Phone"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="16dp"
+                        android:layout_marginLeft="16dp"
+                        android:layout_marginTop="16dp"
+                        android:fontFamily="@font/normal_poppins"
+                        android:text="Email"
+                        android:textColor="@color/hint_color"
+                        android:textSize="@dimen/text_medium"
+                        app:layout_constraintStart_toEndOf="@+id/imageView14"
+                        app:layout_constraintTop_toBottomOf="@+id/divider5Email" />
+
+                    <EditText
+                        android:id="@+id/mIvSecEmailEdit"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:background="@android:color/transparent"
+                        android:focusable="false"
+                        android:focusableInTouchMode="false"
+                        android:fontFamily="@font/normal_poppins"
+                        android:gravity="center_vertical"
+                        android:hint="Write here..."
+                        android:inputType="textEmailAddress"
+                        android:paddingTop="@dimen/margin_1_1x"
+                        android:paddingBottom="@dimen/margin_1_1x"
+                        android:singleLine="true"
+                        android:textColor="@color/text_color"
+                        android:textSize="@dimen/text_medium"
+                        app:layout_constraintEnd_toStartOf="@+id/mIvEditPhonePhone"
+                        app:layout_constraintStart_toStartOf="@+id/textView2Phone"
+                        app:layout_constraintTop_toBottomOf="@+id/textView2Phone" />
+
+                    <ImageView
+                        android:id="@+id/mIvEditPhonePhone"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:padding="@dimen/margin_3x"
+                        android:visibility="gone"
+                        app:layout_constraintBottom_toBottomOf="@+id/imageView2"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintTop_toTopOf="@+id/imageView2"
+                        app:srcCompat="@drawable/ic_editpen"
+                        tools:ignore="VectorDrawableCompat" />
+
+                    <View
+                        android:id="@+id/divider2Phone"
+                        android:layout_width="0dp"
+                        android:layout_height="1dp"
+                        android:background="@color/light_gray_color_new_lighter"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/mIvSecEmailEdit" />
+
+
+                    <ImageView
+                        android:id="@+id/imageView2Fax"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="16dp"
+                        android:padding="@dimen/margin_2x"
+                        android:visibility="gone"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/divider2Phone"
+                        app:srcCompat="@drawable/ic_fax"
+                        tools:ignore="VectorDrawableCompat" />
+
+                    <TextView
+                        android:id="@+id/textView2Fax"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="16dp"
+                        android:layout_marginLeft="16dp"
+                        android:layout_marginTop="16dp"
+                        android:fontFamily="@font/normal_poppins"
+                        android:text="Fax"
+                        android:textColor="@color/hint_color"
+                        android:textSize="@dimen/text_medium"
+                        android:visibility="gone"
+                        app:layout_constraintStart_toEndOf="@+id/imageView14"
+                        app:layout_constraintTop_toBottomOf="@+id/divider2Phone" />
+
+                    <EditText
+                        android:id="@+id/mIvFaxEdit"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:background="@android:color/transparent"
+                        android:focusable="true"
+                        android:focusableInTouchMode="true"
+                        android:fontFamily="@font/normal_poppins"
+                        android:gravity="center_vertical"
+                        android:hint="Write here..."
+                        android:inputType="textPersonName"
+                        android:paddingTop="@dimen/margin_1_1x"
+                        android:paddingBottom="@dimen/margin_1_1x"
+                        android:singleLine="true"
+                        android:textColor="@color/text_color"
+                        android:textSize="@dimen/text_medium"
+                        android:visibility="gone"
+                        app:layout_constraintBottom_toBottomOf="@+id/imageView2Fax"
+                        app:layout_constraintEnd_toStartOf="@+id/mIvEditPhoneFax"
+                        app:layout_constraintStart_toStartOf="@+id/textView2Fax"
+                        app:layout_constraintTop_toBottomOf="@+id/textView2Fax" />
+
+                    <ImageView
+                        android:id="@+id/mIvEditPhoneFax"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:padding="@dimen/margin_3x"
+                        android:src="@drawable/ic_editpen"
+                        android:visibility="invisible"
+                        app:layout_constraintBottom_toBottomOf="@+id/imageView2"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintTop_toTopOf="@+id/imageView2"
+                        tools:ignore="VectorDrawableCompat" />
+
+                    <View
+                        android:id="@+id/divider2Fax"
+                        android:layout_width="0dp"
+                        android:layout_height="1dp"
+                        android:layout_marginTop="2dp"
+                        android:background="@color/light_gray_color_new_lighter"
+                        android:visibility="gone"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/imageView2Fax" />
+
+
+                    <ImageView
+                        android:id="@+id/imageView2Web"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="16dp"
+                        android:padding="@dimen/margin_2x"
+                        android:visibility="gone"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/divider2Fax"
+                        app:srcCompat="@drawable/ic_website"
+                        tools:ignore="VectorDrawableCompat" />
+
+                    <TextView
+                        android:id="@+id/textView2Web"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="16dp"
+                        android:layout_marginLeft="16dp"
+                        android:layout_marginTop="16dp"
+                        android:fontFamily="@font/normal_poppins"
+                        android:text="Website"
+                        android:textColor="@color/hint_color"
+                        android:textSize="@dimen/text_medium"
+                        android:visibility="gone"
+                        app:layout_constraintStart_toEndOf="@+id/imageView14"
+                        app:layout_constraintTop_toBottomOf="@+id/divider2Fax" />
+
+                    <EditText
+                        android:id="@+id/mIvWebsiteEdit"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:background="@android:color/transparent"
+                        android:focusable="true"
+                        android:focusableInTouchMode="true"
+                        android:fontFamily="@font/normal_poppins"
+                        android:gravity="center_vertical"
+                        android:hint="Write here..."
+                        android:inputType="textPersonName"
+                        android:paddingTop="@dimen/margin_1_1x"
+                        android:paddingBottom="@dimen/margin_1_1x"
+                        android:singleLine="true"
+                        android:textColor="@color/text_color"
+                        android:textSize="@dimen/text_medium"
+                        android:visibility="gone"
+                        app:layout_constraintBottom_toBottomOf="@+id/imageView2Web"
+                        app:layout_constraintEnd_toStartOf="@+id/mIvEditPhoneWeb"
+                        app:layout_constraintStart_toStartOf="@+id/textView2Web"
+                        app:layout_constraintTop_toBottomOf="@+id/textView2Web" />
+
+                    <ImageView
+                        android:id="@+id/mIvEditPhoneWeb"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:padding="@dimen/margin_3x"
+                        android:visibility="invisible"
+
+                        app:layout_constraintBottom_toBottomOf="@+id/imageView2Web"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintTop_toTopOf="@+id/imageView2Web"
+                        app:srcCompat="@drawable/ic_editpen"
+                        tools:ignore="VectorDrawableCompat" />
+
+                    <View
+                        android:id="@+id/divider2Web"
+                        android:layout_width="0dp"
+                        android:layout_height="1dp"
+                        android:layout_marginTop="2dp"
+                        android:background="@color/light_gray_color_new_lighter"
+                        android:visibility="gone"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/imageView2Web" />
+
+
+                    <ImageView
+                        android:id="@+id/imageView2Trade"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="16dp"
+                        android:padding="@dimen/margin_2x"
+                        android:visibility="gone"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/divider2Web"
+                        app:srcCompat="@drawable/ic_worktrade"
+                        tools:ignore="VectorDrawableCompat" />
+
+                    <TextView
+                        android:id="@+id/textView2Trade"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="16dp"
+                        android:layout_marginLeft="16dp"
+                        android:layout_marginTop="16dp"
+                        android:fontFamily="@font/normal_poppins"
+                        android:text="Trade"
+                        android:textColor="@color/hint_color"
+                        android:textSize="@dimen/text_medium"
+                        android:visibility="gone"
+                        app:layout_constraintStart_toEndOf="@+id/imageView14"
+                        app:layout_constraintTop_toBottomOf="@+id/divider2Web" />
+
+                    <EditText
+                        android:id="@+id/mIvTradeEdit"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:background="@android:color/transparent"
+                        android:focusable="true"
+                        android:focusableInTouchMode="true"
+                        android:fontFamily="@font/normal_poppins"
+                        android:gravity="center_vertical"
+                        android:hint="Write here..."
+                        android:inputType="textCapSentences"
+                        android:paddingTop="@dimen/margin_1_1x"
+                        android:paddingBottom="@dimen/margin_1_1x"
+                        android:singleLine="true"
+                        android:textColor="@color/text_color"
+                        android:textSize="@dimen/text_medium"
+                        android:visibility="gone"
+                        app:layout_constraintBottom_toBottomOf="@+id/imageView2Trade"
+                        app:layout_constraintEnd_toStartOf="@+id/mIvEditPhoneTrade"
+                        app:layout_constraintStart_toStartOf="@+id/textView2Trade"
+                        app:layout_constraintTop_toBottomOf="@+id/textView2Trade" />
+
+                    <ImageView
+                        android:id="@+id/mIvEditPhoneTrade"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:padding="@dimen/margin_3x"
+                        android:visibility="gone"
+                        app:layout_constraintBottom_toBottomOf="@+id/imageView2Trade"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintTop_toTopOf="@+id/imageView2Trade"
+                        app:srcCompat="@drawable/ic_editpen"
+                        tools:ignore="VectorDrawableCompat" />
+
+                    <View
+                        android:id="@+id/divider2Trade"
+                        android:layout_width="0dp"
+                        android:layout_height="1dp"
+                        android:layout_marginTop="2dp"
+                        android:background="@color/light_gray_color_new_lighter"
+                        android:visibility="gone"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/imageView2Trade" />
+
+                    <TextView
+                        android:id="@+id/textView32"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="16dp"
+                        android:fontFamily="@font/medium_poppins"
+                        android:text="License &amp; Insurance"
+                        android:textColor="@color/black_color"
+                        android:textSize="@dimen/text_mediumLarge"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/divider5Zip" />
+
+
+                    <ImageView
+                        android:id="@+id/imageView2License"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="16dp"
+                        android:padding="@dimen/margin_2x"
+                        android:visibility="gone"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/textView32"
+                        app:srcCompat="@drawable/ic_license"
+                        tools:ignore="VectorDrawableCompat" />
+
+                    <TextView
+                        android:id="@+id/textView2License"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="16dp"
+                        android:layout_marginLeft="16dp"
+                        android:layout_marginTop="16dp"
+                        android:fontFamily="@font/normal_poppins"
+                        android:text="License Number"
+                        android:textColor="@color/hint_color"
+                        android:textSize="@dimen/text_medium"
+                        android:visibility="gone"
+                        app:layout_constraintStart_toEndOf="@+id/imageView14"
+                        app:layout_constraintTop_toBottomOf="@+id/textView32" />
+
+                    <EditText
+                        android:id="@+id/mIvLicenseEdit"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:background="@android:color/transparent"
+                        android:focusable="true"
+                        android:focusableInTouchMode="true"
+                        android:fontFamily="@font/normal_poppins"
+                        android:gravity="center_vertical"
+                        android:hint="Write here..."
+                        android:inputType="textPersonName"
+                        android:paddingTop="@dimen/margin_1_1x"
+                        android:paddingBottom="@dimen/margin_1_1x"
+                        android:singleLine="true"
+                        android:textColor="@color/text_color"
+                        android:textSize="@dimen/text_medium"
+                        android:visibility="gone"
+                        app:layout_constraintBottom_toBottomOf="@+id/imageView2License"
+                        app:layout_constraintEnd_toStartOf="@+id/mIvEditPhoneLicense"
+                        app:layout_constraintStart_toStartOf="@+id/textView2License"
+                        app:layout_constraintTop_toBottomOf="@+id/textView2License" />
+
+                    <ImageView
+                        android:id="@+id/mIvEditPhoneLicense"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:padding="@dimen/margin_3x"
+                        android:visibility="gone"
+                        app:layout_constraintBottom_toBottomOf="@+id/imageView2Web"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintTop_toTopOf="@+id/imageView2Web"
+                        app:srcCompat="@drawable/ic_editpen"
+                        tools:ignore="VectorDrawableCompat" />
+
+                    <View
+                        android:id="@+id/divider2License"
+                        android:layout_width="0dp"
+                        android:layout_height="1dp"
+                        android:layout_marginTop="2dp"
+                        android:background="@color/light_gray_color_new_lighter"
+                        android:visibility="invisible"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/mIvLicenseImage" />
+
+
+                    <ImageView
+                        android:id="@+id/imageView4Doc"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="8dp"
+                        android:padding="@dimen/margin_2x"
+                        android:visibility="gone"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/divider2License"
+                        app:srcCompat="@drawable/ic_document_text"
+                        tools:ignore="VectorDrawableCompat" />
+
+                    <TextView
+                        android:id="@+id/textView3Doc"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="0dp"
+                        android:fontFamily="@font/normal_poppins"
+                        android:text="Documents Files"
+                        android:textColor="@color/hint_color"
+                        android:textSize="@dimen/text_medium"
+                        android:visibility="gone"
+                        app:layout_constraintStart_toStartOf="@+id/mIvLicenseEdit"
+                        app:layout_constraintTop_toBottomOf="@+id/divider2License" />
+
+                    <EditText
+                        android:id="@+id/mIvDocumentEdit"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="16dp"
+                        android:layout_marginLeft="16dp"
+                        android:background="@android:color/transparent"
+                        android:focusable="true"
+                        android:focusableInTouchMode="true"
+                        android:fontFamily="@font/normal_poppins"
+                        android:gravity="center_vertical"
+                        android:hint="Write here..."
+                        android:inputType="textCapSentences"
+                        android:paddingTop="@dimen/margin_1_1x"
+                        android:paddingBottom="@dimen/margin_1_1x"
+                        android:singleLine="true"
+                        android:textColor="@color/text_color"
+                        android:textSize="@dimen/text_medium"
+                        android:visibility="gone"
+                        app:layout_constraintBottom_toBottomOf="@+id/imageView4Doc"
+                        app:layout_constraintEnd_toStartOf="@+id/mIvEditAddressDoc"
+                        app:layout_constraintStart_toEndOf="@+id/imageView4Doc"
+                        app:layout_constraintTop_toBottomOf="@+id/textView3Doc" />
+
+
+                    <ImageView
+                        android:id="@+id/mIvAddDocImage"
+                        android:layout_width="100dp"
+                        android:layout_height="100dp"
+                        android:layout_marginTop="8dp"
+                        android:padding="@dimen/margin_4x"
+                        app:layout_constraintStart_toStartOf="@+id/textView32"
+                        app:layout_constraintTop_toBottomOf="@+id/textView147"
+                        app:srcCompat="@drawable/ic_addsales" />
+
+                    <androidx.recyclerview.widget.RecyclerView
+                        android:id="@+id/mRvDocs"
+                        android:layout_width="0dp"
+                        android:layout_height="100dp"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toEndOf="@+id/mIvAddDocImage"
+                        app:layout_constraintTop_toTopOf="@+id/mIvAddDocImage" />
+
+                    <ImageView
+                        android:id="@+id/mIvEditAddressDoc"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:padding="@dimen/margin_3x"
+                        android:visibility="gone"
+                        app:layout_constraintBottom_toBottomOf="@+id/imageView4Doc"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintTop_toTopOf="@+id/imageView4Doc"
+                        app:srcCompat="@drawable/ic_editpen"
+                        tools:ignore="VectorDrawableCompat" />
+
+                    <View
+                        android:id="@+id/divider3Doc"
+                        android:layout_width="0dp"
+                        android:layout_height="1dp"
+                        android:layout_marginTop="2dp"
+                        android:background="@color/light_gray_color_new_lighter"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/mIvAddDocImage" />
+
+                    <TextView
+                        android:id="@+id/textView33"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="16dp"
+                        android:fontFamily="@font/medium_poppins"
+                        android:text="Website &amp; Social Media"
+                        android:textColor="@color/black_color"
+                        android:textSize="@dimen/text_mediumLarge"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/divider3Doc" />
+
+
+                    <ImageView
+                        android:id="@+id/imageView2Site"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="16dp"
+                        android:padding="@dimen/margin_2x"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/textView33"
+                        app:srcCompat="@drawable/ic_website"
+                        tools:ignore="VectorDrawableCompat" />
+
+                    <TextView
+                        android:id="@+id/textView2Site"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="16dp"
+                        android:layout_marginLeft="16dp"
+                        android:layout_marginTop="16dp"
+                        android:fontFamily="@font/normal_poppins"
+                        android:text="Website"
+                        android:textColor="@color/hint_color"
+                        android:textSize="@dimen/text_medium"
+                        app:layout_constraintStart_toEndOf="@+id/imageView2Site"
+                        app:layout_constraintTop_toBottomOf="@+id/textView33" />
+
+                    <EditText
+                        android:id="@+id/mIvSocialWebEdit"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:background="@android:color/transparent"
+                        android:focusable="true"
+                        android:focusableInTouchMode="true"
+                        android:fontFamily="@font/normal_poppins"
+                        android:gravity="center_vertical"
+                        android:hint="Write here..."
+                        android:inputType="textPersonName"
+                        android:paddingTop="@dimen/margin_1_1x"
+                        android:paddingBottom="@dimen/margin_1_1x"
+                        android:singleLine="true"
+                        android:textColor="@color/text_color"
+                        android:textSize="@dimen/text_medium"
+                        app:layout_constraintBottom_toBottomOf="@+id/imageView2Site"
+                        app:layout_constraintEnd_toStartOf="@+id/mIvEditPhoneSite"
+                        app:layout_constraintStart_toStartOf="@+id/textView2Site"
+                        app:layout_constraintTop_toBottomOf="@+id/textView2Site" />
+
+                    <ImageView
+                        android:id="@+id/mIvEditPhoneSite"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:padding="@dimen/margin_3x"
+                        android:visibility="invisible"
+                        app:layout_constraintBottom_toBottomOf="@+id/imageView2Site"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintTop_toTopOf="@+id/imageView2Site"
+                        app:srcCompat="@drawable/ic_editpen"
+                        tools:ignore="VectorDrawableCompat" />
+
+                    <View
+                        android:id="@+id/divider2Site"
+                        android:layout_width="0dp"
+                        android:layout_height="1dp"
+                        android:layout_marginTop="2dp"
+                        android:background="@color/light_gray_color_new_lighter"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/imageView2Site" />
+
+
+                    <ImageView
+                        android:id="@+id/imageView4Facebook"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="16dp"
+                        android:padding="@dimen/margin_2x"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/divider2Site"
+                        app:srcCompat="@drawable/ic_facebook"
+                        tools:ignore="VectorDrawableCompat" />
+
+                    <TextView
+                        android:id="@+id/textView3Facebook"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="16dp"
+                        android:layout_marginLeft="16dp"
+                        android:layout_marginTop="16dp"
+                        android:fontFamily="@font/normal_poppins"
+                        android:text="Facebook"
+                        android:textColor="@color/hint_color"
+                        android:textSize="@dimen/text_medium"
+                        app:layout_constraintStart_toEndOf="@+id/imageView4Facebook"
+                        app:layout_constraintTop_toBottomOf="@+id/divider2Site" />
+
+                    <EditText
+                        android:id="@+id/mIvFbEdit"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="16dp"
+                        android:layout_marginLeft="16dp"
+                        android:background="@android:color/transparent"
+                        android:focusable="true"
+                        android:focusableInTouchMode="true"
+                        android:fontFamily="@font/normal_poppins"
+                        android:gravity="center_vertical"
+                        android:hint="Write here..."
+                        android:inputType="textPersonName"
+                        android:paddingTop="@dimen/margin_1_1x"
+                        android:paddingBottom="@dimen/margin_1_1x"
+                        android:singleLine="true"
+                        android:textColor="@color/text_color"
+                        android:textSize="@dimen/text_medium"
+                        app:layout_constraintBottom_toBottomOf="@+id/imageView4Facebook"
+                        app:layout_constraintEnd_toStartOf="@+id/mIvEditAddressFacebook"
+                        app:layout_constraintStart_toEndOf="@+id/imageView4Facebook"
+                        app:layout_constraintTop_toBottomOf="@+id/textView3Facebook" />
+
+                    <ImageView
+                        android:id="@+id/mIvEditAddressFacebook"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:padding="@dimen/margin_3x"
+                        android:visibility="invisible"
+                        app:layout_constraintBottom_toBottomOf="@+id/imageView4Facebook"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintTop_toTopOf="@+id/imageView4Facebook"
+                        app:srcCompat="@drawable/ic_editpen"
+                        tools:ignore="VectorDrawableCompat" />
+
+                    <View
+                        android:id="@+id/divider3Facebook"
+                        android:layout_width="0dp"
+                        android:layout_height="1dp"
+                        android:layout_marginTop="2dp"
+                        android:background="@color/light_gray_color_new_lighter"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/imageView4Facebook" />
+
+
+                    <ImageView
+                        android:id="@+id/imageView4Insta"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="16dp"
+                        android:padding="@dimen/margin_2x"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/divider3Facebook"
+                        app:srcCompat="@drawable/ic_instagram"
+                        tools:ignore="VectorDrawableCompat" />
+
+                    <TextView
+                        android:id="@+id/textView3Insta"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="16dp"
+                        android:layout_marginLeft="16dp"
+                        android:layout_marginTop="16dp"
+                        android:fontFamily="@font/normal_poppins"
+                        android:text="Instagram"
+                        android:textColor="@color/hint_color"
+                        android:textSize="@dimen/text_medium"
+                        app:layout_constraintStart_toEndOf="@+id/imageView4Insta"
+                        app:layout_constraintTop_toBottomOf="@+id/divider3Facebook" />
+
+                    <EditText
+                        android:id="@+id/mIvInstaEdit"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="16dp"
+                        android:layout_marginLeft="16dp"
+                        android:background="@android:color/transparent"
+                        android:focusable="true"
+                        android:focusableInTouchMode="true"
+                        android:fontFamily="@font/normal_poppins"
+                        android:gravity="center_vertical"
+                        android:hint="Write here..."
+                        android:inputType="textPersonName"
+                        android:paddingTop="@dimen/margin_1_1x"
+                        android:paddingBottom="@dimen/margin_1_1x"
+                        android:singleLine="true"
+                        android:textColor="@color/text_color"
+                        android:textSize="@dimen/text_medium"
+                        app:layout_constraintBottom_toBottomOf="@+id/imageView4Insta"
+                        app:layout_constraintEnd_toStartOf="@+id/mIvEditAddressInsta"
+                        app:layout_constraintStart_toEndOf="@+id/imageView4Insta"
+                        app:layout_constraintTop_toBottomOf="@+id/textView3Insta" />
+
+                    <ImageView
+                        android:id="@+id/mIvEditAddressInsta"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:padding="@dimen/margin_3x"
+                        android:visibility="invisible"
+                        app:layout_constraintBottom_toBottomOf="@+id/imageView4Insta"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintTop_toTopOf="@+id/imageView4Insta"
+                        app:srcCompat="@drawable/ic_editpen"
+                        tools:ignore="VectorDrawableCompat" />
+
+                    <View
+                        android:id="@+id/divider3Insta"
+                        android:layout_width="0dp"
+                        android:layout_height="1dp"
+                        android:layout_marginTop="2dp"
+                        android:background="@color/light_gray_color_new_lighter"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/imageView4Insta" />
+
+
+                    <TextView
+                        android:id="@+id/textView2Licenses"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="16dp"
+                        android:layout_marginLeft="16dp"
+                        android:layout_marginTop="8dp"
+                        android:fontFamily="@font/normal_poppins"
+                        android:text="License Image"
+                        android:textColor="@color/hint_color"
+                        android:textSize="@dimen/text_medium"
+                        android:visibility="gone"
+                        app:layout_constraintStart_toEndOf="@+id/imageView14"
+                        app:layout_constraintTop_toBottomOf="@+id/mIvLicenseEdit" />
+
+                    <ImageView
+                        android:id="@+id/mIvLicenseImage"
+                        android:layout_width="100dp"
+                        android:layout_height="100dp"
+                        android:visibility="gone"
+                        app:layout_constraintStart_toStartOf="@+id/mIvLicenseEdit"
+                        app:layout_constraintTop_toBottomOf="@+id/textView2Licenses"
+                        app:srcCompat="@drawable/ic_addsales" />
+
+                    <TextView
+                        android:id="@+id/textView147"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="8dp"
+                        android:fontFamily="@font/normal_poppins"
+                        android:text="Upload Documents"
+                        android:textColor="@color/hint_color"
+                        android:textSize="@dimen/text_small"
+                        app:layout_constraintBottom_toBottomOf="@+id/imageView35"
+                        app:layout_constraintStart_toEndOf="@+id/imageView35"
+                        app:layout_constraintTop_toTopOf="@+id/imageView35" />
+
+                    <ImageView
+                        android:id="@+id/imageView35"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="10dp"
+                        android:layout_marginTop="2dp"
+                        android:padding="@dimen/margin_1x"
+                        app:layout_constraintStart_toStartOf="@+id/textView32"
+                        app:layout_constraintTop_toBottomOf="@+id/textView32"
+                        app:srcCompat="@drawable/ic_documents" />
+
+                    <TextView
+                        android:id="@+id/textView103"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:drawableEnd="@drawable/ic_forwardarrowcolord"
+                        android:fontFamily="@font/normal_poppins"
+                        android:text="Upload logo"
+                        android:textColor="@color/hint_color"
+                        android:textSize="@dimen/text_small"
+                        app:layout_constraintBottom_toTopOf="@+id/textView30"
+                        app:layout_constraintStart_toStartOf="@+id/textView30"
+                        app:layout_constraintTop_toTopOf="@+id/mIvLogo" />
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/divider3Insta">
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal">
+
+                            <ImageView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_alignParentLeft="true"
+                                android:layout_marginTop="16dp"
+                                android:padding="@dimen/margin_2x"
+                                app:srcCompat="@drawable/ic_google_business"
+                                tools:ignore="VectorDrawableCompat" />
+
+                            <LinearLayout
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="bottom"
+                                android:orientation="vertical">
+
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginStart="16dp"
+                                    android:layout_marginLeft="16dp"
+                                    android:fontFamily="@font/normal_poppins"
+                                    android:text="Google Business"
+                                    android:textColor="@color/hint_color"
+                                    android:textSize="@dimen/text_medium" />
+
+                                <EditText
+                                    android:id="@+id/editGoogleBusiness"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginStart="16dp"
+                                    android:layout_marginLeft="16dp"
+                                    android:background="@android:color/transparent"
+                                    android:focusable="true"
+                                    android:focusableInTouchMode="true"
+                                    android:fontFamily="@font/normal_poppins"
+                                    android:gravity="center_vertical"
+                                    android:hint="Write here..."
+                                    android:inputType="textPersonName"
+                                    android:paddingTop="@dimen/margin_1_1x"
+                                    android:paddingBottom="@dimen/margin_1_1x"
+                                    android:singleLine="true"
+                                    android:textColor="@color/text_color"
+                                    android:textSize="@dimen/text_medium" />
+                            </LinearLayout>
+                        </LinearLayout>
+
+                        <View
+                            android:layout_width="match_parent"
+                            android:layout_height="2dp"
+                            android:background="@color/light_gray_color_new_lighter"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toBottomOf="@+id/imageView4Insta" />
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal">
+
+                            <ImageView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_alignParentLeft="true"
+                                android:layout_marginTop="16dp"
+                                android:padding="@dimen/margin_2x"
+                                app:srcCompat="@drawable/ic_yelp"
+                                tools:ignore="VectorDrawableCompat" />
+
+                            <LinearLayout
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="bottom"
+                                android:orientation="vertical">
+
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginStart="16dp"
+                                    android:layout_marginLeft="16dp"
+                                    android:fontFamily="@font/normal_poppins"
+                                    android:text="Yelp"
+                                    android:textColor="@color/hint_color"
+                                    android:textSize="@dimen/text_medium" />
+
+                                <EditText
+                                    android:id="@+id/editYelp"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginStart="16dp"
+                                    android:layout_marginLeft="16dp"
+                                    android:background="@android:color/transparent"
+                                    android:focusable="true"
+                                    android:focusableInTouchMode="true"
+                                    android:fontFamily="@font/normal_poppins"
+                                    android:gravity="center_vertical"
+                                    android:hint="Write here..."
+                                    android:inputType="textPersonName"
+                                    android:paddingTop="@dimen/margin_1_1x"
+                                    android:paddingBottom="@dimen/margin_1_1x"
+                                    android:singleLine="true"
+                                    android:textColor="@color/text_color"
+                                    android:textSize="@dimen/text_medium" />
+                            </LinearLayout>
+                        </LinearLayout>
+
+                        <View
+                            android:layout_width="match_parent"
+                            android:layout_height="2dp"
+                            android:background="@color/light_gray_color_new_lighter"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toBottomOf="@+id/imageView4Insta" />
+
+                    </LinearLayout>
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </androidx.core.widget.NestedScrollView>
+</layout>

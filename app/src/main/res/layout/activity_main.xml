@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:fitsSystemWindows="true"
+        tools:context=".MainActivity">
+
+        <TextView
+            android:id="@+id/logout"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Hello World!"
+            android:visibility="invisible"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/sixforone"
+            android:visibility="gone"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/yllowcolor"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <TextView
+                android:id="@+id/mTvSix"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/normal_poppins"
+                android:gravity="center"
+                android:textSize="@dimen/text_mediumLarge"
+                android:visibility="visible"
+                android:padding="@dimen/margin_1x"
+                android:textColor="@color/black_color"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <FrameLayout
+            android:id="@+id/mainContainer"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            app:layout_constraintBottom_toTopOf="@+id/bottomNavigationView"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/sixforone"
+            app:layout_constraintVertical_bias="0.0" />
+
+        <com.google.android.material.bottomnavigation.BottomNavigationView
+            android:id="@+id/bottomNavigationView"
+            android:layout_width="0dp"
+            android:layout_height="?actionBarSize"
+            android:background="@color/white_color"
+            android:visibility="visible"
+            app:itemIconTint="@drawable/selector_grey_red"
+            app:itemRippleColor="@color/colorAccent"
+            app:itemTextColor="@drawable/selector_text_grey_black"
+            app:labelVisibilityMode="labeled"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:menu="@menu/home_menu" />
+
+        <!--    <com.google.android.material.bottomnavigation.BottomNavigationView-->
+        <!--        android:id="@+id/bottomNavigationViewLogin"-->
+        <!--        android:layout_width="0dp"-->
+        <!--        android:layout_height="?actionBarSize"-->
+        <!--        android:background="@color/white_color"-->
+        <!--        android:visibility="invisible"-->
+        <!--        app:itemIconTint="@drawable/selector_grey_red"-->
+        <!--        app:itemRippleColor="@color/red_color"-->
+        <!--        app:itemTextColor="@drawable/selector_text_grey_black"-->
+        <!--        app:labelVisibilityMode="labeled"-->
+        <!--        app:layout_constraintBottom_toBottomOf="parent"-->
+        <!--        app:layout_constraintEnd_toEndOf="parent"-->
+        <!--        app:layout_constraintStart_toStartOf="parent"-->
+        <!--        app:menu="@menu/login_home_menu" />-->
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

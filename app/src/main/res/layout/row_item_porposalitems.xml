@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <LinearLayout
+            android:id="@+id/editItem"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:padding="@dimen/margin_1x"
+            android:weightSum="6"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="3.7"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/tvName"
+                    tools:ignore="UseSwitchCompatOrMaterialXml"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="@dimen/margin_2x"
+                    android:fontFamily="@font/medium_poppins"
+                    android:text="AA"
+                    android:textColor="@color/black_color"
+                    android:textSize="@dimen/text_small" />
+
+                <TextView
+                    android:id="@+id/tvDesc"
+                    tools:ignore="UseSwitchCompatOrMaterialXml"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="@dimen/margin_2x"
+                    android:fontFamily="@font/normal_poppins"
+                    android:gravity="start"
+                    android:maxLines="3"
+                    android:text="aab"
+                    android:textColor="@color/text_color"
+                    android:textSize="@dimen/text_small" />
+
+
+            </LinearLayout>
+
+            <TextView
+                android:id="@+id/quantity"
+                android:layout_width="0dp"
+                android:layout_height="@dimen/_20sdp"
+                android:layout_marginStart="@dimen/margin_1x"
+                android:layout_weight=".6"
+                android:fontFamily="@font/medium_poppins"
+                android:gravity="center"
+                android:text="1"
+                android:textColor="@color/black_color"
+                android:textSize="@dimen/_10sdp" />
+
+            <TextView
+                android:id="@+id/tvPrice"
+                tools:ignore="UseSwitchCompatOrMaterialXml"
+                android:layout_width="0dp"
+                android:layout_height="@dimen/_20sdp"
+                android:layout_marginStart="@dimen/margin_1x"
+                android:layout_marginEnd="@dimen/margin_1x"
+                android:layout_weight="1.2"
+                android:fontFamily="@font/medium_poppins"
+                android:gravity="center_vertical|center_horizontal"
+                android:minHeight="@dimen/margin_8x"
+                android:text="10.00"
+                android:textColor="@color/black_color"
+                android:textSize="@dimen/_10sdp" />
+
+            <ImageView
+                android:id="@+id/cross"
+                android:layout_width="0dp"
+                android:layout_height="20dp"
+                android:layout_weight=".5"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:src="@drawable/cross" />
+
+        </LinearLayout>
+
+        <View
+            android:layout_width="0dp"
+            android:layout_height="1dp"
+            android:layout_marginTop="2dp"
+            android:layout_marginBottom="2dp"
+            android:background="@color/light_gray_color_new"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/editItem" />
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

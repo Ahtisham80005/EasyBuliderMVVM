@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <integer name="design_snackbar_text_max_lines">5</integer>
+
+    <string name="app_name">Ezbuilder</string>
+    <string name="some_error">Something went wrong. Please Try Later!</string>
+    <!--    <string name="google_api_key">AIzaSyBveyEL3kgwhXJjd3IWRXKTZGAgwN0hzUI</string>-->
+    <!--    <string name="google_mapkey">AIzaSyCQLoWckiHcwZ_JqaLsN8J9OBukfKKoRIA</string>-->
+    <!--    <string name="google_mapkey">AIzaSyA8fz5TPMwrgiyxZEk5U112RlOaQlw9cMo</string>-->
+    <string name="google_apikey">AIzaSyAweeG9yxU6nQulKdyN6nIIBtSPak1slfo</string>
+    <string name="enter_email_address">Please Enter Your Email Address:</string>
+    <string name="enter_valid_address">Please Enter Valid Email Address:</string>
+    <string name="enter_password">Please enter password</string>
+    <string name="password_length_message">Password must contain upper and lower letters, numerics, and a special character with a min of 8 characters</string>
+
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+
+    <string name="get_this_coupon">Get this Coupon</string>
+    <string name="save_per">Save %s</string>
+    <string name="discount_near_you">discounts near you</string>
+    <string name="best_price_">best price $%s</string>
+    <string name="cancel">Cancel</string>
+    <string name="apply">Apply</string>
+    <string name="clear">Clear</string>
+    <string name="phone_format">(%s) %s-%s</string>
+    <string name="be_well_do_good">be well. do good.</string>
+    <string name="location_permission_dialog">Allow permission to get you location.</string>
+    <string name="terms_policy_text">I authorize give<b>back</b>Rx to use my information as described in the terms &amp; conditions and privacy policy, including sending me additional savings offer and prescription alerts.</string>
+    <string name="camera">Camera</string>
+    <string name="gallery">Gallery</string>
+    <string name="title_activity_login2">LoginActivity2</string>
+    <string name="prompt_email">Email</string>
+    <string name="google_client_id">820902488577-vqp09nr91fli5c3olfspuvmel3bpbdtc.apps.googleusercontent.com</string>
+    <string name="google_client_secret">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</string>
+    <string name="prompt_password">Password</string>
+    <string name="action_sign_in">Sign in or register</string>
+    <string name="action_sign_in_short">Sign in</string>
+    <string name="welcome">"Welcome !"</string>
+    <string name="invalid_username">Not a valid username</string>
+    <string name="invalid_password">Password must be >5 characters</string>
+    <string name="login_failed">"Login failed"</string>
+    <string name="sign_up"><u>SIGN UP</u></string>
+    <string name="login"><u>LOG IN</u></string>
+    <string name="view_pdf"><u>View Pdf</u></string>
+    <string name="tradesk"><font color='#000000'>EZ</font>Builder</string>
+    <string name="date_time"><![CDATA[Date & Time :]]></string>
+    <string name="enter_name">Enter Your Full Name</string>
+    <string name="facebook_app_id">4922816654511798</string>
+    <string name="fb_login_protocol_scheme">fb1234</string>
+    <string name="facebook_client_token">299afd9b5005489cce6d2d5c6a40b2d5</string>
+
+    <string name="enter_phone">Enter Phone Number</string>
+    <string name="enter_home_phone">Enter Home Phone Number</string>
+    <string name="enter_address">Enter Address</string>
+    <string name="enter_trade">Enter Trade</string>
+    <string name="enter_desc">Enter Job Description</string>
+    <string name="enter_startdate">Enter Start Date</string>
+    <string name="select_sales">Select Sales Person</string>
+    <string name="select_client">Select Client</string>
+    <string name="enter_project_name">Enter Project Name</string>
+    <string name="add_source">Add Source</string>
+    <string name="pleaseuploadpic">Please Upload Picture</string>
+    <string name="select_trade">Select Trade</string>
+    <string name="enter_valid_phone">Enter valid phone number</string>
+    <string name="go_parent_label">"⬆️ Parent folder"</string>
+
+    <!---->
+    <string name="folder_item">🗂 %1$s</string>
+    <string name="file_item">📄 %1$s</string>
+    <string name="permission_rationale_message">We need your permission to access your files\n</string>
+    <string name="permission_request_label">Give permission</string>
+    <string name="legacy_external_storage_warning_message">Enable the <b>External Storage</b>\n</string>
+    <string name="settings_title">File Manager settings</string>
+    <string name="file_manager_title">File Manager</string>
+    <string name="sdk_codename_info">SDK codename: %1$s</string>
+    <string name="sdk_version_info">SDK version: %1$s</string>
+    <string name="legacy_storage_info">Legacy External Storage: %1$s</string>
+    <string name="permission_used_info">Permission used: %1$s</string>
+    <string name="permission_granted_info">Permission granted: %1$s</string>
+    <string name="open_settings_button_label">Open settings</string>
+    <string name="request_permission_button_label">Request permission</string>
+    <string-array name="address_type">
+        <item>Select Address Type</item>
+        <item>Home</item>
+        <item>Work</item>
+        <item>Shipping Address</item>
+        <item>Billing Address</item>
+    </string-array>
+
+    <string-array name="months_name">
+        <item>January</item>
+        <item>February</item>
+        <item>March</item>
+        <item>April</item>
+        <item>May</item>
+        <item>June</item>
+        <item>July</item>
+        <item>August</item>
+        <item>September</item>
+        <item>October</item>
+        <item>November</item>
+        <item>December</item>
+    </string-array>
+
+</resources>

@@ -1,0 +1,67 @@
+<resources>
+    <!-- Default screen margins, per the Android Design guidelines. -->
+    <dimen name="activity_horizontal_margin">16dp</dimen>
+    <dimen name="activity_vertical_margin">16dp</dimen>
+
+    <!--margins-->
+    <dimen name="margin_1_1x">2dp</dimen>
+    <dimen name="margin_1_2x">3dp</dimen>
+    <dimen name="margin_1x">5dp</dimen>
+    <dimen name="margin_2x">10dp</dimen>
+    <dimen name="margin_3x">15dp</dimen>
+    <dimen name="margin_4x">20dp</dimen>
+    <dimen name="margin_5x">25dp</dimen>
+    <dimen name="margin_6x">30dp</dimen>
+    <dimen name="margin_7x">35dp</dimen>
+    <dimen name="margin_8x">40dp</dimen>
+    <dimen name="margin_9x">45dp</dimen>
+    <dimen name="margin_10x">50dp</dimen>
+    <dimen name="margin_12x">60dp</dimen>
+    <dimen name="margin_15x">75dp</dimen>
+    <dimen name="margin_16x">80dp</dimen>
+    <dimen name="margin_18x">90dp</dimen>
+    <dimen name="margin_20x">100dp</dimen>
+
+    <!--text size-->
+    <dimen name="text_too_small">9sp</dimen>
+    <dimen name="text_very_small">10sp</dimen>
+    <dimen name="text_small">13sp</dimen>
+    <dimen name="text_medium">15sp</dimen>
+    <dimen name="text_mediumLarge">16sp</dimen>
+    <dimen name="text_large">17sp</dimen>
+    <dimen name="text_xlarge">21sp</dimen>
+    <dimen name="text_xxlarge">23sp</dimen>
+    <dimen name="text_xxxlarge">25sp</dimen>
+    <dimen name="text_xxxxlarge">27sp</dimen>
+    <dimen name="text_xxxxxlarge">29sp</dimen>
+
+
+    <dimen name="text_tabxlarge">29sp</dimen>
+    <dimen name="text_tabxxlarge">32sp</dimen>
+    <dimen name="text_tabxxxlarge">35sp</dimen>
+    <dimen name="text_tabxxxxlarge">38sp</dimen>
+    <dimen name="text_tabxxxxxlarge">42sp</dimen>
+
+    <!--extra dimen-->
+    <dimen name="rounder_corner">4dp</dimen>
+    <dimen name="progress_dimen">150dp</dimen>
+
+    <!--image height-->
+    <dimen name="imageview_dimen">140dp</dimen>
+    <dimen name="imageview_dimen_wid">120dp</dimen>
+    <dimen name="profile_image_dimen">200dp</dimen>
+    <dimen name="linespace_1x">0.9dp</dimen>
+    <dimen name="divider_height">2dp</dimen>
+    <dimen name="view_pager_height">140dp</dimen>
+
+    <dimen name="rounded_dimnesion">90dp</dimen>
+    <dimen name="rounded_dimnesion_dash">80dp</dimen>
+    <dimen name="rounded_dimnesion_dash_medium">60dp</dimen>
+    <dimen name="rounded_dimnesion_dash_small">50dp</dimen>
+    <dimen name="rounded_dimnesion_dash_very_small">40dp</dimen>
+    <dimen name="rounded_dimnesion_dash_very_very_small">30dp</dimen>
+    <dimen name="chat_user_image">40dp</dimen>
+    <dimen name="tab_height">70dp</dimen>
+    <dimen name="mini_carousal_height">110dp</dimen>
+    <dimen name="carousal_height">180dp</dimen>
+</resources>

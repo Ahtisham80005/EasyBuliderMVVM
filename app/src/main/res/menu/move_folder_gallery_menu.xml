@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/item_jobs_folder"
+        android:title="Jobs Album">
+        <menu></menu>
+    </item>
+    <item
+        android:id="@+id/item_user_folder"
+        android:title="User Album">
+        <menu></menu>
+    </item>
+</menu>
+

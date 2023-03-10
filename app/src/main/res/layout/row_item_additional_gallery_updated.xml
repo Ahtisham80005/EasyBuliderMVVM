@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+
+        <com.makeramen.roundedimageview.RoundedImageView
+            android:visibility="gone"
+            android:id="@+id/mIvPic"
+            android:layout_width="0dp"
+            android:layout_height="160dp"
+            android:layout_marginStart="2dp"
+            android:layout_marginTop="2dp"
+            android:layout_marginEnd="2dp"
+            android:scaleType="centerCrop"
+            android:src="@drawable/beforepng"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintHorizontal_chainStyle="packed"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:riv_border_color="@color/white_color"
+            app:riv_border_width="@dimen/margin_1_1x"
+            app:riv_corner_radius="@dimen/margin_1x" />
+
+        <com.facebook.shimmer.ShimmerFrameLayout
+            android:id="@+id/shimmer_view_container"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintHorizontal_chainStyle="packed"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <com.makeramen.roundedimageview.RoundedImageView
+                android:id="@+id/mIvPicdumy"
+                android:layout_width="match_parent"
+                android:layout_height="160dp"
+                android:layout_marginStart="2dp"
+                android:layout_marginTop="2dp"
+                android:layout_marginEnd="2dp"
+                android:scaleType="centerCrop"
+                app:riv_border_width="@dimen/margin_1_1x"
+                app:riv_corner_radius="@dimen/margin_1x"
+                android:background="#DDDDDD" />
+        </com.facebook.shimmer.ShimmerFrameLayout>
+
+
+        <ImageView
+            android:visibility="gone"
+            android:id="@+id/ivMenu"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="4dp"
+            android:layout_marginEnd="8dp"
+            android:layout_marginRight="8dp"
+            app:layout_constraintEnd_toEndOf="@+id/mIvPic"
+            app:layout_constraintTop_toTopOf="@+id/mIvPic"
+            app:srcCompat="@drawable/ic_more"
+            tools:ignore="VectorDrawableCompat" />
+
+        <TextView
+            android:id="@+id/mTitle"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="2dp"
+            android:layout_marginBottom="2dp"
+            android:layout_marginLeft="@dimen/_10sdp"
+            android:layout_marginRight="@dimen/_10sdp"
+            android:text="Ahtisham Sagheer"
+            android:fontFamily="@font/normal_poppins"
+            android:textColor="@color/black_color"
+            android:maxLines="2"
+            android:gravity="center_vertical"
+            android:textSize="@dimen/_12sdp"
+            app:layout_constraintEnd_toEndOf="@+id/mIvPic"
+            app:layout_constraintStart_toStartOf="@+id/mIvPic"
+            app:layout_constraintTop_toBottomOf="@+id/mIvPic" />
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

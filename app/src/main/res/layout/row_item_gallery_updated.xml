@@ -1,0 +1,155 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+
+        <com.makeramen.roundedimageview.RoundedImageView
+            android:visibility="gone"
+            android:id="@+id/mIvPic"
+            android:layout_width="0dp"
+            android:layout_height="160dp"
+            android:layout_marginStart="2dp"
+            android:layout_marginTop="2dp"
+            android:layout_marginEnd="2dp"
+            android:scaleType="centerCrop"
+            android:src="@drawable/beforepng"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintHorizontal_chainStyle="packed"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:riv_border_color="@color/white_color"
+            app:riv_border_width="@dimen/margin_1_1x"
+            app:riv_corner_radius="@dimen/margin_1x" />
+
+        <com.facebook.shimmer.ShimmerFrameLayout
+            android:id="@+id/shimmer_view_container"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintHorizontal_chainStyle="packed"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <com.makeramen.roundedimageview.RoundedImageView
+                android:id="@+id/mIvPicdumy"
+                android:layout_width="match_parent"
+                android:layout_height="160dp"
+                android:layout_marginStart="2dp"
+                android:layout_marginTop="2dp"
+                android:layout_marginEnd="2dp"
+                android:scaleType="centerCrop"
+                app:riv_border_width="@dimen/margin_1_1x"
+                app:riv_corner_radius="@dimen/margin_1x"
+                android:background="#DDDDDD" />
+        </com.facebook.shimmer.ShimmerFrameLayout>
+
+        <TextView
+            android:id="@+id/mImageClick"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="2dp"
+            android:visibility="gone"
+            android:background="@color/white_color"
+            android:text="Click on image to see all files of this job"
+            android:textColor="@color/black_color"
+            android:textSize="@dimen/text_very_small"
+            app:layout_constraintEnd_toEndOf="@+id/mIvPic"
+            app:layout_constraintHorizontal_chainStyle="packed"
+            app:layout_constraintStart_toStartOf="@+id/mIvPic"
+            app:layout_constraintTop_toBottomOf="@+id/mIvPic"
+            app:srcCompat="@drawable/beforepng" />
+
+        <TextView
+            android:visibility="gone"
+            android:id="@+id/tvDocument"
+            android:layout_width="0dp"
+            android:layout_height="160dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="2dp"
+            android:layout_marginEnd="16dp"
+            android:background="@drawable/round_shape_rectangle_withwhitepdf"
+            android:drawableTop="@drawable/ic_icon_files"
+            android:drawablePadding="@dimen/margin_2x"
+            android:gravity="center_vertical"
+            android:maxLines="2"
+            android:minLines="2"
+            android:paddingStart="@dimen/margin_1x"
+            android:paddingEnd="@dimen/margin_1x"
+            android:text="fgfdgfdgdfgdf.png"
+            android:textStyle="bold"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/mImageClick" />
+
+        <TextView
+            android:id="@+id/mDocClick"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="2dp"
+            android:background="@color/white_color"
+            android:gravity="center_vertical"
+            android:text="Click on image to see all files of this job"
+            android:textColor="@color/black_color"
+            android:textSize="@dimen/text_very_small"
+            android:visibility="gone"
+            app:layout_constraintEnd_toEndOf="@+id/tvDocument"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintHorizontal_chainStyle="packed"
+            app:layout_constraintStart_toStartOf="@+id/tvDocument"
+            app:layout_constraintTop_toBottomOf="@+id/tvDocument"
+            app:srcCompat="@drawable/beforepng" />
+
+
+        <ImageView
+
+            android:id="@+id/ivMenu"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="4dp"
+            android:layout_marginEnd="8dp"
+            android:layout_marginRight="8dp"
+            android:visibility="gone"
+            app:layout_constraintEnd_toEndOf="@+id/mIvPic"
+            app:layout_constraintTop_toTopOf="@+id/mIvPic"
+            app:srcCompat="@drawable/ic_more"
+            tools:ignore="VectorDrawableCompat" />
+
+        <ImageView
+
+            android:id="@+id/ivMenuTwo"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="4dp"
+            android:layout_marginEnd="8dp"
+            android:layout_marginRight="8dp"
+            android:visibility="gone"
+            app:layout_constraintEnd_toEndOf="@+id/tvDocument"
+            app:layout_constraintTop_toTopOf="@+id/tvDocument"
+            app:srcCompat="@drawable/ic_more"
+            tools:ignore="VectorDrawableCompat" />
+
+        <CheckBox
+            android:visibility="gone"
+            android:id="@+id/mCheckBox"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="8dp"
+            android:checked="false"
+            app:layout_constraintEnd_toEndOf="@id/mIvPic"
+            app:layout_constraintTop_toTopOf="@id/mIvPic" />
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>
