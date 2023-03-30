@@ -32,9 +32,9 @@ class SalesPersonDetailActivity : AppCompatActivity() {
         binding= DataBindingUtil.setContentView(this, R.layout.activity_sales_person_detail)
         viewModel= ViewModelProvider(this).get(SalesPersonViewModel::class.java)
 
-        if (intent.getStringExtra("image").toString().isNotEmpty()) {
-            binding.mTvImage.loadWallImage(intent.getStringExtra("image").toString())
-        }
+//        if (intent.getStringExtra("image").toString().isNotEmpty()) {
+//            binding.mTvImage.loadWallImage(intent.getStringExtra("image").toString())
+//        }
 
         if (intent.getStringExtra("phone").toString().isEmpty()) {
             binding.mTvPhone.text = "N/A"
@@ -109,9 +109,9 @@ class SalesPersonDetailActivity : AppCompatActivity() {
     }
 
     private fun setUserDetails(it: ClientSalesModelNew) {
-        if (it.data.client.image.isNotEmpty()) {
-            binding.mTvImage.loadWallImage(it.data.client.image)
-        }
+//        if (it.data.client.image.isNotEmpty()) {
+//            binding.mTvImage.loadWallImage(it.data.client.image)
+//        }
         binding.mTvName.text = it.data.client.name
         binding.mNameTv.text =it.data.client.name
         binding.mTvTrade.text = it.data.client.trade

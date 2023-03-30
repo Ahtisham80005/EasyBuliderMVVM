@@ -10,7 +10,9 @@ import android.graphics.drawable.ColorDrawable
 import android.net.ConnectivityManager
 import android.net.Uri
 import android.os.Build
+import android.os.Environment
 import android.provider.Browser
+import android.text.Editable
 import android.util.Log
 import android.view.Gravity
 import android.view.ViewGroup
@@ -18,6 +20,7 @@ import android.view.Window
 import android.view.WindowManager
 import android.webkit.MimeTypeMap
 import android.widget.TextView
+import android.widget.Toast
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
 import com.google.gson.Gson
@@ -230,6 +233,25 @@ object Constants {
         }).findFirst().isPresent()
     }
 
+    fun createImageFile(context: Context): File {
+        // Create an image file eventName
+        val timeStamp = SimpleDateFormat("yyyyMMdd_HHmmss", Locale.US).format(Date())
+        val imageFileName = "JPEG_" + timeStamp + "_"
+        val storageDir = context.getExternalFilesDir(
+            "${Environment.DIRECTORY_PICTURES}${File.separator}.${
+                context.getString(
+                    R.string.app_name
+                )
+            }"
+        )
+        val image = File.createTempFile(
+            imageFileName, /* prefix */
+            ".jpg", /* suffix */
+            storageDir /* directory */
+        )
+        return image
+    }
+
     fun insertString(
         originalString: String,
         stringToBeInserted: String?,
@@ -249,6 +271,11 @@ object Constants {
         }
         // return the modified String
         return newString
+    }
+
+    fun showToast(activity: Activity,message:String)
+    {
+        Toast.makeText(activity,message,Toast.LENGTH_SHORT).show()
     }
 
 }

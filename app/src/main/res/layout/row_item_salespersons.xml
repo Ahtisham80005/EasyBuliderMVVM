@@ -95,6 +95,7 @@
                 app:layout_constraintTop_toBottomOf="@+id/mTvPhone" />
 
             <TextView
+                android:visibility="gone"
                 android:id="@+id/mTvAddress"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"

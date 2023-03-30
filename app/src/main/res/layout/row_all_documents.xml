@@ -12,10 +12,12 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
         android:layout_marginEnd="8dp"
-        android:layout_marginTop="12dp">
+        android:layout_marginTop="12dp"
+        tools:ignore="WebViewLayout">
 
 
         <ImageView
+            android:visibility="gone"
             android:id="@+id/mIvPic"
             android:layout_width="0dp"
             android:layout_height="160dp"
@@ -31,6 +33,7 @@
 
 
         <WebView
+            android:visibility="gone"
             android:id="@+id/myWebView"
             android:layout_width="0dp"
             android:layout_height="140dp"
@@ -42,6 +45,25 @@
             app:layout_constraintHorizontal_chainStyle="packed"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
+
+        <com.facebook.shimmer.ShimmerFrameLayout
+            android:id="@+id/shimmer_view_container"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintHorizontal_chainStyle="packed"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <com.makeramen.roundedimageview.RoundedImageView
+                android:id="@+id/mIvPicdumy"
+                android:layout_width="match_parent"
+                android:layout_height="140dp"
+                android:scaleType="centerCrop"
+                android:background="#DDDDDD" />
+        </com.facebook.shimmer.ShimmerFrameLayout>
+
 
 
         <TextView
@@ -68,7 +90,6 @@
             android:layout_marginTop="8dp"
             android:layout_marginEnd="8dp"
             android:checked="false"
-            android:background="@drawable/ic_checkbox_bg"
             app:layout_constraintEnd_toEndOf="@id/myWebView"
             app:layout_constraintTop_toTopOf="@id/myWebView" />
 

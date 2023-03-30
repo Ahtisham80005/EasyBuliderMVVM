@@ -38,9 +38,9 @@ class JobContractorUsersAdapter (context: Context,
         holder.bind()
         holder.apply {
             binding.mIvName.text = mTasksDataFiltered[position].name
-            if (mTasksDataFiltered[position].image.isNotEmpty()) {
-                binding.mIvImage.loadWallRound(mTasksDataFiltered[position].image)
-            }
+//            if (mTasksDataFiltered[position].image.isNotEmpty()) {
+//                binding.mIvImage.loadWallRound(mTasksDataFiltered[position].image)
+//            }
             binding.clParent.setOnClickListener { listener.onSingleItemClick("123", position) }
         }
     }

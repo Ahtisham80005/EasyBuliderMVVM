@@ -1,4 +1,4 @@
-package com.tradesk.activity.documentModule
+package com.tradesk.activity.documentModule.adapter
 
 import android.annotation.SuppressLint
 import android.util.Log
@@ -6,15 +6,16 @@ import android.view.LayoutInflater
 import android.view.MotionEvent
 import android.view.View
 import android.view.ViewGroup
+import android.webkit.WebView
+import android.webkit.WebViewClient
 import android.widget.Filter
 import android.widget.Filterable
 import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.RecyclerView
-import com.socialgalaxyApp.util.extension.loadWallImage
 import com.tradesk.Interface.SingleListCLickListener
 import com.tradesk.Model.JobDocuments
 import com.tradesk.R
-import com.tradesk.databinding.AddClientListItemBinding
+import com.tradesk.activity.documentModule.DocumentsActivity
 import com.tradesk.databinding.RowAllDocumentsBinding
 import java.util.*
 
@@ -41,7 +42,7 @@ class AllDocumentsAdapter(
     }
 
     override fun getItemCount(): Int =  mTasksDataFiltered.size
-    override fun onBindViewHolder(holder: MyViewHolder, position: Int) {
+    override fun onBindViewHolder(holder: MyViewHolder, @SuppressLint("RecyclerView") position: Int) {
         holder.bind()
         holder.apply {
             binding.mTitle.text = mTasksDataFiltered[position].project_name
@@ -75,7 +76,14 @@ class AllDocumentsAdapter(
                     return false
                 }
             })
-
+            binding.myWebView.getSettings().setDisplayZoomControls(false)
+            binding.myWebView.setWebViewClient(object : WebViewClient() {
+                override fun onPageFinished(view: WebView?, url: String?) {
+                    binding.myWebView.visibility=View.VISIBLE
+                    binding.shimmerViewContainer.stopShimmer()
+                    binding.shimmerViewContainer.visibility=View.GONE
+                }
+            })
             for(aDocuments in mTasksDataFiltered[position].additional_images)
             {
                 if(aDocuments.status.equals("permit"))

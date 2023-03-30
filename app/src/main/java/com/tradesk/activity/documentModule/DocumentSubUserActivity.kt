@@ -11,20 +11,19 @@ import android.os.Environment
 import android.util.Log
 import android.view.Gravity
 import android.view.View
-import android.widget.AbsListView
 import android.widget.PopupMenu
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.GridLayoutManager
-import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.tradesk.Interface.*
+import com.tradesk.Model.CheckModel
 import com.tradesk.Model.SelectedUserDocsDel
 import com.tradesk.R
+import com.tradesk.activity.documentModule.adapter.UserSubDocumentsAdapter
 import com.tradesk.databinding.ActivityDocumentSubUserBinding
-import com.tradesk.databinding.ActivityDocumentsBinding
 import com.tradesk.network.NetworkResult
 import com.tradesk.util.Constants
 import com.tradesk.util.Constants.isInternetConnected
@@ -62,6 +61,7 @@ class DocumentSubUserActivity : AppCompatActivity(), SingleListCLickListener,
     var checkBoxVisibility:Boolean=false
     var allCheckBoxSelect:Boolean=false
     var activeSlectMenu:Boolean=false
+    var mcheckBoxModelList=mutableListOf<CheckModel>()
     lateinit var binding: ActivityDocumentSubUserBinding
     lateinit var viewModel: DocumentViewModel
     @Inject
@@ -83,11 +83,16 @@ class DocumentSubUserActivity : AppCompatActivity(), SingleListCLickListener,
         docsFrom = intent.getStringExtra("docsFrom").toString()
         mListUserDocuments = intent.getStringArrayListExtra("docslist") as ArrayList<String>
         Log.d(TAG, "setRv: "+mListUserDocuments)
-
-        userSubDocumentsAdapter = UserSubDocumentsAdapter(this,this,mListUserDocuments,this,this,this,checkBoxVisibility,allCheckBoxSelect)
+        mcheckBoxModelList.clear()
+        for(i in mListUserDocuments)
+        {
+            mcheckBoxModelList.add(CheckModel(false))
+        }
+        userSubDocumentsAdapter = UserSubDocumentsAdapter(this,this,mListUserDocuments,this,this,this,checkBoxVisibility,allCheckBoxSelect,mcheckBoxModelList)
         GridLayoutManager(this,   2,  RecyclerView.VERTICAL,   false).apply {
             binding.rvSelectItemUserDocuments.layoutManager = this
         }
+
         binding.rvSelectItemUserDocuments.adapter= userSubDocumentsAdapter
 
         if (docsFrom == "LicenseAndIns"){
@@ -158,11 +163,20 @@ class DocumentSubUserActivity : AppCompatActivity(), SingleListCLickListener,
         popup.setOnMenuItemClickListener{
 
             if (it.itemId == R.id.item_select_items){
+                selectedIdArray.clear()
+                selectedUrlsArray.clear()
                 activeSlectMenu=true
                 checkBoxVisibility=true
                 userSubDocumentsAdapter!!.checkboxVisibility=true
+                mcheckBoxModelList.clear()
+                for(i in mListUserDocuments)
+                {
+                    mcheckBoxModelList.add(CheckModel(false))
+                }
                 userSubDocumentsAdapter!!.notifyDataSetChanged()
             }else if (it.itemId == R.id.item_select_all){
+                selectedIdArray.clear()
+                selectedUrlsArray.clear()
                 checkBoxVisibility=true
                 userSubDocumentsAdapter!!.checkboxVisibility=true
                 userSubDocumentsAdapter!!.allCheckBoxSelect=true
@@ -170,6 +184,11 @@ class DocumentSubUserActivity : AppCompatActivity(), SingleListCLickListener,
 //                    selectedIdArray.add(additional._id)
 //                    selectedImageArray.add(additional.image)
 //                }
+                mcheckBoxModelList.clear()
+                for(i in mListUserDocuments)
+                {
+                    mcheckBoxModelList.add(CheckModel(true))
+                }
                 userSubDocumentsAdapter!!.notifyDataSetChanged()
                 activeSlectMenu=true
             }
@@ -192,25 +211,46 @@ class DocumentSubUserActivity : AppCompatActivity(), SingleListCLickListener,
         popup.setOnMenuItemClickListener {
 
             if (it.itemId == R.id.item_share) {
-                shareDocs()
+                if(!selectedIdArray.isEmpty())
+                {
+                    shareDocs()
+                }
+                else{
+                    toast("Select an item")
+                }
+
             } else if (it.itemId == R.id.item_delete) {
-//                if (selectedPosition != null && selectionResult >= 1 && selectType.equals("single")) {
-                AllinOneDialog(ttle = "Delete",
-                    msg = "Are you sure you want to Delete it ?",
-                    onLeftClick = {/*btn No click*/ },
-                    onRightClick = {/*btn Yes click*/
+                if (!selectedIdArray.isEmpty()) {
+                    AllinOneDialog(ttle = "Delete",
+                        msg = "Are you sure you want to Delete it ?",
+                        onLeftClick = {/*btn No click*/ },
+                        onRightClick = {/*btn Yes click*/
 //                            if (isInternetConnected() && selectedPosition != null && selectionResult >= 1) {
-                        val selectedUserDocsDel = SelectedUserDocsDel(index!!, selectedUrlsArray)
-                        CoroutineScope(Dispatchers.IO).launch {
-                            viewModel.deleteUserSelectedAdditionalDocs(selectedUserDocsDel)
-                        }
-                        Log.d(TAG, "showRightMenu: " +selectedUrlsArray)
+                            val selectedUserDocsDel =
+                                SelectedUserDocsDel(index!!, selectedUrlsArray)
+                            Constants.showLoading(this)
+                            CoroutineScope(Dispatchers.IO).launch {
+                                viewModel.deleteUserSelectedAdditionalDocs(selectedUserDocsDel)
+                            }
+                            Log.d(TAG, "showRightMenu: " + selectedUrlsArray)
 //                            }
-                    })
+                        })
+                    }
+                else
+                {
+                    toast("Select an item")
+                }
             }
             else if (it.itemId == R.id.item_download) {
-                selectedIdArray.zip(selectedUrlsArray).forEach { pair ->
-                    downloadFile(pair.first, pair.second)
+                if(!selectedIdArray.isEmpty())
+                {
+                    selectedIdArray.zip(selectedUrlsArray).forEach { pair ->
+                        downloadFile(pair.first, pair.second)
+                    }
+                }
+                else
+                {
+                    toast("Select an item")
                 }
             }
             return@setOnMenuItemClickListener true
@@ -294,6 +334,7 @@ class DocumentSubUserActivity : AppCompatActivity(), SingleListCLickListener,
             hashMapOf<String, RequestBody>().also {
 //                it.put("doc\"; filename=\"doc.${mFile!!.extension}", RequestBody.create(MediaType.parse("application/${mFile!!.extension}"),mFile!!))
                 it.put("index", RequestBody.create(MediaType.parse("multipart/form-data"), intent.getIntExtra("index",-1).toString()))
+                Constants.showLoading(this)
                 CoroutineScope(Dispatchers.IO).launch {
                     viewModel.usersUpdateAdditionalDocs(it,parts1)
                 }
@@ -341,7 +382,8 @@ class DocumentSubUserActivity : AppCompatActivity(), SingleListCLickListener,
                 selectedUrlsArray.removeAll(setOf(mListUserDocuments[selectedPosition]))
             }
         }
-
+        selectedIdArray.add(mListUserDocuments[selectedPosition].substringAfterLast("/"))
+        selectedUrlsArray.add(mListUserDocuments[selectedPosition])
         popup.setOnMenuItemClickListener {
             if (it.itemId == R.id.item_share) {
                 shareDocs()
@@ -353,6 +395,7 @@ class DocumentSubUserActivity : AppCompatActivity(), SingleListCLickListener,
                     onLeftClick = {/*btn No click*/ },
                     onRightClick = {/*btn Yes click*/
                         val selectedUserDocsDel = SelectedUserDocsDel(index!!, selectedUrlsArray)
+                        Constants.showLoading(this)
                         CoroutineScope(Dispatchers.IO).launch {
                             viewModel.deleteUserSelectedAdditionalDocs(selectedUserDocsDel)
                         }

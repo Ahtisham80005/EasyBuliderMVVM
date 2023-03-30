@@ -2,14 +2,18 @@ package com.tradesk.adapter
 
 import android.content.Context
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
 import android.widget.Filter
 import android.widget.Filterable
 import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.socialgalaxyApp.util.extension.loadWallImage
+import com.tradesk.Interface.CustomCheckBoxListener
 import com.tradesk.Interface.LongClickListener
 import com.tradesk.Interface.SingleListCLickListener
+import com.tradesk.Interface.UnselectCheckBoxListener
+import com.tradesk.Model.CheckModel
 import com.tradesk.Model.Client
 import com.tradesk.R
 import com.tradesk.databinding.RowItemCalendaritemsBinding
@@ -22,7 +26,12 @@ class UsersContractAdapter (
     var mClientListFiltered: MutableList<Client>,
     var mClientListOriginal: MutableList<Client>,
     val listener: SingleListCLickListener,
-    val longClickListener: LongClickListener
+    val longClickListener: LongClickListener,
+    var customCheckBoxListener: CustomCheckBoxListener,
+    val unselectCheckBoxListener: UnselectCheckBoxListener,
+    var checkboxVisibility:Boolean,
+    var allCheckBoxSelect:Boolean,
+    var mcheckBoxModelList: MutableList<CheckModel>
 ) : RecyclerView.Adapter<UsersContractAdapter.MyViewHolder>(),
     Filterable {
 
@@ -33,6 +42,12 @@ class UsersContractAdapter (
             binding.executePendingBindings()
         }
     }
+
+//    override fun onViewRecycled(holder: MyViewHolder) {
+////        holder.binding.mCheckBox.setChecked(false)
+//        super.onViewRecycled(holder)
+//    }
+
     var visiblePos = -1
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MyViewHolder {
         val binding: RowItemUserscontractBinding = DataBindingUtil.inflate(
@@ -46,9 +61,26 @@ class UsersContractAdapter (
     override fun onBindViewHolder(holder: MyViewHolder, position: Int) {
         holder.bind()
         holder.apply {
-
-            if (mClientListFiltered[position].image.isNotEmpty()) {
-                binding.mCvUserProfile.loadWallImage(mClientListFiltered[position].image)
+            if(checkboxVisibility)
+            {
+                binding.mCheckBox.visibility= View.VISIBLE
+            }
+            if(allCheckBoxSelect)
+            {
+                binding.mCheckBox.isChecked = true
+                binding.mCheckBox.isClickable = false
+            }
+            //in some cases, it will prevent unwanted situations
+            binding.mCheckBox.setOnCheckedChangeListener(null)
+            binding.mCheckBox.tag=position
+            binding.mCheckBox.isChecked=mcheckBoxModelList.get(position).check
+            binding.mCheckBox.setOnCheckedChangeListener { _, isChecked ->
+                mcheckBoxModelList.get(position).check=isChecked
+                if (isChecked) {
+                    customCheckBoxListener.onCheckBoxClick(position)
+                } else {
+                    unselectCheckBoxListener.onCheckBoxUnCheckClick(0, position)
+                }
             }
 
             binding.mTvUserName.setText(mClientListFiltered[position].name)

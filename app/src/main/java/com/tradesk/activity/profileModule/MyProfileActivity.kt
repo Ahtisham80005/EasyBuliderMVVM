@@ -2,7 +2,6 @@ package com.tradesk.activity.profileModule
 
 import android.app.Activity
 import android.app.Dialog
-import android.content.ContentValues
 import android.content.Intent
 import android.location.Address
 import android.location.Geocoder
@@ -14,10 +13,10 @@ import android.util.Log
 import android.view.Gravity
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.core.content.FileProvider
 import androidx.core.view.isVisible
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.ViewModelProvider
@@ -27,13 +26,15 @@ import com.google.android.libraries.places.api.model.Place
 import com.google.android.libraries.places.widget.Autocomplete
 import com.google.android.libraries.places.widget.model.AutocompleteActivityMode
 import com.socialgalaxyApp.util.extension.loadWallImage
+import com.theartofdev.edmodo.cropper.CropImage
+import com.theartofdev.edmodo.cropper.CropImageView
 import com.tradesk.Interface.SingleItemCLickListener
-import com.tradesk.Interface.SingleListCLickListener
 import com.tradesk.Model.PhoneTextFormatter
 import com.tradesk.Model.ProfileModel
 import com.tradesk.R
-import com.tradesk.activity.documentModule.UserDocumentsAdapter
 import com.tradesk.databinding.ActivityMyProfileBinding
+import com.tradesk.filemanager.checkStoragePermission
+import com.tradesk.filemanager.requestStoragePermission
 import com.tradesk.network.NetworkResult
 import com.tradesk.util.Constants
 import com.tradesk.util.Constants.REQUEST_CODE_DOCS
@@ -41,7 +42,7 @@ import com.tradesk.util.Constants.insertString
 import com.tradesk.util.Constants.isInternetConnected
 import com.tradesk.util.Constants.openApp
 import com.tradesk.util.FileFinder
-import com.tradesk.util.FilePath
+import com.tradesk.util.file.FilePath
 import com.tradesk.util.PermissionFile
 import com.tradesk.util.extension.toast
 import com.tradesk.viewModel.ProfileViewModel
@@ -82,6 +83,7 @@ class MyProfileActivity : AppCompatActivity(), SingleItemCLickListener {
     lateinit var viewModel:ProfileViewModel
     @Inject
     lateinit var permissionFile: PermissionFile
+    private var hasPermission = false
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding=DataBindingUtil.setContentView(this,R.layout.activity_my_profile)
@@ -117,8 +119,16 @@ class MyProfileActivity : AppCompatActivity(), SingleItemCLickListener {
         }
         binding.mIvAddDocImage.setOnClickListener {
             if (permissionFile.checkLocStorgePermission(this)) {
-                licenseimage = "2"
-                showDocsPop()
+                hasPermission = checkStoragePermission(this)
+                if (hasPermission)
+                {
+                    licenseimage = "2"
+                    showDocsPop()
+                } else {
+                    requestStoragePermission(this)
+                }
+
+
             }
         }
         binding.mIvBack.setOnClickListener {
@@ -209,7 +219,6 @@ class MyProfileActivity : AppCompatActivity(), SingleItemCLickListener {
             binding.mTvPhone.text = insertString(binding.mTvPhone.text.toString(), " ", 3)
             binding.mTvPhone.text = insertString(binding.mTvPhone.text.toString(), "-", 7)
             binding.mTvPhone.text = "+1 (" + binding.mTvPhone.text.toString()
-
         }
 
         if (it.data.license_and_ins.docs_url.isNotEmpty()) {
@@ -240,8 +249,15 @@ class MyProfileActivity : AppCompatActivity(), SingleItemCLickListener {
                         "(###)###-####"
                     )
                 )
-            } else {
-                binding.mIvPhoneEdit.setText(it.data.phone_no)
+            }
+            else {
+                var phone = Constants.insertString(it.data.phone_no, "", 0)
+                phone = Constants.insertString(phone!!, ")", 2)
+                phone = Constants.insertString(phone!!, " ", 3)
+                phone = Constants.insertString(phone!!, "-", 7)
+                phone = "(" + phone!!
+
+                binding.mIvPhoneEdit.setText(phone)
 
                 binding.mIvPhoneEdit.addTextChangedListener(
                     PhoneTextFormatter(
@@ -251,6 +267,7 @@ class MyProfileActivity : AppCompatActivity(), SingleItemCLickListener {
                 )
             }
         }
+
 
         if (!binding.mIvHomePhoneEdit.text.toString().trim().replace("(", "")
                 .replace(")", "").replace("-", "").equals(it.data.addtional_info.home_phone_no)
@@ -308,6 +325,7 @@ class MyProfileActivity : AppCompatActivity(), SingleItemCLickListener {
     }
 
     private fun browseDocuments() {
+//        startActivityForResult(Intent(this, FileExplorerActivity::class.java), REQUEST_CODE_DOCS)
         val mimeTypes = arrayOf("application/msword", "application/vnd.openxmlformats-officedocument.wordprocessingml.document", // .doc & .docx
             "application/vnd.ms-powerpoint", "application/vnd.openxmlformats-officedocument.presentationml.presentation", // .ppt & .pptx
             "application/vnd.ms-excel", "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", // .xls & .xlsx
@@ -319,6 +337,9 @@ class MyProfileActivity : AppCompatActivity(), SingleItemCLickListener {
         intent.putExtra(Intent.EXTRA_ALLOW_MULTIPLE, true)
         intent.addFlags(Intent.FLAG_GRANT_WRITE_URI_PERMISSION)
         intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
+//        if (intent.resolveActivity(this.packageManager) != null) {
+//            startActivityForResult(intent, Constants.REQUEST_CODE_DOCS)
+//        }
         resultLauncher.launch(intent)
     }
 
@@ -326,35 +347,40 @@ class MyProfileActivity : AppCompatActivity(), SingleItemCLickListener {
         if (result.resultCode == Activity.RESULT_OK) {
             uriList.clear()
             // There are no request codes
-            val data: Intent? = result.data!!
-            if(data!=null)
-            {
-                if (data.clipData!= null) {
-                    val count: Int = data.clipData!!.getItemCount()
-                    Toast.makeText(this,count.toString(), Toast.LENGTH_SHORT).show()
-                    //evaluate the count before the for loop --- otherwise, the count is evaluated every loop.
-                    for (i in 0 until count) {
-                        val documentUri: Uri = data.clipData!!.getItemAt(i).getUri()
-                        uriList.add(documentUri)
-                    }
-                    licenseimage="2"
-                    uploadFileToAPI(true)
-                }
-                else
-                {
-                    licenseimage="2"
-                    if (result.resultCode == Activity.RESULT_OK) {
-                        uriList.add(result.data?.data!!)
-                        Log.e("Upload Document",uriList.toString())
-                        uploadFileToAPI(true)
-                    }
-                }
-
-            }
+            addDocumentList(result.data!!)
         }
     }
 
+    fun addDocumentList(data: Intent) {
+        if(data!=null)
+        {
+            uriList.clear()
+            if (data.clipData!= null)
+            {
+                val count: Int = data.clipData!!.getItemCount()
+                Toast.makeText(this,count.toString(), Toast.LENGTH_SHORT).show()
+                //evaluate the count before the for loop --- otherwise, the count is evaluated every loop.
+                for (i in 0 until count) {
+                    val documentUri: Uri = data.clipData!!.getItemAt(i).getUri()
+                    uriList.add(documentUri)
+                }
+//                licenseimage="2"
+                uploadFileToAPI(true)
+            }
+            else
+            {
+//                licenseimage="2"
 
+
+//                if (result.resultCode == Activity.RESULT_OK) {
+                    uriList.add(data?.data!!)
+                    Log.e("Upload Document",uriList.toString())
+                    uploadFileToAPI(true)
+//                }
+            }
+
+        }
+    }
     fun showImagePop() {
         mBuilder.setContentView(R.layout.camera_dialog);
         mBuilder.getWindow()!!.getAttributes().windowAnimations = R.style.DialogAnimation;
@@ -375,52 +401,112 @@ class MyProfileActivity : AppCompatActivity(), SingleItemCLickListener {
             it.isVisible = true
             it.setOnClickListener {
                 mBuilder.dismiss()
-                val values = ContentValues()
-                values.put(MediaStore.Images.Media.TITLE, "New Picture")
-                values.put(MediaStore.Images.Media.DESCRIPTION, "From the Camera")
-                camera_image_uri = contentResolver.insert(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, values)!!
-                val cameraIntent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
-                cameraIntent.putExtra(MediaStore.EXTRA_OUTPUT, camera_image_uri)
-                resultLauncherCamera.launch(cameraIntent)
+                dispatchTakePictureIntent()
             }
         }
         mBuilder.findViewById<TextView>(R.id.titleGallery).also {
             it.isVisible = true
             it.setOnClickListener {
                 mBuilder.dismiss()
-                val intent = Intent()
-                intent.type = "image/*"
-                intent.action = Intent.ACTION_GET_CONTENT
-                resultLauncherGallery.launch(intent)
+                dispatchTakeGalleryIntent()
             }
         }
         mBuilder.findViewById<TextView>(R.id.titleCancel)
             .setOnClickListener { mBuilder.dismiss() }
         mBuilder.show();
     }
-    var resultLauncherCamera = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
-        if (result.resultCode == Activity.RESULT_OK) {
-            var uriList: java.util.ArrayList<Uri> = java.util.ArrayList<Uri>()
-            uriList.clear()
-            uriList.add(camera_image_uri)
-            saveCaptureImageResults(camera_image_uri)
-        }
-        else
-        {
-            Toast.makeText(applicationContext,"No Select", Toast.LENGTH_SHORT).show()
-        }
-    }
-    var resultLauncherGallery = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
-        if (result.resultCode == Activity.RESULT_OK) {
-            var uriList: java.util.ArrayList<Uri> = java.util.ArrayList<Uri>()
-            val data: Intent? = result.data!!
-            if(data!=null)
-            {
-                saveCaptureImageResults(result.data?.data!!)
+
+    private fun dispatchTakePictureIntent() {
+        Intent(MediaStore.ACTION_IMAGE_CAPTURE).also { takePictureIntent ->
+            // Ensure that there's a camera activity to handle the intent
+            takePictureIntent.resolveActivity(this@MyProfileActivity.packageManager)?.also {
+                // Create the File where the photo should go
+                val photoFile: File? = try {
+                    Constants.createImageFile(this@MyProfileActivity)
+                } catch (ex: IOException) {
+                    // Error occurred while creating the File
+                    null
+                }
+                // Continue only if the File was successfully created
+                photoFile?.also {
+                    val photoURI: Uri = FileProvider.getUriForFile(
+                        this@MyProfileActivity,
+                        "${this@MyProfileActivity.packageName}.provider",
+                        it
+                    )
+                    myImageUri = photoURI.toString()
+                    takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, photoURI)
+                    startActivityForResult(takePictureIntent, Constants.REQUEST_TAKE_PHOTO)
+                }
             }
         }
     }
 
+    private fun dispatchTakeGalleryIntent() {
+        Toast.makeText(this,"1",Toast.LENGTH_SHORT).show()
+        val intent = Intent(Intent.ACTION_GET_CONTENT).apply {
+            type = "image/*"
+        }
+        if (intent.resolveActivity(this.packageManager) != null) {
+            startActivityForResult(intent, Constants.REQUEST_IMAGE_GET)
+        }
+    }
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        if (resultCode == Activity.RESULT_OK)
+        {
+            if (requestCode == REQUEST_CODE_DOCS)
+            {
+                addDocumentList(data!!)
+//                val filePath = data?.getStringExtra("_data") ?: ""
+//                if (filePath.isNotEmpty()) {
+//                    mFile = File(filePath)
+//                    uploadFileToAPI(true)
+//                }
+//                Log.e("data file", data?.getStringExtra("_data") ?: "")
+            }/*
+            if (requestCode === REQUEST_CODE_DOCS) {
+
+                writePdf(data!!)
+
+            }*/
+            else if (requestCode == Constants.REQUEST_TAKE_PHOTO) {
+                CropImage.activity(Uri.parse(myImageUri))
+                    .setCropShape(CropImageView.CropShape.RECTANGLE)
+//                    .setMinCropWindowSize(1000,1200)
+//                    .setMinCropWindowSize(displayMetrics.widthPixels,(displayMetrics.widthPixels*.6).toInt())
+//                    .setMaxCropResultSize(displayMetrics.widthPixels,(displayMetrics.widthPixels*.8).toInt())
+                    .setGuidelinesColor(android.R.color.transparent).start(this)
+            }
+            else if (requestCode ==Constants.REQUEST_IMAGE_GET) {
+                val uri: Uri = data?.data!!
+                CropImage.activity(uri).setCropShape(CropImageView.CropShape.RECTANGLE)
+//                    .setAspectRatio(2, 1)
+//                    .setMinCropWindowSize(1000,1200)
+//                    .setMinCropWindowSize(displayMetrics.widthPixels,(displayMetrics.widthPixels*.6).toInt())
+//                    .setMaxCropResultSize(displayMetrics.widthPixels,(displayMetrics.widthPixels*.8).toInt())
+                    .setGuidelinesColor(android.R.color.transparent).start(this)
+            }
+            else if (requestCode == Constants.PLACE_AUTOCOMPLETE_REQUEST_CODE) {
+                try {
+                    val place = Autocomplete.getPlaceFromIntent(data!!)
+                    setPlaceData(place)
+                } catch (e: java.lang.Exception) {
+                }
+            }
+            if (requestCode == CropImage.CROP_IMAGE_ACTIVITY_REQUEST_CODE)
+            {
+                Toast.makeText(this,"Profile crop",Toast.LENGTH_SHORT).show()
+                Log.e("Crop","Crop Image")
+                val result = CropImage.getActivityResult(data)
+                if (resultCode == AppCompatActivity.RESULT_OK) {
+                    saveCaptureImageResults(result.uri)
+                } else if (resultCode == CropImage.CROP_IMAGE_ACTIVITY_RESULT_ERROR_CODE) {
+                    val error = result.error
+                }
+            }
+        }
+    }
     private fun saveCaptureImageResults(path: Uri) = try {
 //        binding.mIvPic.loadWallImage(path)
         var path2= FilePath.getPath(this,path)
@@ -496,7 +582,6 @@ class MyProfileActivity : AppCompatActivity(), SingleItemCLickListener {
         }
 
     }
-
     fun showDocsPop() {
         mBuilder.setContentView(R.layout.camera_dialog);
         mBuilder.getWindow()!!.getAttributes().windowAnimations = R.style.DialogAnimation;
@@ -531,55 +616,9 @@ class MyProfileActivity : AppCompatActivity(), SingleItemCLickListener {
             .setOnClickListener { mBuilder.dismiss() }
         mBuilder.show();
     }
-
     override fun onSingleItemClick(item: Any, position: Int) {
         openApp(this@MyProfileActivity, mListImages[position])
     }
-
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        super.onActivityResult(requestCode, resultCode, data)
-        if (resultCode == Activity.RESULT_OK)
-        {
-            if (requestCode == REQUEST_CODE_DOCS)
-            {
-                val filePath = data?.getStringExtra("_data") ?: ""
-                if (filePath.isNotEmpty()) {
-                    mFile = File(filePath)
-                    uploadFileToAPI(true)
-                }
-                Log.e("data file", data?.getStringExtra("_data") ?: "")
-            }
-//            else if (requestCode == ConstUtils.REQUEST_TAKE_PHOTO) {
-//                CropImage.activity(Uri.parse(myImageUri))
-//                    .setCropShape(CropImageView.CropShape.RECTANGLE)
-//                    .setGuidelinesColor(android.R.color.transparent).start(this)
-//            }
-//            else if (requestCode == ConstUtils.REQUEST_IMAGE_GET) {
-//                val uri: Uri = data?.data!!
-//                CropImage.activity(uri).setCropShape(CropImageView.CropShape.RECTANGLE)
-//                    .setGuidelinesColor(android.R.color.transparent).start(this)
-//            }
-            else if (requestCode == Constants.PLACE_AUTOCOMPLETE_REQUEST_CODE) {
-                try {
-                    val place = Autocomplete.getPlaceFromIntent(data!!)
-                    setPlaceData(place)
-                } catch (e: java.lang.Exception) {
-                }
-            }
-//            if (requestCode == CropImage.CROP_IMAGE_ACTIVITY_REQUEST_CODE)
-//            {
-//                Toast.makeText(this,"Profile crop",Toast.LENGTH_SHORT).show()
-//                Log.e("Crop","Crop Image")
-//                val result = CropImage.getActivityResult(data)
-//                if (resultCode == AppCompatActivity.RESULT_OK) {
-//                    saveCaptureImageResults(result.uri)
-//                } else if (resultCode == CropImage.CROP_IMAGE_ACTIVITY_RESULT_ERROR_CODE) {
-//                    val error = result.error
-//                }
-//            }
-        }
-    }
-
     fun updateData() {
         isBack = true
         if (binding.mIvNameEdit.text.toString().isEmpty()) {
@@ -643,7 +682,7 @@ class MyProfileActivity : AppCompatActivity(), SingleItemCLickListener {
                         "city",
                         RequestBody.create(
                             MediaType.parse("multipart/form-data"),
-                            city
+                            binding.mIvCityEdit.text.toString()
                         )
                     )
 
@@ -772,7 +811,6 @@ class MyProfileActivity : AppCompatActivity(), SingleItemCLickListener {
                 }
         }
     }
-
     fun openPlaceDialog() {
         val fields = Arrays.asList(
             Place.Field.PHONE_NUMBER,
@@ -845,8 +883,7 @@ class MyProfileActivity : AppCompatActivity(), SingleItemCLickListener {
                     state = address.adminArea
                     city = address.locality
                 }
-
-
+                binding.mIvCityEdit.setText(city)
 
                 lng = placeData.latLng!!.longitude.toString();
                 lat = placeData.latLng!!.latitude.toString();
@@ -873,7 +910,6 @@ class MyProfileActivity : AppCompatActivity(), SingleItemCLickListener {
         }
         return address
     }
-
     override fun onBackPressed() {
         super.onBackPressed()
         updateData()

@@ -35,6 +35,7 @@ import com.tradesk.util.PermissionFile
 import com.tradesk.util.extension.customFullDialog
 import com.tradesk.util.extension.toast
 import com.tradesk.viewModel.ProposalsViewModel
+import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -44,6 +45,7 @@ import java.text.NumberFormat
 import java.util.*
 import javax.inject.Inject
 
+@AndroidEntryPoint
 class ProposaltemsActivity : AppCompatActivity() , SingleItemCLickListener {
     var select_old = ""
     var select_old_title = ""
@@ -65,12 +67,16 @@ class ProposaltemsActivity : AppCompatActivity() , SingleItemCLickListener {
         binding.rvDefaultItems.adapter = mDefaultItemsAdapter
 
         if (isInternetConnected(this)) {
+            Constants.showLoading(this)
             CoroutineScope(Dispatchers.IO).launch {
                 viewModel.getProposalItemslist()
             }
         }
 
         binding.mIvAddNew.setOnClickListener {
+            select_old = ""
+            select_old_title = ""
+            select_old_description = ""
             createEditItem {
                 addItem(it)
             }
@@ -82,6 +88,7 @@ class ProposaltemsActivity : AppCompatActivity() , SingleItemCLickListener {
         if (intent.hasExtra("taxRate")){
             taxRate=intent.getStringExtra("taxRate")!!.toInt()
         }
+        initObserve()
     }
     fun initObserve()
     {
@@ -192,85 +199,9 @@ class ProposaltemsActivity : AppCompatActivity() , SingleItemCLickListener {
                 // do something, the isChecked will be
                 // true if the switch is in the On position
             })
-            etCost.addTextChangedListener(object : TextWatcher {
-                override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
-                    if (etCost.text.toString().isNotEmpty()) {
-                        if (etCost.text.toString().isNotEmpty()) {
-
-                            var sub_total =
-                                etCost.text.toString().replace(",", "")
-                                    .toInt() * etQty.text.toString()
-                                    .toInt()
-
-                            var tax = 0
-                            if (isTaxable.isChecked) {
-                                tax = sub_total * taxRate / 100
-                            } else {
-                                tax = 0
-                            }
-
-                            var totalamount = sub_total + tax
-
-
-                            val formatter = DecimalFormat("#,###,###")
-
-
-                            subTotal.setText("$ " + formatter.format(sub_total))
-                            itemTax.setText("$ " + formatter.format(tax))
-                            total.setText("$ " + formatter.format(totalamount))
-
-
-
-
-
-
-
-                            sub_total_amount = sub_total.toString()
-                            total_amount = totalamount.toString()
-                            tax_amount = tax.toString()
-
-                        }
-                    }else toast("Please enter quantity to continue")
-
-                }
-
-                override fun beforeTextChanged(
-                    s: CharSequence?,
-                    start: Int,
-                    count: Int,
-                    after: Int
-                ) {
-                }
-
-                override fun afterTextChanged(s: Editable) {
-                    etCost.removeTextChangedListener(this)
-
-                    try {
-                        var originalString = s.toString()
-                        val longval: Long
-                        if (originalString.contains(",")) {
-                            originalString = originalString.replace(",".toRegex(), "")
-                        }
-                        longval = originalString.toLong()
-                        val formatter: DecimalFormat =
-                            NumberFormat.getInstance(Locale.US) as DecimalFormat
-                        formatter.applyPattern("#,###,###,###")
-                        val formattedString: String = formatter.format(longval)
-
-                        //setting text after format to EditText
-                        etCost.setText(formattedString)
-                        etCost.setSelection(etCost.getText()!!.length)
-                    } catch (nfe: NumberFormatException) {
-                        nfe.printStackTrace()
-                    }
-
-                    etCost.addTextChangedListener(this)
-                }
-            })
             etQty.addTextChangedListener(object : TextWatcher {
                 override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
                 }
-
                 override fun beforeTextChanged(
                     s: CharSequence?,
                     start: Int,
@@ -322,6 +253,69 @@ class ProposaltemsActivity : AppCompatActivity() , SingleItemCLickListener {
                     }
 
                     etQty.addTextChangedListener(this)
+                }
+            })
+            etCost.addTextChangedListener(object : TextWatcher {
+                override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+                    if (etQty.text.toString().isNotEmpty())
+                    {
+                        if (etCost.text.toString().isNotEmpty()) {
+                            if(etQty.text.toString().isNotEmpty())
+                            {
+                                var sub_total = etCost.text.toString().replace(",", "")
+                                    .toInt() * etQty.text.toString()
+                                    .toInt()
+                                var tax = 0
+                                if (isTaxable.isChecked) {
+                                    tax = sub_total * taxRate / 100
+                                } else {
+                                    tax = 0
+                                }
+                                var totalamount = sub_total + tax
+                                val formatter = DecimalFormat("#,###,###")
+                                subTotal.setText("$ " + formatter.format(sub_total))
+                                itemTax.setText("$ " + formatter.format(tax))
+                                total.setText("$ " + formatter.format(totalamount))
+                                sub_total_amount = sub_total.toString()
+                                total_amount = totalamount.toString()
+                                tax_amount = tax.toString()
+                            }
+                        }
+                    }else toast("Please enter quantity to continue")
+
+                }
+
+                override fun beforeTextChanged(
+                    s: CharSequence?,
+                    start: Int,
+                    count: Int,
+                    after: Int
+                ) {
+                }
+
+                override fun afterTextChanged(s: Editable) {
+                    etCost.removeTextChangedListener(this)
+
+                    try {
+                        var originalString = s.toString()
+                        val longval: Long
+                        if (originalString.contains(",")) {
+                            originalString = originalString.replace(",".toRegex(), "")
+                        }
+                        longval = originalString.toLong()
+                        val formatter: DecimalFormat =
+                            NumberFormat.getInstance(Locale.US) as DecimalFormat
+                        formatter.applyPattern("#,###,###,###")
+                        val formattedString: String = formatter.format(longval)
+
+                        //setting text after format to EditText
+                        etCost.setText(formattedString)
+                        etCost.setSelection(etCost.getText()!!.length)
+                    } catch (nfe: NumberFormatException) {
+                        nfe.printStackTrace()
+                    }
+
+                    etCost.addTextChangedListener(this)
                 }
             })
 

@@ -3,6 +3,7 @@ package com.tradesk.adapter
 import android.annotation.SuppressLint
 import android.content.Context
 import android.os.Build
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -13,8 +14,11 @@ import androidx.annotation.RequiresApi
 import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.tradesk.BuildzerApp
+import com.tradesk.Interface.CustomCheckBoxListener
 import com.tradesk.Interface.LongClickListener
 import com.tradesk.Interface.SingleListCLickListener
+import com.tradesk.Interface.UnselectCheckBoxListener
+import com.tradesk.Model.CheckModel
 import com.tradesk.Model.Proposal
 import com.tradesk.R
 import com.tradesk.databinding.AddClientListItemBinding
@@ -23,9 +27,14 @@ import java.text.DecimalFormat
 import java.util.*
 
 class ProposalsAdapter(context: Context,
-                           var mTasksDataOriginal: MutableList<Proposal>,
-                           var mTasksDataFiltered: MutableList<Proposal>, val listener: SingleListCLickListener,
-                           val longClickListener: LongClickListener
+                       var mTasksDataOriginal: MutableList<Proposal>,
+                       var mTasksDataFiltered: MutableList<Proposal>, val listener: SingleListCLickListener,
+                       val longClickListener: LongClickListener,
+                       var customCheckBoxListener: CustomCheckBoxListener,
+                       val unselectCheckBoxListener: UnselectCheckBoxListener,
+                       var checkboxVisibility:Boolean,
+                       var allCheckBoxSelect:Boolean,
+                       var mcheckBoxModelList: MutableList<CheckModel>
 ) : RecyclerView.Adapter<ProposalsAdapter.MyViewHolder>(), Filterable {
 
     class MyViewHolder (var binding: RowItemProposalsBinding): RecyclerView.ViewHolder((binding.root))
@@ -49,6 +58,28 @@ class ProposalsAdapter(context: Context,
     override fun onBindViewHolder(holder: MyViewHolder, position: Int) {
         holder.bind()
         holder.apply {
+
+            if(checkboxVisibility)
+            {
+                binding.mCheckBox.visibility= View.VISIBLE
+            }
+            if(allCheckBoxSelect)
+            {
+                binding.mCheckBox.isChecked = true
+                binding.mCheckBox.isClickable = false
+            }
+            //in some cases, it will prevent unwanted situations
+            binding.mCheckBox.setOnCheckedChangeListener(null)
+            binding.mCheckBox.tag=position
+            binding.mCheckBox.isChecked=mcheckBoxModelList.get(position).check
+            binding.mCheckBox.setOnCheckedChangeListener { _, isChecked ->
+                mcheckBoxModelList.get(position).check=isChecked
+                if (isChecked) {
+                    customCheckBoxListener.onCheckBoxClick(position)
+                } else {
+                    unselectCheckBoxListener.onCheckBoxUnCheckClick(0, position)
+                }
+            }
 
             if (mTasksDataFiltered[position].client_id != null)
             {
@@ -115,25 +146,25 @@ class ProposalsAdapter(context: Context,
                     result.count = mTasksDataOriginal.size
                     result.values = mTasksDataOriginal
                     return result
-                } else {
+                }
+                else {
                     val listing = mutableListOf<Proposal>()
                     mTasksDataOriginal.forEach {
-                        if (it.client_id.name.toLowerCase(Locale.ENGLISH)
-                                .contains(p0.toString().toLowerCase(Locale.ENGLISH))
-                        /*|| it.client_details.name.toLowerCase(Locale.ENGLISH).contains(p0.toString().toLowerCase(Locale.ENGLISH))*/) {
-                            listing.add(it)
+                        if(it.client_id!=null)
+                        {
+                            if (it.client_id.name.trim().lowercase(Locale.ENGLISH).contains(p0.toString().trim().lowercase(Locale.ENGLISH))
+                            /*|| it.client_details.name.toLowerCase(Locale.ENGLISH).contains(p0.toString().toLowerCase(Locale.ENGLISH))*/) {
+                                listing.add(it)
+                            }
                         }
                     }
-
                     result.count = listing.size
                     result.values = listing
                     return result
                 }
             }
-
-            @SuppressLint("NotifyDataSetChanged")
-            override fun publishResults(p0: CharSequence?, p1: FilterResults?) {
-                mTasksDataFiltered = p1!!.values as MutableList<Proposal>
+            override fun publishResults(p0: CharSequence?, result: FilterResults?) {
+                mTasksDataFiltered = result!!.values as MutableList<Proposal>
                 notifyDataSetChanged()
             }
         }

@@ -25,6 +25,10 @@ class Repository @Inject constructor(val easyBuliderAPI: EasyBuliderAPI) {
     val responseSuccessModel: LiveData<NetworkResult<SuccessModel>>
         get()=_responseSuccessModel
 
+    private val _responsedeleteAllExpenseJobSuccessModel= MutableLiveData<NetworkResult<SuccessModel>>()
+    val responsedeleteAllExpenseJobSuccessModel: LiveData<NetworkResult<SuccessModel>>
+        get()=_responsedeleteAllExpenseJobSuccessModel
+
     private val _responseDeleteReminderSuccessModel= MutableLiveData<NetworkResult<SuccessModel>>()
     val responseDeleteReminderSuccessModel: LiveData<NetworkResult<SuccessModel>>
         get()=_responseDeleteReminderSuccessModel
@@ -81,6 +85,34 @@ class Repository @Inject constructor(val easyBuliderAPI: EasyBuliderAPI) {
     val responseAllLeadsModel: LiveData<NetworkResult<LeadsModel>>
         get()=_responseAllLeadsModel
 
+    private val _responseTaskModel= MutableLiveData<NetworkResult<TasksListModel>>()
+    val responseTaskModel: LiveData<NetworkResult<TasksListModel>>
+        get()=_responseTaskModel
+
+    private val _responseNotesListModel= MutableLiveData<NetworkResult<NotesListModel>>()
+    val responseNotesListModel: LiveData<NetworkResult<NotesListModel>>
+        get()=_responseNotesListModel
+
+    private val _responseExpensesListModel= MutableLiveData<NetworkResult<ExpensesListModel>>()
+    val responseExpensesListModel: LiveData<NetworkResult<ExpensesListModel>>
+        get()=_responseExpensesListModel
+
+    private val _responseAddExpenseModel= MutableLiveData<NetworkResult<AddExpenseModel>>()
+    val responseAddExpenseModel: LiveData<NetworkResult<AddExpenseModel>>
+        get()=_responseAddExpenseModel
+
+    private val _responseTimesheetList= MutableLiveData<NetworkResult<TimeModelNewUPdate>>()
+    val responseTimesheetList: LiveData<NetworkResult<TimeModelNewUPdate>>
+        get()=_responseTimesheetList
+
+    private val _responseJobDetailTimesheet= MutableLiveData<NetworkResult<NewTimeSheetModelClass>>()
+    val responseJobDetailTimesheet: LiveData<NetworkResult<NewTimeSheetModelClass>>
+        get()=_responseJobDetailTimesheet
+
+    private val _responseClockInOutModel= MutableLiveData<NetworkResult<ClockInOutModel>>()
+    val responseClockInOutModel: LiveData<NetworkResult<ClockInOutModel>>
+        get()=_responseClockInOutModel
+
     private val _responsePendingLeadsModel= MutableLiveData<NetworkResult<LeadsModel>>()
     val responsePendingLeadsModel: LiveData<NetworkResult<LeadsModel>>
         get()=_responsePendingLeadsModel
@@ -125,6 +157,10 @@ class Repository @Inject constructor(val easyBuliderAPI: EasyBuliderAPI) {
     private val _responsDeleteSelectedSales= MutableLiveData<NetworkResult<SuccessModel>>()
     val responsDeleteSelectedSales: LiveData<NetworkResult<SuccessModel>>
         get()=_responsDeleteSelectedSales
+
+    private val _responsDeleteAllClient= MutableLiveData<NetworkResult<SuccessModel>>()
+    val responsDeleteAllClient: LiveData<NetworkResult<SuccessModel>>
+        get()=_responsDeleteAllClient
 
     private val _responsAdditionalImages= MutableLiveData<NetworkResult<AdditionalImagesWithClientModel>>()
     val responsAdditionalImages: LiveData<NetworkResult<AdditionalImagesWithClientModel>>
@@ -301,8 +337,14 @@ class Repository @Inject constructor(val easyBuliderAPI: EasyBuliderAPI) {
         else if(response.errorBody()!=null)
         {
             val errorStr = response.errorBody()!!.string()
-            val message = (JSONObject(errorStr).getString("message"))
-            _responseProfileModel.postValue(NetworkResult.Error(message))
+            try{
+                val message = (JSONObject(errorStr).getString("message"))
+                _responseAllLeadsModel.postValue(NetworkResult.Error(message))
+            }
+            catch(e:Exception)
+            {
+                _responseProfileModel.postValue(NetworkResult.Error(errorStr))
+            }
         }
         else
         {
@@ -318,8 +360,14 @@ class Repository @Inject constructor(val easyBuliderAPI: EasyBuliderAPI) {
         else if(response.errorBody()!=null)
         {
             val errorStr = response.errorBody()!!.string()
-            val message = (JSONObject(errorStr).getString("message"))
-            _responseUpdateProfileModel.postValue(NetworkResult.Error(message))
+            try{
+                val message = (JSONObject(errorStr).getString("message"))
+                _responseAllLeadsModel.postValue(NetworkResult.Error(message))
+            }
+            catch(e:Exception)
+            {
+                _responseUpdateProfileModel.postValue(NetworkResult.Error(errorStr))
+            }
         }
         else
         {
@@ -355,7 +403,6 @@ class Repository @Inject constructor(val easyBuliderAPI: EasyBuliderAPI) {
         else if(response.errorBody()!=null)
         {
             val errorStr = response.errorBody()!!.string()
-
             try{
                 val message = (JSONObject(errorStr).getString("message"))
                 _responseAllLeadsModel.postValue(NetworkResult.Error(message))
@@ -543,6 +590,237 @@ class Repository @Inject constructor(val easyBuliderAPI: EasyBuliderAPI) {
         }
     }
 
+    suspend fun leadstaskslist(id: String) {
+        var response=easyBuliderAPI.getLeadTasks(id)
+        if(response.isSuccessful && response!=null)
+        {
+            _responseTaskModel.postValue(NetworkResult.Success(response.body()!!))
+        }
+        else if(response.errorBody()!=null)
+        {
+            val errorStr = response.errorBody()!!.string()
+            val message = (JSONObject(errorStr).getString("message"))
+            _responseTaskModel.postValue(NetworkResult.Error(message))
+        }
+        else
+        {
+            _responseTaskModel.postValue(NetworkResult.Error("Something went wrong 2"))
+        }
+    }
+
+    suspend fun addleadstasks(ids: String, titles: String, descriptions: String) {
+        var response=easyBuliderAPI.leadaddtasks(ids, titles, descriptions)
+        if(response.isSuccessful && response!=null)
+        {
+            _responseSuccessModel.postValue(NetworkResult.Success(response.body()!!))
+        }
+        else if(response.errorBody()!=null)
+        {
+            val errorStr = response.errorBody()!!.string()
+            val message = (JSONObject(errorStr).getString("message"))
+            _responseSuccessModel.postValue(NetworkResult.Error(message))
+        }
+        else
+        {
+            _responseSuccessModel.postValue(NetworkResult.Error("Something went wrong 2"))
+        }
+    }
+
+    suspend fun timesheetlist(page: String,limit:String,user_id:String) {
+        var response=easyBuliderAPI.timesheetlist(page,limit,user_id)
+        if(response.isSuccessful && response!=null)
+        {
+            _responseTimesheetList.postValue(NetworkResult.Success(response.body()!!))
+        }
+        else if(response.errorBody()!=null)
+        {
+            val errorStr = response.errorBody()!!.string()
+            val message = (JSONObject(errorStr).getString("message"))
+            _responseTimesheetList.postValue(NetworkResult.Error(message))
+        }
+        else
+        {
+            _responseTimesheetList.postValue(NetworkResult.Error("Something went wrong 2"))
+        }
+    }
+    suspend fun jobsdetailtimesheet(id:String) {
+        var response=easyBuliderAPI.jobsdetailtimesheet( id)
+        if(response.isSuccessful && response!=null)
+        {
+            _responseJobDetailTimesheet.postValue(NetworkResult.Success(response.body()!!))
+        }
+        else if(response.errorBody()!=null)
+        {
+            val errorStr = response.errorBody()!!.string()
+            val message = (JSONObject(errorStr).getString("message"))
+            _responseJobDetailTimesheet.postValue(NetworkResult.Error(message))
+        }
+        else
+        {
+            _responseJobDetailTimesheet.postValue(NetworkResult.Error("Something went wrong 2"))
+        }
+    }
+
+    suspend fun addtime(job_id: String,status:String,end_date: String,timezone: String,address:String,city: String,state:String,zipcode: String,latLong:String) {
+        var response=easyBuliderAPI.intime(job_id,status,end_date,timezone,address,city,state,zipcode,latLong)
+        if(response.isSuccessful && response!=null)
+        {
+            _responseClockInOutModel.postValue(NetworkResult.Success(response.body()!!))
+        }
+        else if(response.errorBody()!=null)
+        {
+            val errorStr = response.errorBody()!!.string()
+            val message = (JSONObject(errorStr).getString("message"))
+            _responseClockInOutModel.postValue(NetworkResult.Error(message))
+        }
+        else
+        {
+            _responseClockInOutModel.postValue(NetworkResult.Error("Something went wrong 2"))
+        }
+    }
+
+    suspend fun leadsnoteslist(id: String) {
+        var response=easyBuliderAPI.getLeadNotes(id)
+        if(response.isSuccessful && response!=null)
+        {
+            _responseNotesListModel.postValue(NetworkResult.Success(response.body()!!))
+        }
+        else if(response.errorBody()!=null)
+        {
+            val errorStr = response.errorBody()!!.string()
+            val message = (JSONObject(errorStr).getString("message"))
+            _responseNotesListModel.postValue(NetworkResult.Error(message))
+        }
+        else
+        {
+            _responseNotesListModel.postValue(NetworkResult.Error("Something went wrong 2"))
+        }
+    }
+    suspend fun addleadsnotes(ids: String, titles: String, descriptions: String) {
+        var response=easyBuliderAPI.leadaddnotes(ids, titles, descriptions)
+        if(response.isSuccessful && response!=null)
+        {
+            _responseSuccessModel.postValue(NetworkResult.Success(response.body()!!))
+        }
+        else if(response.errorBody()!=null)
+        {
+            val errorStr = response.errorBody()!!.string()
+            val message = (JSONObject(errorStr).getString("message"))
+            _responseSuccessModel.postValue(NetworkResult.Error(message))
+        }
+        else
+        {
+            _responseSuccessModel.postValue(NetworkResult.Error("Something went wrong 2"))
+        }
+    }
+
+    suspend fun getExpenseslist(page: String, limit: String, id: String) {
+        var response=easyBuliderAPI.expenseslist(page, limit, id)
+        if(response.isSuccessful && response!=null)
+        {
+            _responseExpensesListModel.postValue(NetworkResult.Success(response.body()!!))
+        }
+        else if(response.errorBody()!=null)
+        {
+            val errorStr = response.errorBody()!!.string()
+            val message = (JSONObject(errorStr).getString("message"))
+            _responseExpensesListModel.postValue(NetworkResult.Error(message))
+        }
+        else
+        {
+            _responseExpensesListModel.postValue(NetworkResult.Error("Something went wrong 2"))
+        }
+    }
+
+    suspend fun deleteSelectedExpense(selectedIds: SelectedIds) {
+        var response=easyBuliderAPI.deleteSelectedExpense(selectedIds)
+        if(response.isSuccessful && response!=null)
+        {
+            _responseSuccessModel.postValue(NetworkResult.Success(response.body()!!))
+        }
+        else if(response.errorBody()!=null)
+        {
+            val errorStr = response.errorBody()!!.string()
+            val message = (JSONObject(errorStr).getString("message"))
+            _responseSuccessModel.postValue(NetworkResult.Error(message))
+        }
+        else
+        {
+            _responseSuccessModel.postValue(NetworkResult.Error("Something went wrong 2"))
+        }
+    }
+    suspend fun deleteAllExpenseJob(id: String) {
+        var response=easyBuliderAPI.deleteAllExpenseJob(id)
+        if(response.isSuccessful && response!=null)
+        {
+            _responsedeleteAllExpenseJobSuccessModel.postValue(NetworkResult.Success(response.body()!!))
+        }
+        else if(response.errorBody()!=null)
+        {
+            val errorStr = response.errorBody()!!.string()
+            val message = (JSONObject(errorStr).getString("message"))
+            _responsedeleteAllExpenseJobSuccessModel.postValue(NetworkResult.Error(message))
+        }
+        else
+        {
+            _responsedeleteAllExpenseJobSuccessModel.postValue(NetworkResult.Error("Something went wrong 2"))
+        }
+    }
+
+    suspend fun updateExpense(id: String,map: HashMap<String, RequestBody>) {
+        var response=easyBuliderAPI.updateExpense(id,map)
+        if(response.isSuccessful && response!=null)
+        {
+            _responseSuccessModel.postValue(NetworkResult.Success(response.body()!!))
+        }
+        else if(response.errorBody()!=null)
+        {
+            val errorStr = response.errorBody()!!.string()
+            val message = (JSONObject(errorStr).getString("message"))
+            _responseSuccessModel.postValue(NetworkResult.Error(message))
+        }
+        else
+        {
+            _responseSuccessModel.postValue(NetworkResult.Error("Something went wrong 2"))
+        }
+    }
+    suspend fun addexpense(map: HashMap<String, RequestBody>) {
+        var response=easyBuliderAPI.addexpense(map)
+        if(response.isSuccessful && response!=null)
+        {
+            _responseAddExpenseModel.postValue(NetworkResult.Success(response.body()!!))
+        }
+        else if(response.errorBody()!=null)
+        {
+            val errorStr = response.errorBody()!!.string()
+            val message = (JSONObject(errorStr).getString("message"))
+            _responseAddExpenseModel.postValue(NetworkResult.Error(message))
+        }
+        else
+        {
+            _responseAddExpenseModel.postValue(NetworkResult.Error("Something went wrong 2"))
+        }
+    }
+
+    suspend fun addImgaes(map: HashMap<String, RequestBody>) {
+        var response=easyBuliderAPI.add_addtional_images(map)
+        if(response.isSuccessful && response!=null)
+        {
+            _responseSuccessModel.postValue(NetworkResult.Success(response.body()!!))
+        }
+        else if(response.errorBody()!=null)
+        {
+            val errorStr = response.errorBody()!!.string()
+            val message = (JSONObject(errorStr).getString("message"))
+            _responseSuccessModel.postValue(NetworkResult.Error(message))
+        }
+        else
+        {
+            _responseSuccessModel.postValue(NetworkResult.Error("Something went wrong 2"))
+        }
+    }
+
+
     suspend fun getUserDetails(id: String, page: String, limit: String, type: String, status: String) {
 
         var response=easyBuliderAPI.clientdetails(id, page, limit, type, status)
@@ -686,6 +964,24 @@ class Repository @Inject constructor(val easyBuliderAPI: EasyBuliderAPI) {
         else
         {
             _responsDeleteSelectedSales.postValue(NetworkResult.Error("Something went wrong 2"))
+        }
+    }
+
+    suspend fun deleteAllClient(type: String) {
+        var response=easyBuliderAPI.deleteAllClient(type)
+        if(response.isSuccessful && response!=null)
+        {
+            _responsDeleteAllClient.postValue(NetworkResult.Success(response.body()!!))
+        }
+        else if(response.errorBody()!=null)
+        {
+            val errorStr = response.errorBody()!!.string()
+            val message = (JSONObject(errorStr).getString("message"))
+            _responsDeleteAllClient.postValue(NetworkResult.Error(message))
+        }
+        else
+        {
+            _responsDeleteAllClient.postValue(NetworkResult.Error("Something went wrong 2"))
         }
     }
 

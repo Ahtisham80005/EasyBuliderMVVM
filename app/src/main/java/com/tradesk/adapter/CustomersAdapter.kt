@@ -4,6 +4,7 @@ import android.content.Context
 import android.content.Intent
 import android.net.Uri
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
 import android.widget.Filter
 import android.widget.Filterable
@@ -11,8 +12,11 @@ import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.socialgalaxyApp.util.extension.loadWallImage
 import com.tradesk.BuildzerApp
+import com.tradesk.Interface.CustomCheckBoxListener
 import com.tradesk.Interface.LongClickListener
 import com.tradesk.Interface.SingleListCLickListener
+import com.tradesk.Interface.UnselectCheckBoxListener
+import com.tradesk.Model.CheckModel
 import com.tradesk.Model.Client
 import com.tradesk.R
 import com.tradesk.databinding.AddClientListItemBinding
@@ -25,7 +29,12 @@ class CustomersAdapter (
     var mClientsList: MutableList<Client>,
     var mClientsListOriginal: MutableList<Client>,
     val listener: SingleListCLickListener,
-    val longClickListener: LongClickListener
+    val longClickListener: LongClickListener,
+    var customCheckBoxListener: CustomCheckBoxListener,
+    val unselectCheckBoxListener: UnselectCheckBoxListener,
+    var checkboxVisibility:Boolean,
+    var allCheckBoxSelect:Boolean,
+    var mcheckBoxModelList: MutableList<CheckModel>
 ) : RecyclerView.Adapter<CustomersAdapter.MyViewHolder>(), Filterable {
 
     class MyViewHolder (var binding: RowItemCustomerslistBinding): RecyclerView.ViewHolder((binding.root))
@@ -47,13 +56,39 @@ class CustomersAdapter (
         holder.bind()
         holder.apply {
 
+            if(checkboxVisibility)
+            {
+                binding.mCheckBox.visibility= View.VISIBLE
+            }
+            if(allCheckBoxSelect)
+            {
+                binding.mCheckBox.isChecked = true
+                binding.mCheckBox.isClickable = false
+            }
+            //in some cases, it will prevent unwanted situations
+            binding.mCheckBox.setOnCheckedChangeListener(null)
+            binding.mCheckBox.tag=position
+            binding.mCheckBox.isChecked=mcheckBoxModelList.get(position).check
+            binding.mCheckBox.setOnCheckedChangeListener { _, isChecked ->
+                mcheckBoxModelList.get(position).check=isChecked
+                if (isChecked) {
+                    customCheckBoxListener.onCheckBoxClick(position)
+                } else {
+                    unselectCheckBoxListener.onCheckBoxUnCheckClick(0, position)
+                }
+            }
+
+
             binding.mTvName.text = mClientsList[position].name
             binding.mTvEmail.text = mClientsList[position].email
+
             binding.mTvPhone.text = insertString(mClientsList[position].phone_no, "", 0)
             binding.mTvPhone.text = insertString(binding.mTvPhone.text.toString(), ")", 2)
             binding.mTvPhone.text = insertString(binding.mTvPhone.text.toString(), " ", 3)
             binding.mTvPhone.text = insertString(binding.mTvPhone.text.toString(), "-", 7)
-            binding.mTvPhone.text = "(" + binding.mTvPhone.text.toString()
+            binding.mTvPhone.text = "+1(" + binding.mTvPhone.text.toString()
+
+
             binding.mTvAddress.text = mClientsList[position].address.street
 
             binding.clEdit.setOnClickListener {

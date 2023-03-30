@@ -443,7 +443,7 @@ fun AppCompatActivity.toast(message: String?, success: Boolean = true)
     snack.show()
 }
 
-fun Fragment.toast(message: String?, success: Boolean = true) = context!!.toast(message, success)
+fun Fragment.toast(message: String?, success: Boolean = true) = requireActivity()!!.toast(message, success)
 
 fun Context.toast(message: String?, success: Boolean = true) =
     (this as AppCompatActivity).toast(message, success)
@@ -880,7 +880,15 @@ fun Fragment.AllinOneDialog(
     ttle: String = "", msg: String = "", btnLeft: String = "No",
     btnRight: String = "Yes", onLeftClick: () -> Unit, onRightClick: () -> Unit
 ) {
-    (context as AppCompatActivity).AllinOneDialog(
+//    context.AllinOneDialog(
+//        ttle,
+//        msg,
+//        btnLeft,
+//        btnRight,
+//        onLeftClick,
+//        onRightClick
+//    )
+    (requireActivity() as AppCompatActivity).AllinOneDialog(
         ttle,
         msg,
         btnLeft,

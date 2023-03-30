@@ -1,17 +1,20 @@
 package com.tradesk.activity.proposalModule
 
+import android.Manifest
 import android.app.Activity
 import android.app.Dialog
 import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
 import android.content.IntentFilter
+import android.content.pm.PackageManager
 import android.graphics.Bitmap
 import android.net.Uri
 import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.os.Handler
+import android.provider.MediaStore
 import android.provider.OpenableColumns
 import android.util.Log
 import android.view.Gravity
@@ -26,9 +29,13 @@ import androidx.localbroadcastmanager.content.LocalBroadcastManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.viewpager.widget.ViewPager
+import com.fxn.pix.Options
+import com.fxn.pix.Pix
 import com.google.android.libraries.places.widget.Autocomplete
 import com.google.android.material.textfield.TextInputEditText
 import com.google.gson.GsonBuilder
+import com.theartofdev.edmodo.cropper.CropImage
+import com.theartofdev.edmodo.cropper.CropImageView
 import com.tradesk.Interface.AttachedDocListener
 import com.tradesk.Interface.DocListener
 import com.tradesk.Interface.OnItemRemove
@@ -51,6 +58,7 @@ import com.tradesk.util.extension.customCenterDialog
 import com.tradesk.util.extension.toast
 import com.tradesk.viewModel.ProposalsViewModel
 import dagger.hilt.android.AndroidEntryPoint
+import id.zelory.compressor.Compressor
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -130,7 +138,20 @@ class AddProposalActivity : AppCompatActivity() , SingleItemCLickListener, OnIte
     val docsAdapter by lazy { DocsAdapter(this, this, selectedDocList) }
     val mProSelectedItemsAdapter by lazy { ProSelectedItemsAdapter(this, this, this, mAddItemDataUpdate) }
     val mBuilder: Dialog by lazy { Dialog(this@AddProposalActivity) }
+    val options by lazy {
+        Options.init()
+            .setRequestCode(1010) //Request code for activity results
+            .setCount(3) //Number of images to restict selection count
+            .setFrontfacing(false) //Front Facing camera on start
+            .setPreSelectedUrls(arrayListOf()) //Pre selected Image Urls
+            .setSpanCount(4) //Span count for gallery min 1 & max 5
+            .setMode(Options.Mode.All) //Option to select only pictures or videos or both
+            .setVideoDurationLimitinSeconds(30) //Duration for video recording
+            .setScreenOrientation(Options.SCREEN_ORIENTATION_PORTRAIT) //Orientaion
+            .setPath("/pix/images") //Custom Path For media Storage
 
+    }
+    var uriList=ArrayList<Uri>()
     lateinit var mySignSwitch: Switch
     lateinit var clientSignSwitch: Switch
     lateinit var datePicker: DatePickerHelper
@@ -516,6 +537,7 @@ class AddProposalActivity : AppCompatActivity() , SingleItemCLickListener, OnIte
                             )
                         }
                         if (!isEditMode) {
+                            Constants.showLoading(this)
                             CoroutineScope(Dispatchers.IO).launch {
                                 viewModel.addProposals(it, docsList, filesParts)
                             }
@@ -554,8 +576,7 @@ class AddProposalActivity : AppCompatActivity() , SingleItemCLickListener, OnIte
         initObserve()
     }
 
-    fun initObserve()
-    {
+    fun initObserve() {
         viewModel.responseProfileModel.observe(this, androidx.lifecycle.Observer {it->
             Constants.hideLoading()
             when (it) {
@@ -721,36 +742,10 @@ class AddProposalActivity : AppCompatActivity() , SingleItemCLickListener, OnIte
         }
     }
 
-    fun showDocsPop(profileModel: ProfileModel) {
-        if (profileModel.data.license_and_ins.docs_url != null && profileModel.data.license_and_ins.docs_url.isNotEmpty()) {
-            mBuilder.setContentView(R.layout.docs_dialog);
-            mBuilder.setCancelable(true)
-            mBuilder.getWindow()!!.getAttributes().windowAnimations = R.style.DialogAnimation;
-            mBuilder.window!!.setGravity(Gravity.BOTTOM)
-            mBuilder.window!!.setLayout(
-                ViewGroup.LayoutParams.MATCH_PARENT,
-                ViewGroup.LayoutParams.WRAP_CONTENT
-            )
-
-            var docsRV: RecyclerView = mBuilder.findViewById<RecyclerView>(R.id.docsRV)
-            var list = arrayListOf<String>()
-            val attachedDocsAdapter by lazy {
-                AttachedDocsAdapter(
-                    this, this,
-                    profileModel.data.license_and_ins.docs_url as MutableList<String>
-                )
-            }
-            docsRV.layoutManager = LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
-            docsRV.adapter = attachedDocsAdapter;
-//            list.addAll(profileModel.data.license_and_ins.docs_url)
-//            attachedDocsAdapter.notifyDataSetChanged()
-            mBuilder.show();
-        } else toast("No documents attached yet, Please upload new one")
-    }
-
     fun showTaxDialog() {
         customCenterDialog(R.layout.addtax_dialog, true) { v, d ->
             val taxRateEdit = v.findViewById<EditText>(R.id.mEtTaxes)
+            taxRateEdit.setText(binding.mEtTaxes.text.toString())
             val button: Button =v.findViewById(R.id.done_button);
             button.setOnClickListener {
                 if (!taxRateEdit.text.isNullOrEmpty()) {
@@ -772,109 +767,156 @@ class AddProposalActivity : AppCompatActivity() , SingleItemCLickListener, OnIte
         }
     }
 
+    private fun filePicker() {
+
+        val intent = Intent(Intent.ACTION_OPEN_DOCUMENT)
+        intent.type = "application/pdf"
+        intent.putExtra(Intent.EXTRA_ALLOW_MULTIPLE, true)
+        intent.addFlags(Intent.FLAG_GRANT_WRITE_URI_PERMISSION)
+        intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
+        if (intent.resolveActivity(this.packageManager) != null) {
+            startActivityForResult(intent, Constants.PICKFILE_RESULT_CODE)
+        }
+
+//        val intent = Intent(Intent.ACTION_OPEN_DOCUMENT)
+//        intent.addCategory(Intent.CATEGORY_OPENABLE)
+//        intent.type = "application/pdf"
+//        startActivityForResult(intent, Constants.PICKFILE_RESULT_CODE)
+        isUploadingDoc = true;
+    }
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
-//        if (requestCode == 1010) {
-//            data?.getStringArrayListExtra(Pix.IMAGE_RESULTS)?.let {
-//                if (it.isNotEmpty()) {
-//                    isUploadingDoc = false
-//                    saveCaptureImageResults(it[0])
-//                }
-//            }
-//            Log.e("RESULT", "RESULT")
-////                saveCaptureImageResults()
-//        }
-//        else if (resultCode == Activity.RESULT_OK) {
-//            if (requestCode == Constants.REQUEST_TAKE_PHOTO) {
-//            } else if (requestCode == Constants.REQUEST_UPLOAD_DOC) {
-//                CropImage.activity(Uri.parse(selectedDoc))
-//                    .setCropShape(CropImageView.CropShape.RECTANGLE)
-//                    .setGuidelinesColor(android.R.color.transparent).start(this)
-//            } else if (requestCode == Constants.REQUEST_IMAGE_GET) {
-//            } else if (requestCode == Constants.PLACE_AUTOCOMPLETE_REQUEST_CODE) {
-//                try {
-//                    val place = Autocomplete.getPlaceFromIntent(data!!)
-//                } catch (e: java.lang.Exception) {
-//                }
-//            } else if (requestCode == Constants.PICKFILE_RESULT_CODE) {
-//                try {
-//                    if (data != null) {
-//                        val filePath =
-//                            data.data?.let { getRealPathFromUri(it, this) }
-//                        val parsedpath = filePath?.split("/")?.toTypedArray()
-//                        //now we will upload the file
-//                        //lets import okhttp first
-//                        var fileName = parsedpath?.get(parsedpath.size - 1)
-//                        var file = File(filePath)
-//                        mDocFile = file
-//                        binding.selectedDocLayout.visibility = View.VISIBLE
-//                        binding.crossDoc.visibility = View.VISIBLE
-//                        binding.atttachDocLayout.visibility = View.GONE
-//                        binding.docName.text = fileName
-//                        selectedDoc = ""
-//                        selectedDocList.clear()
-//                        isUploadingDoc = false
-//
-//
-//                    }
-//
-//                } catch (e: java.lang.Exception) {
-//                }
-//            } else if (requestCode == 3333) {
-//                if (resultCode == Activity.RESULT_OK) {
-//                    clients_id = ""
-//                    clients_name = ""
-//                    clients_email = ""
-//                    clients_address = ""
-//                    clients_phone = ""
-//                    clients_id = data!!.getStringExtra("result").toString()
-//                    clients_name = data!!.getStringExtra("name").toString()
-//                    binding.mTvClientName.setText("Client : " + clients_name)
-//                    binding.mTvClientName.visibility = View.VISIBLE
-//                    clients_email = data!!.getStringExtra("email").toString()
-//                    clients_address = data!!.getStringExtra("address").toString()
-//                    clients_phone = data!!.getStringExtra("phonenumber").toString()
-//                }
-//                if (resultCode == Activity.RESULT_CANCELED) {
-//                    // Write your code if there's no result
-//                }
-//            } else if (requestCode == 4444) {
-//                if (resultCode == Activity.RESULT_OK) {
-//                    sales = ""
-//                    sales = data!!.getStringExtra("result").toString()
-//                    if (data!!.getStringExtra("image").toString().isNotEmpty()) {
-////                        imageView223.loadWallImage(data!!.getStringExtra("image").toString())
-//                    }
-//                }
-//                if (resultCode == Activity.RESULT_CANCELED) {
-//                    // Write your code if there's no result
-//                }
-//            } else if (requestCode == 5555) {
-//                if (resultCode == Activity.RESULT_OK) {
-//                    mySignatureUri = ""
-//                    mySignatureUri = data!!.getStringExtra("result").toString()
-//                    if (data!!.getStringExtra("mySignatureUri").toString().isNotEmpty()) {
-//                        Handler().postDelayed({ Constants.showSuccessDialog(this, "Signature Added")
-//                        }, 100)
-//                        binding.switchMySign.isChecked = true
-//                        isMySign = true
-////                        imageView223.loadWallImage(data!!.getStringExtra("image").toString())
-//                    }
-//                }
-//                if (resultCode == Activity.RESULT_CANCELED) {0
-//
-//                    // Write your code if there's no result
-//                }
-//            }
-//            if (requestCode == CropImage.CROP_IMAGE_ACTIVITY_REQUEST_CODE) {
-//                val result = CropImage.getActivityResult(data)
-//                if (resultCode == AppCompatActivity.RESULT_OK) {
-//                    result.uri.path?.let { saveCaptureImageResults(it) }
-//                } else if (resultCode == CropImage.CROP_IMAGE_ACTIVITY_RESULT_ERROR_CODE) {
-//                    val error = result.error
-//                }
-//            }
-//        }
+        if (requestCode == 1010) {
+            data?.getStringArrayListExtra(Pix.IMAGE_RESULTS)?.let {
+                if (it.isNotEmpty()) {
+                    isUploadingDoc = false
+                    saveCaptureImageResults(it[0])
+                }
+            }
+            Log.e("RESULT", "RESULT")
+//                saveCaptureImageResults()
+        }
+        else if (resultCode == Activity.RESULT_OK) {
+            if (requestCode == Constants.REQUEST_TAKE_PHOTO) {
+            }
+            else if (requestCode == Constants.REQUEST_UPLOAD_DOC) {
+                CropImage.activity(Uri.parse(selectedDoc))
+                    .setCropShape(CropImageView.CropShape.RECTANGLE)
+                    .setGuidelinesColor(android.R.color.transparent).start(this)
+            }
+            else if (requestCode == Constants.REQUEST_IMAGE_GET) {
+            }
+            else if (requestCode == Constants.PLACE_AUTOCOMPLETE_REQUEST_CODE) {
+                try {
+                    val place = Autocomplete.getPlaceFromIntent(data!!)
+                } catch (e: java.lang.Exception) {
+                }
+            }
+            else if (requestCode == Constants.PICKFILE_RESULT_CODE)
+            {
+                try {
+                    if (data != null) {
+//                        addDocumentList(data)
+
+                        val filePath = data.data?.let { getRealPathFromUri(it, this) }
+                        val parsedpath = filePath?.split("/")?.toTypedArray()
+                        //now we will upload the file
+                        //lets import okhttp first
+                        var fileName = parsedpath?.get(parsedpath.size - 1)
+                        var file = File(filePath)
+                        mDocFile = file
+                        binding.selectedDocLayout.visibility = View.VISIBLE
+                        binding.crossDoc.visibility = View.VISIBLE
+                        binding.atttachDocLayout.visibility = View.GONE
+                        binding.docName.text = fileName
+                        selectedDoc = ""
+                        selectedDocList.clear()
+                        isUploadingDoc = false
+                    }
+                } catch (e: java.lang.Exception) {
+                }
+            }
+            else if (requestCode == 3333) {
+                if (resultCode == Activity.RESULT_OK) {
+                    clients_id = ""
+                    clients_name = ""
+                    clients_email = ""
+                    clients_address = ""
+                    clients_phone = ""
+                    clients_id = data!!.getStringExtra("result").toString()
+                    clients_name = data!!.getStringExtra("name").toString()
+                    binding.mTvClientName.setText("Client : " + clients_name)
+                    binding.mTvClientName.visibility = View.VISIBLE
+                    clients_email = data!!.getStringExtra("email").toString()
+                    clients_address = data!!.getStringExtra("address").toString()
+                    clients_phone = data!!.getStringExtra("phonenumber").toString()
+                }
+                if (resultCode == Activity.RESULT_CANCELED) {
+                    // Write your code if there's no result
+                }
+            }
+            else if (requestCode == 4444) {
+                if (resultCode == Activity.RESULT_OK) {
+                    sales = ""
+                    sales = data!!.getStringExtra("result").toString()
+                    if (data!!.getStringExtra("image").toString().isNotEmpty()) {
+//                        imageView223.loadWallImage(data!!.getStringExtra("image").toString())
+                    }
+                }
+                if (resultCode == Activity.RESULT_CANCELED) {
+                    // Write your code if there's no result
+                }
+            }
+            else if (requestCode == 5555) {
+                if (resultCode == Activity.RESULT_OK) {
+                    mySignatureUri = ""
+                    mySignatureUri = data!!.getStringExtra("result").toString()
+                    if (data!!.getStringExtra("mySignatureUri").toString().isNotEmpty()) {
+                        Handler().postDelayed({ Constants.showSuccessDialog(this, "Signature Added")
+                        }, 100)
+                        binding.switchMySign.isChecked = true
+                        isMySign = true
+//                        imageView223.loadWallImage(data!!.getStringExtra("image").toString())
+                    }
+                }
+                if (resultCode == Activity.RESULT_CANCELED) {0
+
+                    // Write your code if there's no result
+                }
+            }
+            if (requestCode == CropImage.CROP_IMAGE_ACTIVITY_REQUEST_CODE) {
+                val result = CropImage.getActivityResult(data)
+                if (resultCode == AppCompatActivity.RESULT_OK) {
+                    result.uri.path?.let { saveCaptureImageResults(it) }
+                } else if (resultCode == CropImage.CROP_IMAGE_ACTIVITY_RESULT_ERROR_CODE) {
+                    val error = result.error
+                }
+            }
+        }
+    }
+
+    fun addDocumentList(data: Intent) {
+        if(data!=null)
+        {
+            uriList.clear()
+            if (data.clipData!= null) {
+                val count: Int = data.clipData!!.getItemCount()
+                Toast.makeText(this,count.toString(), Toast.LENGTH_SHORT).show()
+                //evaluate the count before the for loop --- otherwise, the count is evaluated every loop.
+                for (i in 0 until count) {
+                    val documentUri: Uri = data.clipData!!.getItemAt(i).getUri()
+                    uriList.add(documentUri)
+                }
+//                uploadFileToAPI(true)
+            }
+            else
+            {
+                uriList.add(data?.data!!)
+                Log.e("Upload Document",uriList.toString())
+//                uploadFileToAPI(true)
+            }
+
+        }
     }
 
     fun getRealPathFromUri(uri: Uri, activity: Activity): String? {
@@ -960,21 +1002,92 @@ class AddProposalActivity : AppCompatActivity() , SingleItemCLickListener, OnIte
 
 
     fun showImagePop() {
-//        if(imagesList.size < 5) {
-//            Pix.start(this@AddProposalActivity, options)
-//        } else {
-//            Toast.makeText(this@AddProposalActivity, "You can not add more than 5 pictures", Toast.LENGTH_LONG).show()
-//        }
+        if(imagesList.size < 5) {
+            Pix.start(this@AddProposalActivity, options)
+        } else {
+            Toast.makeText(this@AddProposalActivity, "You can not add more than 5 pictures", Toast.LENGTH_LONG).show()
+        }
+    }
+
+    fun showDocsPop(profileModel: ProfileModel) {
+        if (profileModel.data.license_and_ins.docs_url != null && profileModel.data.license_and_ins.docs_url.isNotEmpty()) {
+            mBuilder.setContentView(R.layout.docs_dialog);
+            mBuilder.setCancelable(true)
+            mBuilder.getWindow()!!.getAttributes().windowAnimations = R.style.DialogAnimation;
+            mBuilder.window!!.setGravity(Gravity.BOTTOM)
+            mBuilder.window!!.setLayout(
+                ViewGroup.LayoutParams.MATCH_PARENT,
+                ViewGroup.LayoutParams.WRAP_CONTENT
+            )
+
+            var docsRV: RecyclerView = mBuilder.findViewById<RecyclerView>(R.id.docsRV)
+            var list = arrayListOf<String>()
+            val attachedDocsAdapter by lazy {
+                AttachedDocsAdapter(
+                    this, this,
+                    profileModel.data.license_and_ins.docs_url as MutableList<String>
+                )
+            }
+            docsRV.layoutManager = LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
+            docsRV.adapter = attachedDocsAdapter;
+//            list.addAll(profileModel.data.license_and_ins.docs_url)
+//            attachedDocsAdapter.notifyDataSetChanged()
+
+            mBuilder.show();
+        } else toast("No documents attached yet, Please upload new one")
+    }
+
+    @RequiresApi(Build.VERSION_CODES.M)
+    private fun dispatchTakePictureIntent(requestCode: Int) {
+//        Intent(MediaStore.ACTION_IMAGE_CAPTURE).also { takePictureIntent ->
+//            // Ensure that there's a camera activity to handle the intent
+//            takePictureIntent.resolveActivity(this@AddProposalActivity.packageManager)?.also {
+//                // Create the File where the photo should go
+//                val photoFile: File? = try {
+//                    ConstUtils.createImageFile(this@AddProposalActivity)
+//                } catch (ex: IOException) {
+//                    // Error occurred while creating the File
+//                    null
+//                }
+//                // Continue only if the File was successfully created
+//                photoFile?.also {
+//                    val photoURI: Uri = FileProvider.getUriForFile(
+//                        this@AddProposalActivity,
+//                        "${this@AddProposalActivity.packageName}.provider",
+//                        it
+//                    )
+//                    myImageUri = photoURI.toString()
+//                    takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, photoURI)
+//                    startActivityForResult(takePictureIntent, requestCode)
+//                }
+//            }
+        if (checkSelfPermission(Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
+            requestPermissions(arrayOf(Manifest.permission.CAMERA), requestCode)
+        } else {
+            val cameraIntent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
+            startActivityForResult(cameraIntent, requestCode)
+        }
+
+
+    }
+
+    private fun dispatchTakeGalleryIntent(requestCode: Int) {
+        val intent = Intent(Intent.ACTION_GET_CONTENT).apply {
+            type = "image/*"
+        }
+        if (intent.resolveActivity(this.packageManager) != null) {
+            startActivityForResult(intent, requestCode)
+        }
     }
 
     private fun saveCaptureImageResults(path: String) = try {
         if (isUploadingDoc) {
             val file = File(path)
-//            mDocFile = Compressor(this@AddProposalActivity)
-//                .setMaxHeight(1000).setMaxWidth(1000)
-//                .setQuality(99)
-//                .setCompressFormat(Bitmap.CompressFormat.JPEG)
-//                .compressToFile(file)
+            mDocFile = Compressor(this@AddProposalActivity)
+                .setMaxHeight(1000).setMaxWidth(1000)
+                .setQuality(99)
+                .setCompressFormat(Bitmap.CompressFormat.JPEG)
+                .compressToFile(file)
             binding.selectedDocLayout.visibility = View.VISIBLE
             binding.crossDoc.visibility = View.GONE
             binding.atttachDocLayout.visibility = View.GONE
@@ -984,11 +1097,11 @@ class AddProposalActivity : AppCompatActivity() , SingleItemCLickListener, OnIte
 
         } else {
             val file = File(path)
-//            mFile = Compressor(this@AddProposalActivity)
-//                .setQuality(99)
-//                .setCompressFormat(Bitmap.CompressFormat.JPEG)
-//                .compressToFile(file)
-//dont
+            mFile = Compressor(this@AddProposalActivity)
+                .setQuality(99)
+                .setCompressFormat(Bitmap.CompressFormat.JPEG)
+                .compressToFile(file)
+
 //            if (!imagesList.contains(mFile!!.absolutePath)) imagesList.add(mFile!!.absolutePath)
 //            if (!filesList.contains(mFile)) {
 //                filesList.add(mFile!!)
@@ -997,19 +1110,14 @@ class AddProposalActivity : AppCompatActivity() , SingleItemCLickListener, OnIte
             filesList.add(mFile!!)
             viewPager.adapter = imagesAdapter
             imagesAdapter.notifyDataSetChanged()
-//            dots.attachViewPager(mIvMainImage)
+            binding.dots.attachViewPager(binding.mIvMainImage)
         }
     } catch (e: Exception) {
         Log.e("AddProposalActivity", e.message.toString())
     }
 
-    private fun filePicker() {
-        val intent = Intent(Intent.ACTION_OPEN_DOCUMENT)
-        intent.addCategory(Intent.CATEGORY_OPENABLE)
-        intent.type = "application/pdf"
-        startActivityForResult(intent, Constants.PICKFILE_RESULT_CODE)
-        isUploadingDoc = true;
-    }
+
+
 
     private fun setItemsTotals(isTaxable: Switch, etCost: TextInputEditText, etQty: TextInputEditText, itemTax: TextView, subTotal: TextView, total: TextView) {
 
@@ -1036,6 +1144,7 @@ class AddProposalActivity : AppCompatActivity() , SingleItemCLickListener, OnIte
 
 
         AddProposalActivity.sub_total_amount = sub_total.toString()
+
         AddProposalActivity.total_amount = totalamount.toString()
         AddProposalActivity.tax_amount = tax.toString()
     }

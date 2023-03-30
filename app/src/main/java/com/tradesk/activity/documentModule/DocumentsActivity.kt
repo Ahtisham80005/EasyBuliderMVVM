@@ -15,7 +15,6 @@ import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
 import com.tradesk.Interface.SingleItemCLickListener
 import com.tradesk.Interface.SingleListCLickListener
 import com.tradesk.Model.AdditionalDocument
@@ -23,8 +22,10 @@ import com.tradesk.Model.AdditionalImageDocuments
 import com.tradesk.Model.JobDocuments
 import com.tradesk.Model.Users
 import com.tradesk.R
+import com.tradesk.activity.documentModule.adapter.AllDocumentsAdapter
+import com.tradesk.activity.documentModule.adapter.LicenseAndInsDocumentsAdapter
+import com.tradesk.activity.documentModule.adapter.UserDocumentsAdapter
 import com.tradesk.databinding.ActivityDocumentsBinding
-import com.tradesk.databinding.RowAllDocumentsBinding
 import com.tradesk.network.NetworkResult
 import com.tradesk.util.Constants
 import com.tradesk.util.Constants.isInternetConnected
@@ -279,6 +280,7 @@ class DocumentsActivity : AppCompatActivity(), SingleListCLickListener, SingleIt
             hashMapOf<String, RequestBody>().also {
 //                    it.put("doc\"; filename=\"doc.${mFile!!.extension}", RequestBody.create(MediaType.parse("application/${mFile!!.extension}"),mFile!!))
                 it.put("folder_name", RequestBody.create(MediaType.parse("multipart/form-data"), folderName))
+                Constants.showLoading(this)
                 CoroutineScope(Dispatchers.IO).launch {
                     viewModel.usersAddAdditionalDocs(it,parts1)
                 }
@@ -354,4 +356,17 @@ class DocumentsActivity : AppCompatActivity(), SingleListCLickListener, SingleIt
             )
         }
     }
+
+    override fun onResume() {
+        super.onResume()
+        binding.mEtSearchName.setText("")
+        if (isInternetConnected(this)) {
+            Constants.showLoading(this)
+            CoroutineScope(Dispatchers.IO).launch {
+                viewModel.getAllDocuments()
+            }
+        }
+    }
+
+
 }

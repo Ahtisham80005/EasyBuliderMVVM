@@ -11,9 +11,11 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.os.Environment
 import android.provider.MediaStore
+import android.provider.Settings
 import android.util.Log
 import android.view.*
 import android.widget.*
+import androidx.activity.result.PickVisualMediaRequest
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.net.toUri
 import androidx.core.view.isVisible
@@ -21,6 +23,7 @@ import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.socialgalaxyApp.util.extension.loadWallImage
 import com.tradesk.Interface.CustomCheckBoxListener
 import com.tradesk.Interface.LongClickListener
 import com.tradesk.Interface.SingleListCLickListener
@@ -34,13 +37,17 @@ import com.tradesk.activity.galleryModule.adapter.SubAdditionalGallaryAdapter
 import com.tradesk.data.entity.MoveImagesInFolderModel
 import com.tradesk.data.entity.MoveImagesJobToProfileModel
 import com.tradesk.databinding.ActivitySubGallaryBinding
+import com.tradesk.filemanager.checkStoragePermission
+import com.tradesk.filemanager.requestStoragePermission
 import com.tradesk.network.NetworkResult
 import com.tradesk.util.Constants
 import com.tradesk.util.Constants.isInternetConnected
-import com.tradesk.util.FilePath
+import com.tradesk.util.FileFinder
+import com.tradesk.util.file.FilePath
 import com.tradesk.util.PermissionFile
 import com.tradesk.util.extension.AllinOneDialog
 import com.tradesk.util.extension.toast
+import com.tradesk.util.file.PathUtil
 import com.tradesk.viewModel.GallaryViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.CoroutineScope
@@ -71,7 +78,7 @@ class SubGallaryActivity : AppCompatActivity(), SingleListCLickListener, LongCli
     var allCheckBoxSelect:Boolean=false
     var activeSlectMenu:Boolean=false
 
-
+    var mcheckBoxModelList=mutableListOf<CheckModel>()
 
     /*For gallary adapter*/
     var mListUpdatedAdditionalImage = ArrayList<LeadsDataImageClient>()
@@ -79,9 +86,9 @@ class SubGallaryActivity : AppCompatActivity(), SingleListCLickListener, LongCli
 
 
     val mListAdditional = mutableListOf<AdditionalImageLeadDetail>()
-    val mGallaryAdapterUpdated by lazy { GallaryAdapterUpdated(this,this,mListAdditional,this,this,this,checkBoxVisibility,allCheckBoxSelect) }
+    val mGallaryAdapterUpdated by lazy { GallaryAdapterUpdated(this,this,mListAdditional,this,this,this,checkBoxVisibility,allCheckBoxSelect,mcheckBoxModelList) }
     var mSubListUpdatedAdditionalImage = ArrayList<AdditionalImageImageClient>()
-    val subAdditionalGallaryAdapter by lazy { SubAdditionalGallaryAdapter( mSubListUpdatedAdditionalImage,this,this,this,this,checkBoxVisibility,allCheckBoxSelect) }
+    val subAdditionalGallaryAdapter by lazy { SubAdditionalGallaryAdapter( mSubListUpdatedAdditionalImage,this,this,this,this,checkBoxVisibility,allCheckBoxSelect,mcheckBoxModelList) }
 
     var job_id = ""
     var image_id = ""
@@ -95,7 +102,9 @@ class SubGallaryActivity : AppCompatActivity(), SingleListCLickListener, LongCli
     @Inject
     lateinit var permissionFile: PermissionFile
     lateinit var dialog: Dialog
+    private var hasPermission = false
     val mBuilder: Dialog by lazy { Dialog(this@SubGallaryActivity) }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding=DataBindingUtil.setContentView(this,R.layout.activity_sub_gallary)
@@ -109,9 +118,17 @@ class SubGallaryActivity : AppCompatActivity(), SingleListCLickListener, LongCli
         }
         binding.mIvRightMenue.visibility = View.VISIBLE
         binding.mIvBack.setOnClickListener { finish() }
-        binding.mIvAddImage.setOnClickListener {  if (permissionFile.checkLocStorgePermission(this)) {
-            showImagePop()
-        } }
+        binding.mIvAddImage.setOnClickListener {
+            if (permissionFile.checkLocStorgePermission(this)) {
+                hasPermission = checkStoragePermission(this)
+                if (hasPermission)
+                {
+                    showImagePop()
+                } else {
+                    requestStoragePermission(this)
+                }
+            }
+        }
         binding.mIvRightMenue.setOnClickListener {
             if(!activeSlectMenu)
             {
@@ -167,6 +184,11 @@ class SubGallaryActivity : AppCompatActivity(), SingleListCLickListener, LongCli
                     binding.rvGallary.layoutManager = this
                 }
                 binding.rvGallary.adapter = subAdditionalGallaryAdapter
+                mcheckBoxModelList.clear()
+                for(i in mSubListUpdatedAdditionalImage)
+                {
+                    mcheckBoxModelList.add(CheckModel(false))
+                }
                 subAdditionalGallaryAdapter.notifyDataSetChanged()
             }
         }
@@ -294,6 +316,11 @@ class SubGallaryActivity : AppCompatActivity(), SingleListCLickListener, LongCli
                     mListAdditional.addAll(allAdditionalImage)
                     allAdditionalImage.clear()
                 }
+                mcheckBoxModelList.clear()
+                for(i in mListAdditional)
+                {
+                    mcheckBoxModelList.add(CheckModel(false))
+                }
                 mGallaryAdapterUpdated.notifyDataSetChanged()
             }
         }
@@ -381,6 +408,75 @@ class SubGallaryActivity : AppCompatActivity(), SingleListCLickListener, LongCli
         }
     }
 
+    fun showImagePop() {
+        mBuilder.setContentView(R.layout.camera_dialog);
+        mBuilder.getWindow()!!.getAttributes().windowAnimations = R.style.DialogAnimation;
+        mBuilder.window!!.setGravity(Gravity.BOTTOM)
+        mBuilder.window!!.setLayout(
+            ViewGroup.LayoutParams.MATCH_PARENT,
+            ViewGroup.LayoutParams.WRAP_CONTENT
+        )
+        mBuilder.findViewById<TextView>(R.id.titleCamera).also {
+            it.isVisible = !intent.hasExtra("permits")
+            it.setOnClickListener {
+                mBuilder.dismiss()
+                val values = ContentValues()
+                values.put(MediaStore.Images.Media.TITLE, "New Picture")
+                values.put(MediaStore.Images.Media.DESCRIPTION, "From the Camera")
+                camera_image_uri = contentResolver.insert(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, values)!!
+                val cameraIntent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
+                cameraIntent.putExtra(MediaStore.EXTRA_OUTPUT, camera_image_uri)
+                resultLauncherCamera.launch(cameraIntent)
+            }
+        }
+        mBuilder.findViewById<View>(R.id.view11).isVisible = intent.hasExtra("permits")
+        mBuilder.findViewById<TextView>(R.id.titleGallery).also {
+            it.isVisible = !intent.hasExtra("permits")
+            //       it.isVisible = false
+            it.setOnClickListener {
+                mBuilder.dismiss()
+                if (Build.VERSION.SDK_INT >= 30) {
+                    if (!Environment.isExternalStorageManager())
+                    {
+                        val getpermission = Intent()
+                        getpermission.action = Settings.ACTION_MANAGE_ALL_FILES_ACCESS_PERMISSION
+                        startActivity(getpermission)
+                    } else {
+                        if (permissionFile.checkLocStorgePermission(this))
+                        {
+                            pickMultipleMedia.launch(PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.ImageOnly))
+                        }
+                    }
+                }
+                else
+                {
+                    if (permissionFile.checkLocStorgePermission(this)) {
+                        pickMultipleMedia.launch(PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.ImageOnly))
+                    }
+                }
+//                val intent = Intent()
+//                intent.type = "image/*"
+//                intent.putExtra(Intent.EXTRA_ALLOW_MULTIPLE, true)
+//                intent.action = Intent.ACTION_GET_CONTENT
+//                resultLauncher.launch(intent)
+            }
+        }
+        mBuilder.findViewById<TextView>(R.id.titleCancel)
+            .setOnClickListener { mBuilder.dismiss() }
+        mBuilder.show();
+    }
+    val pickMultipleMedia = registerForActivityResult(ActivityResultContracts.PickMultipleVisualMedia(15)) { uris ->
+        // Callback is invoked after the user selects media items or closes the
+        // photo picker.
+        if (uris.isNotEmpty()) {
+            Log.d("PhotoPicker", "Number of items selected: ${uris.size}")
+            saveCaptureImageResults(uris!!)
+        } else {
+            toast("No media selected Permission not allow")
+            Log.d("PhotoPicker", "No media selected")
+        }
+    }
+
     var resultLauncher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
         if (result.resultCode == Activity.RESULT_OK) {
 //            Toast.makeText(this,"Gallery", Toast.LENGTH_SHORT).show()
@@ -426,17 +522,28 @@ class SubGallaryActivity : AppCompatActivity(), SingleListCLickListener, LongCli
         }
     }
 
-    private fun saveCaptureImageResults(uriList: ArrayList<Uri>) = try {
+    private fun saveCaptureImageResults(uriList: List<Uri>) = try {
 //        Toast.makeText(this,uriList.toString(),Toast.LENGTH_SHORT).show()
         Log.e("MYImages",uriList.toString())
 
         var parts1: ArrayList<MultipartBody.Part> = ArrayList<MultipartBody.Part>()
         for(data in uriList)
         {
-            var path= FilePath.getPath(applicationContext,data);
-            var image=Constants.getRequestParamImage("image",path)
+            var path = FilePath.getPath(this@SubGallaryActivity,data)
+            if(path==null)
+            {
+                path= PathUtil.getPath(this@SubGallaryActivity,data)
+//                Log.e("My File 2",path)
+            }
+            if(path==null)
+            {
+                path= FileFinder.getFilePath(this@SubGallaryActivity,data)
+//                Log.e("My File 3",path)
+            }
+            var image=Constants.getRequestParam("image",path)
             parts1.add(image!!)
         }
+
         hashMapOf<String, RequestBody>().also {
             it.put("_id", RequestBody.create(MediaType.parse("multipart/form-data"), intent.getStringExtra("job_id").toString()))
             it.put("status", RequestBody.create(MediaType.parse("multipart/form-data"), "image"))
@@ -444,50 +551,12 @@ class SubGallaryActivity : AppCompatActivity(), SingleListCLickListener, LongCli
             CoroutineScope(Dispatchers.IO).launch {
                 viewModel.addMultipleImgaes(it,parts1)
             }
-
         }
-
     } catch (e: Exception) {
+        toast(e.message.toString())
         e.printStackTrace()
     }
-    fun showImagePop() {
-        mBuilder.setContentView(R.layout.camera_dialog);
-        mBuilder.getWindow()!!.getAttributes().windowAnimations = R.style.DialogAnimation;
-        mBuilder.window!!.setGravity(Gravity.BOTTOM)
-        mBuilder.window!!.setLayout(
-            ViewGroup.LayoutParams.MATCH_PARENT,
-            ViewGroup.LayoutParams.WRAP_CONTENT
-        )
-        mBuilder.findViewById<TextView>(R.id.titleCamera).also {
-            it.isVisible = !intent.hasExtra("permits")
-            it.setOnClickListener {
-                mBuilder.dismiss()
-                val values = ContentValues()
-                values.put(MediaStore.Images.Media.TITLE, "New Picture")
-                values.put(MediaStore.Images.Media.DESCRIPTION, "From the Camera")
-                camera_image_uri = contentResolver.insert(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, values)!!
-                val cameraIntent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
-                cameraIntent.putExtra(MediaStore.EXTRA_OUTPUT, camera_image_uri)
-                resultLauncherCamera.launch(cameraIntent)
-            }
-        }
-        mBuilder.findViewById<View>(R.id.view11).isVisible = intent.hasExtra("permits")
-        mBuilder.findViewById<TextView>(R.id.titleGallery).also {
-            it.isVisible = !intent.hasExtra("permits")
-            //       it.isVisible = false
-            it.setOnClickListener {
-                mBuilder.dismiss()
-                val intent = Intent()
-                intent.type = "image/*"
-                intent.putExtra(Intent.EXTRA_ALLOW_MULTIPLE, true)
-                intent.action = Intent.ACTION_GET_CONTENT
-                resultLauncher.launch(intent)
-            }
-        }
-        mBuilder.findViewById<TextView>(R.id.titleCancel)
-            .setOnClickListener { mBuilder.dismiss() }
-        mBuilder.show();
-    }
+
     private fun showRightMenuOnLong(anchor: View,selectedPosition:Int): Boolean {
         val popup = PopupMenu(this, anchor)
         popup.menuInflater.inflate(R.menu.select_item_gallery_menu, popup.getMenu())
@@ -698,27 +767,47 @@ class SubGallaryActivity : AppCompatActivity(), SingleListCLickListener, LongCli
 
             if (it.itemId == R.id.item_select_items){
                 activeSlectMenu=true
+                selectedIdArray.clear()
+                selectedImageArray.clear()
                 checkBoxVisibility=true
                 if (intent.hasExtra("additionalimages"))
                 {
                     //From Job
+                    mcheckBoxModelList.clear()
+                    for(i in mListAdditional)
+                    {
+                        mcheckBoxModelList.add(CheckModel(false))
+                    }
                     mGallaryAdapterUpdated.checkboxVisibility=true
                     mGallaryAdapterUpdated.notifyDataSetChanged()
                 }
                 else{
                     //From Gallery
+                    mcheckBoxModelList.clear()
+                    for(i in mSubListUpdatedAdditionalImage)
+                    {
+                        mcheckBoxModelList.add(CheckModel(false))
+                    }
                     subAdditionalGallaryAdapter.checkboxVisibility=true
                     subAdditionalGallaryAdapter.notifyDataSetChanged()
                 }
+
+
             }
             else if (it.itemId == R.id.item_select_all){
                 checkBoxVisibility=true
                 activeSlectMenu=true
                 selectedIdArray.clear()
                 selectedImageArray.clear()
+
                 if (intent.hasExtra("additionalimages"))
                 {
                     //From Job
+                    mcheckBoxModelList.clear()
+                    for(i in mListAdditional)
+                    {
+                        mcheckBoxModelList.add(CheckModel(true))
+                    }
                     mGallaryAdapterUpdated.checkboxVisibility=true
                     mGallaryAdapterUpdated.allCheckBoxSelect=true
                     //No Add List
@@ -726,6 +815,11 @@ class SubGallaryActivity : AppCompatActivity(), SingleListCLickListener, LongCli
                 }
                 else{
                     //From Gallery
+                    mcheckBoxModelList.clear()
+                    for(i in mSubListUpdatedAdditionalImage)
+                    {
+                        mcheckBoxModelList.add(CheckModel(true))
+                    }
                     subAdditionalGallaryAdapter.checkboxVisibility=true
                     subAdditionalGallaryAdapter.allCheckBoxSelect=true
                     //No Add List
@@ -749,44 +843,64 @@ class SubGallaryActivity : AppCompatActivity(), SingleListCLickListener, LongCli
         Log.e("IdArray 3",selectedIdArray.size.toString())
         popup.setOnMenuItemClickListener {
             if (it.itemId == R.id.item_share) {
-//                if (selectionResult >= 1) {
-                shareImage()
-//                } else {
-//                    toast("Select an item")
-//                }
+                if (!selectedIdArray.isEmpty()) {
+                        shareImage()
+                } else {
+                    toast("Select an item")
+                }
             }
             else if (it.itemId == R.id.item_move) {
-//                if (selectionResult >= 1) {
-                if (isInternetConnected(this)){
-                    //  presenter.getadditionalimagesjobs("1","30","image")
-                    showMoveItemToAlbumDialog()
+                if (!selectedIdArray.isEmpty())
+                {
+                    if (isInternetConnected(this)) {
+                        //  presenter.getadditionalimagesjobs("1","30","image")
+                        showMoveItemToAlbumDialog()
+                    }
+                }
+                else
+                {
+                    toast("Select an item")
                 }
             }
             else if (it.itemId == R.id.item_delete) {
-                AllinOneDialog(ttle = "Delete",
-                    msg = "Are you sure you want to Delete it ?",
-                    onLeftClick = {/*btn No click*/ },
-                    onRightClick = {/*btn Yes click*/
+                if (!selectedIdArray.isEmpty()) {
+                    AllinOneDialog(ttle = "Delete",
+                        msg = "Are you sure you want to Delete it ?",
+                        onLeftClick = {/*btn No click*/ },
+                        onRightClick = {/*btn Yes click*/
 //                            if (isInternetConnected() && selectedPosition != null && selectionResult >= 1) {
-                        val selectedImageIds = SelectedImageIds(job_id,selectedIdArray)
-                        Constants.showLoading(this)
-                        CoroutineScope(Dispatchers.IO).launch {
-                            viewModel.deleteSelectedGallery(selectedImageIds)
-                        }
+                            val selectedImageIds = SelectedImageIds(job_id,selectedIdArray)
+                            Constants.showLoading(this)
+                            CoroutineScope(Dispatchers.IO).launch {
+                                viewModel.deleteSelectedGallery(selectedImageIds)
+                            }
 //                        Log.d(TAG, "showRightMenu: "+selectedIdArray)
 //                            }
-                    })
-
-            }
-            else if (it.itemId == R.id.item_download) {
-                selectedIdArray.zip(selectedImageArray).forEach { pair ->
-                    downloadImage(pair.first, pair.second)
+                        })
+                }
+                else{
+                    toast("Select an item")
                 }
             }
+            else if (it.itemId == R.id.item_download) {
+                 if (!selectedIdArray.isEmpty()) {
+                     selectedIdArray.zip(selectedImageArray).forEach { pair ->
+                         downloadImage(pair.first, pair.second)
+                     }
+                 }
+                    else{
+                        toast("Select an item")
+                    }
+            }
             else if (it.itemId == R.id.item_make_an_album) {
-                Log.e("imageArray 4",selectedImageArray.size.toString())
-                Log.e("IdArray 4",selectedIdArray.size.toString())
-                showCreateAlbumDialog()
+                    if (!selectedIdArray.isEmpty()) {
+                        Log.e("imageArray 4",selectedImageArray.size.toString())
+                        Log.e("IdArray 4",selectedIdArray.size.toString())
+                        showCreateAlbumDialog()
+                     }
+                    else{
+                        toast("Select an item")
+                    }
             }
             return@setOnMenuItemClickListener true
         }

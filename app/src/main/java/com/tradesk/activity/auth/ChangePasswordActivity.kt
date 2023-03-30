@@ -11,10 +11,12 @@ import com.tradesk.util.Constants
 import com.tradesk.util.Constants.isInternetConnected
 import com.tradesk.util.extension.toast
 import com.tradesk.viewModel.SignupViewModel
+import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
+@AndroidEntryPoint
 class ChangePasswordActivity : AppCompatActivity() {
     lateinit var binding:ActivityChangePasswordBinding
     lateinit var viewModel: SignupViewModel

@@ -34,7 +34,7 @@ class DocumentViewModel @Inject constructor(val repository: Repository) : ViewMo
         get()=repository.responseAddImagesSuccessModel
 
     val responseUsersDelSelectedAdditionalDocs: LiveData<NetworkResult<SuccessModel>>
-        get()=repository.responseAddImagesSuccessModel
+        get()=repository.responseUsersDelSelectedAdditionalDocs
 
     val responseUsersUpdateAdditionalDocs: LiveData<NetworkResult<SuccessModel>>
         get()=repository.responseUsersUpdateAdditionalDocs

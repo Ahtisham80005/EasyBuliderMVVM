@@ -4,6 +4,7 @@ import com.tradesk.Model.*
 import com.tradesk.data.entity.MoveImagesInFolderModel
 import com.tradesk.data.entity.MoveImagesJobToProfileModel
 import com.tradesk.util.NetworkConstants
+import io.reactivex.Observable
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
 import retrofit2.Response
@@ -115,6 +116,80 @@ interface EasyBuliderAPI {
         @Part("users_assigned") users: ArrayList<RequestBody?>?
     ): Response<SuccessModel>
 
+    @GET(NetworkConstants.leadstask + "{id}")
+    suspend fun getLeadTasks(@Path("id") id: String): Response<TasksListModel>
+
+    @FormUrlEncoded
+    @POST(NetworkConstants.leadsaddtask)
+    suspend fun leadaddtasks(
+        @Field("leads_id") id: String,
+        @Field("title") title: String,
+        @Field("description") description: String
+    ): Response<SuccessModel>
+
+    @GET(NetworkConstants.timesheetlist)
+    suspend fun timesheetlist(
+        @Query("page") page: String,
+        @Query("limit") limit: String,
+        @Query("user_id") user_id: String
+    ): Response<TimeModelNewUPdate>
+
+    @GET(NetworkConstants.jobsdetailtimesheet + "{id}")
+    suspend fun jobsdetailtimesheet(@Path("id") id: String): Response<NewTimeSheetModelClass>
+
+    @FormUrlEncoded
+    @POST(NetworkConstants.inouttime)
+    suspend fun intime(
+        @Field("job_id") job_id: String,
+        @Field("status") status: String,
+        @Field("start_date") end_date: String,
+        @Field("timezone") timezone: String,
+        @Field("address") address: String,
+        @Field("city") city: String,
+        @Field("state") state: String,
+        @Field("zipcode") zipcode: String,
+        @Field("latLong") latLong: String
+    ): Response<ClockInOutModel>
+
+    @GET(NetworkConstants.leadsnotes + "{id}")
+    suspend fun getLeadNotes(@Path("id") id: String): Response<NotesListModel>
+
+    @FormUrlEncoded
+    @POST(NetworkConstants.leadsaddnotes)
+    suspend fun leadaddnotes(
+        @Field("leads_id") id: String,
+        @Field("title") title: String,
+        @Field("description") description: String
+    ): Response<SuccessModel>
+
+    @GET(NetworkConstants.expenseslist)
+    suspend fun expenseslist(
+        @Query("page") page: String,
+        @Query("limit") limit: String,
+        @Query("job_id") job_id: String
+    ): Response<ExpensesListModel>
+
+    @HTTP(method = "DELETE", path = NetworkConstants.deleteSelectedExpense, hasBody = true)
+    suspend fun deleteSelectedExpense(@Body selectedIds: SelectedIds): Response<SuccessModel>
+
+    @DELETE(NetworkConstants.deleteAllExpenseJob)
+    suspend fun deleteAllExpenseJob(
+        @Query("job_id") job_id: String
+    ): Response<SuccessModel>
+
+    @Multipart
+    @PUT(NetworkConstants.updateExpense + "{id}")
+    suspend fun updateExpense(@Path("id") id: String, @PartMap map: HashMap<String, RequestBody>)
+            : Response<SuccessModel>
+
+    @Multipart
+    @POST(NetworkConstants.addexpense)
+    suspend fun addexpense(@PartMap map: HashMap<String, RequestBody>): Response<AddExpenseModel>
+
+    @Multipart
+    @POST(NetworkConstants.add_addtional_images)
+    suspend fun add_addtional_images(@PartMap map: HashMap<String, RequestBody>): Response<SuccessModel>
+
     @GET(NetworkConstants.clientdetails + "{id}")
     suspend fun clientdetails(
         @Path("id") id: String,
@@ -150,6 +225,11 @@ interface EasyBuliderAPI {
 
     @HTTP(method = "DELETE", path = NetworkConstants.deleteSelectedClient, hasBody = true)
     suspend fun deleteSelectedClient(@Body selectedIds: SelectedIds): Response<SuccessModel>
+
+    @DELETE(NetworkConstants.deleteAllClient)
+    suspend fun deleteAllClient(
+        @Query("type") type: String
+    ): Response<SuccessModel>
 
     @FormUrlEncoded
     @POST(NetworkConstants.addjobsubusers)

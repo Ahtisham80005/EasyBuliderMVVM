@@ -13,6 +13,7 @@ import com.tradesk.Interface.LongClickListener
 import com.tradesk.Interface.SingleListCLickListener
 import com.tradesk.Interface.UnselectCheckBoxListener
 import com.tradesk.Model.AdditionalImageImageClient
+import com.tradesk.Model.CheckModel
 import com.tradesk.R
 import com.tradesk.databinding.RowItemAdditionalGalleryUpdatedBinding
 import com.tradesk.databinding.RowItemGalleryBinding
@@ -30,7 +31,8 @@ class SubAdditionalGallaryAdapter(
     var customCheckBoxListener: CustomCheckBoxListener,
     val unselectCheckBoxListener: UnselectCheckBoxListener,
     var checkboxVisibility:Boolean,
-    var allCheckBoxSelect:Boolean
+    var allCheckBoxSelect:Boolean,
+    var mcheckBoxModelList: MutableList<CheckModel>
 ) : RecyclerView.Adapter<SubAdditionalGallaryAdapter.MyViewHolder>() {
 
     class MyViewHolder (var binding: RowItemSubAdditionalGalleryUpdatedBinding): RecyclerView.ViewHolder((binding.root))
@@ -60,13 +62,19 @@ class SubAdditionalGallaryAdapter(
                 binding.mCheckBox.isChecked = true
                 binding.mCheckBox.isClickable = false
             }
+            //in some cases, it will prevent unwanted situations
+            binding.mCheckBox.setOnCheckedChangeListener(null)
+            binding.mCheckBox.tag=position
+            binding.mCheckBox.isChecked=mcheckBoxModelList.get(position).check
             binding.mCheckBox.setOnCheckedChangeListener { _, isChecked ->
+                mcheckBoxModelList.get(position).check=isChecked
                 if (isChecked) {
                     customCheckBoxListener.onCheckBoxClick(position)
                 } else {
                     unselectCheckBoxListener.onCheckBoxUnCheckClick(0, position)
                 }
             }
+
             for (i in 0 until mTasksDataFiltered.size) {
                 if (mTasksDataFiltered[position].status.equals("image")){
 

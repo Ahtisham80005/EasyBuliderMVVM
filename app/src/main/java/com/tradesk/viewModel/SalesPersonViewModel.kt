@@ -26,11 +26,11 @@ class SalesPersonViewModel @Inject constructor(val repository: Repository) : Vie
     val responseUserDetail: LiveData<NetworkResult<ClientSalesModelNew>>
         get()=repository.responseUserDetail
 
-    val responsAllSalesList: LiveData<NetworkResult<ClientsListModel>>
-        get()=repository.responsAllSalesList
-
     val responsDeleteSelectedSales: LiveData<NetworkResult<SuccessModel>>
         get()=repository.responsDeleteSelectedSales
+
+    val responsDeleteAllSales: LiveData<NetworkResult<SuccessModel>>
+        get()=repository.responsDeleteAllClient
 
     suspend fun getAllSalesPerson(type:String,page: String, limit: String) {
         repository.getAllSalesPerson(type,page,limit)
@@ -44,6 +44,12 @@ class SalesPersonViewModel @Inject constructor(val repository: Repository) : Vie
 
     suspend fun deleteSelectedSales(selectedIds: SelectedIds) {
         repository.deleteSelectedSales(selectedIds)
+    }
+
+    suspend fun deleteAllSales(type: String) {
+        viewModelScope.launch {
+            repository.deleteAllClient(type)
+        }
     }
 
     suspend fun getAllSalesList(type:String,page: String, limit: String, trade: String) {

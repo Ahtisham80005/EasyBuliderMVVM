@@ -35,7 +35,7 @@ import com.tradesk.network.NetworkResult
 import com.tradesk.util.Constants
 import com.tradesk.util.Constants.insertString
 import com.tradesk.util.Constants.isInternetConnected
-import com.tradesk.util.FilePath
+import com.tradesk.util.file.FilePath
 import com.tradesk.util.PermissionFile
 import com.tradesk.util.extension.toast
 import com.tradesk.viewModel.SalesUserViewModel
@@ -96,16 +96,19 @@ class AddSalesPersonActivity : AppCompatActivity() {
 //        mEtTrade.setOnClickListener { showTradeMenu(mEtTrade, 1) }
 //        imageView9.setOnClickListener { showTradeMenu(mEtTrade, 1) }
 
-        binding.mIvPic.setOnClickListener {
-            if (permissionFile.checkLocStorgePermission(this)) {
-                showImagePop()
-            }
-        }
+        //No need add Picture
+//        binding.mIvPic.setOnClickListener {
+//            if (permissionFile.checkLocStorgePermission(this)) {
+//                showImagePop()
+//            }
+//        }
+
         binding.mEtAddress.setOnFocusChangeListener { view, b ->
             if (b)
                 openPlaceDialog()
         }
         if (intent.hasExtra("id")) {
+            Constants.showLoading(this)
             CoroutineScope(Dispatchers.IO).launch {
                 viewModel.getUserDetails(intent.getStringExtra("id").toString(), "1", "10", intent.getStringExtra("type").toString(), ""
                 )
@@ -406,9 +409,9 @@ class AddSalesPersonActivity : AppCompatActivity() {
     }
 
     fun setUserDetails(it: ClientSalesModelNew) {
-        if (it.data.client.image.isNotEmpty()) {
-            binding.mIvPic.loadWallImage(it.data.client.image)
-        }
+//        if (it.data.client.image.isNotEmpty()) {
+//            binding.mIvPic.loadWallImage(it.data.client.image)
+//        }
 
         binding.mEtName.setText(it.data.client.name)
         binding.mEtEmail.setText(it.data.client.email)
@@ -569,7 +572,7 @@ class AddSalesPersonActivity : AppCompatActivity() {
 //        } else {
 //            binding.mIvPic.loadWallImage(mFile!!.absolutePath)
         binding.mIvPic.loadWallImage(path)
-        var path2=FilePath.getPath(this,path)
+        var path2= FilePath.getPath(this,path)
         mFile= File(path2)
 
 //        }

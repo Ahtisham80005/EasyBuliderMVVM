@@ -15,6 +15,7 @@ import android.provider.Settings
 import android.util.Log
 import android.view.*
 import android.widget.*
+import androidx.activity.result.PickVisualMediaRequest
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.view.isVisible
 import androidx.databinding.DataBindingUtil
@@ -34,10 +35,12 @@ import com.tradesk.databinding.ActivityGallaryBinding
 import com.tradesk.network.NetworkResult
 import com.tradesk.util.Constants
 import com.tradesk.util.Constants.isInternetConnected
-import com.tradesk.util.FilePath
+import com.tradesk.util.FileFinder
+import com.tradesk.util.file.FilePath
 import com.tradesk.util.PermissionFile
 import com.tradesk.util.extension.addWatcher
 import com.tradesk.util.extension.toast
+import com.tradesk.util.file.PathUtil
 import com.tradesk.viewModel.GallaryViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.CoroutineScope
@@ -117,7 +120,7 @@ class GallaryActivity : AppCompatActivity() , SingleListCLickListener {
         if (isInternetConnected(this)){
             Constants.showLoading(this)
             CoroutineScope(Dispatchers.IO).launch {
-                viewModel.getadditionalimagesjobs("1","30","image")
+                viewModel.getadditionalimagesjobs("1","100","image")
             }
         }
     }
@@ -142,7 +145,7 @@ class GallaryActivity : AppCompatActivity() , SingleListCLickListener {
                 is NetworkResult.Success -> {
                     toast("Added Successfully")
                     CoroutineScope(Dispatchers.IO).launch {
-                       viewModel.getadditionalimagesjobs("1","30","image")
+                       viewModel.getadditionalimagesjobs("1","100","image")
                     }
                 }
                 is NetworkResult.Error -> {
@@ -307,18 +310,38 @@ class GallaryActivity : AppCompatActivity() , SingleListCLickListener {
             it.isVisible = !intent.hasExtra("permits")
             it.setOnClickListener {
                 mBuilder.dismiss()
-                val intent = Intent()
-                intent.type = "image/*"
-                intent.putExtra(Intent.EXTRA_ALLOW_MULTIPLE, true)
-                intent.action = Intent.ACTION_GET_CONTENT
-                resultLauncher.launch(intent)
-
+                if (Build.VERSION.SDK_INT >= 30) {
+                    if (!Environment.isExternalStorageManager()) {
+                        val getpermission = Intent()
+                        getpermission.action = Settings.ACTION_MANAGE_ALL_FILES_ACCESS_PERMISSION
+                        startActivity(getpermission)
+                    } else {
+                        if (permissionFile.checkLocStorgePermission(this)) {
+//                            val intent = Intent()
+//                            intent.type = "image/*"
+//                            intent.putExtra(Intent.EXTRA_ALLOW_MULTIPLE, true)
+//                            intent.flags=Intent.FLAG_GRANT_READ_URI_PERMISSION
+//                            intent.flags=Intent.FLAG_GRANT_WRITE_URI_PERMISSION
+//                            intent.action = Intent.ACTION_GET_CONTENT
+//                            intent.addCategory(Intent.CATEGORY_OPENABLE)
+//                            resultLauncher.launch(intent)
+                            pickMultipleMedia.launch(PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.ImageOnly))
+                        }
+                    }
+                }
+                else
+                {
+                    if (permissionFile.checkLocStorgePermission(this)) {
+                        pickMultipleMedia.launch(PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.ImageOnly))
+                    }
+                }
             }
         }
         mBuilder.findViewById<TextView>(R.id.titleCancel)
             .setOnClickListener { mBuilder.dismiss() }
         mBuilder.show();
     }
+
     var resultLauncherCamera = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
         if (result.resultCode == Activity.RESULT_OK) {
             var uriList: ArrayList<Uri> = ArrayList<Uri>()
@@ -341,6 +364,7 @@ class GallaryActivity : AppCompatActivity() , SingleListCLickListener {
             Toast.makeText(applicationContext,"No Select", Toast.LENGTH_SHORT).show()
         }
     }
+
     var resultLauncher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
         if (result.resultCode == Activity.RESULT_OK) {
             var uriList: ArrayList<Uri> = ArrayList<Uri>()
@@ -372,6 +396,23 @@ class GallaryActivity : AppCompatActivity() , SingleListCLickListener {
             }
         }
     }
+
+    val pickMultipleMedia = registerForActivityResult(ActivityResultContracts.PickMultipleVisualMedia(15)) { uris ->
+            // Callback is invoked after the user selects media items or closes the
+            // photo picker.
+        pathFromUriList.clear()
+            if (uris.isNotEmpty()) {
+                Log.d("PhotoPicker", "Number of items selected: ${uris.size}")
+                pathFromUriList.addAll(uris)
+                val ivBackground: ImageView = dialog.findViewById<ImageView>(R.id.ivBackground)
+                ivBackground.loadWallImage(pathFromUriList.get(0))
+            } else {
+                toast("No media selected Permission not allow")
+                Log.d("PhotoPicker", "No media selected")
+            }
+        }
+
+
     @SuppressLint("SuspiciousIndentation")
     private fun setDialogBgImageOnResult() {
         val ivBackground: ImageView = dialog.findViewById<ImageView>(R.id.ivBackground)
@@ -384,18 +425,38 @@ class GallaryActivity : AppCompatActivity() , SingleListCLickListener {
         var parts1: ArrayList<MultipartBody.Part> = ArrayList<MultipartBody.Part>()
         for(data in uriList)
         {
-            var path=FilePath.getPath(applicationContext,data);
+            var path = FilePath.getPath(this@GallaryActivity,data)
+            if(path==null)
+            {
+                path= PathUtil.getPath(this@GallaryActivity,data)
+//                Log.e("My File 2",path)
+            }
+            if(path==null)
+            {
+                path=FileFinder.getFilePath(this@GallaryActivity,data)
+//                Log.e("My File 3",path)
+            }
             var image=Constants.getRequestParam("image",path)
             parts1.add(image!!)
         }
-        hashMapOf<String, RequestBody>().also {
-            it.put("folder_name", RequestBody.create(MediaType.parse("multipart/form-data"),folderName))
-            Constants.showLoading(this)
-            CoroutineScope(Dispatchers.IO).launch {
-               viewModel.usersAddAlbum(it,parts1)
+
+        if(!parts1.isEmpty())
+        {
+            hashMapOf<String, RequestBody>().also {
+                it.put("folder_name", RequestBody.create(MediaType.parse("multipart/form-data"),folderName))
+                Constants.showLoading(this)
+                CoroutineScope(Dispatchers.IO).launch {
+                    viewModel.usersAddAlbum(it,parts1)
+                }
             }
         }
+        else
+        {
+            toast("parts1 is empty")
+        }
+
     } catch (e: Exception) {
+        toast(e.message.toString())
         Log.e("GalleryActivity", e.message.toString())
     }
 

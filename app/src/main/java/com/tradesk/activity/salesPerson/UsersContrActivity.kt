@@ -4,14 +4,20 @@ import android.content.Intent
 import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
 import android.view.Gravity
 import android.view.View
 import android.widget.PopupMenu
+import android.widget.Toast
+import androidx.core.net.toUri
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.tradesk.Interface.CustomCheckBoxListener
 import com.tradesk.Interface.LongClickListener
 import com.tradesk.Interface.SingleListCLickListener
+import com.tradesk.Interface.UnselectCheckBoxListener
+import com.tradesk.Model.CheckModel
 import com.tradesk.Model.Client
 import com.tradesk.Model.DataTradesOld
 import com.tradesk.Model.SelectedIds
@@ -36,12 +42,21 @@ import java.util.*
 import javax.inject.Inject
 
 @AndroidEntryPoint
-class UsersContrActivity : AppCompatActivity() , SingleListCLickListener, LongClickListener {
+class UsersContrActivity : AppCompatActivity() , SingleListCLickListener, LongClickListener,
+    CustomCheckBoxListener, UnselectCheckBoxListener {
+
+    var checkBoxVisibility:Boolean=false
+    var allCheckBoxSelect:Boolean=false
+    var activeSlectMenu:Boolean=false
+
+    var selectedPositionArray = ArrayList<Int>()
+
     var tab_click = "All"
     var mList = mutableListOf<Client>()
     var mListTrade = mutableListOf<DataTradesOld>()
     val mListTradeOld = mutableListOf<DataTradesOld>()
-    val mUsersContractAdapter by lazy { UsersContractAdapter(this, mList, mList,this,this) }
+    var mcheckBoxModelList=mutableListOf<CheckModel>()
+    val mUsersContractAdapter by lazy { UsersContractAdapter(this, mList, mList,this,this,this,this,checkBoxVisibility,allCheckBoxSelect,mcheckBoxModelList) }
     var selectedIdArray = ArrayList<String>()
     var itemPosition: Int? = null
     lateinit var binding:ActivityUsersContrBinding
@@ -56,8 +71,15 @@ class UsersContrActivity : AppCompatActivity() , SingleListCLickListener, LongCl
         binding.rvUsersContract.layoutManager = LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
         binding.rvUsersContract.adapter = mUsersContractAdapter
         binding.mIvRightMenuContract.setOnClickListener {
-            if (mList.isNotEmpty()){
-                showRightMenu(it)
+            if(!activeSlectMenu)
+            {
+                if (mList.isNotEmpty()){
+                    showRightMenu(it)
+                }
+            }
+            else
+            {
+                showSecondRightMenu(it)
             }
         }
         binding.mIvAdd.setOnClickListener {
@@ -69,9 +91,6 @@ class UsersContrActivity : AppCompatActivity() , SingleListCLickListener, LongCl
                     .putExtra("addUser",true)
             )
         }
-//        if (isInternetConnected(this)) {
-//            presenter.getTradeDetails("sales", "1", "100")
-//        }
 
         if (isInternetConnected(this)) {
             Constants.showLoading(this)
@@ -91,9 +110,20 @@ class UsersContrActivity : AppCompatActivity() , SingleListCLickListener, LongCl
             when (it) {
                 is NetworkResult.Success -> {
                     mList.clear()
-                    mUsersContractAdapter.notifyDataSetChanged()
                     mList.addAll(it.data!!.data.client)
                     Collections.reverse(mList)
+                    binding.rvUsersContract.layoutManager = LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
+                    activeSlectMenu=false
+                    checkBoxVisibility=false
+                    selectedIdArray.clear()
+                    selectedPositionArray.clear()
+                    mcheckBoxModelList.clear()
+                    for(i in mList)
+                    {
+                        mcheckBoxModelList.add(CheckModel(false))
+                    }
+                    mUsersContractAdapter.checkboxVisibility=false
+                    binding.rvUsersContract.adapter =mUsersContractAdapter
                     mUsersContractAdapter.notifyDataSetChanged()
                 }
                 is NetworkResult.Error -> {
@@ -109,8 +139,22 @@ class UsersContrActivity : AppCompatActivity() , SingleListCLickListener, LongCl
             when (it) {
                 is NetworkResult.Success -> {
                     toast("Deleted successfully")
-                    mList.removeAt(itemPosition!!)
-                    mUsersContractAdapter.notifyItemRemoved(itemPosition!!)
+                    FirstTimeCallFunction()
+                }
+                is NetworkResult.Error -> {
+                    toast(it.message)
+                }
+                is NetworkResult.Loading -> {
+                    Constants.showLoading(this)
+                }
+            }
+        })
+        viewModel.responsDeleteAllSales.observe(this, androidx.lifecycle.Observer { it ->
+            Constants.hideLoading()
+            when (it) {
+                is NetworkResult.Success -> {
+                    toast("Deleted successfully")
+                    FirstTimeCallFunction()
                 }
                 is NetworkResult.Error -> {
                     toast(it.message)
@@ -126,13 +170,46 @@ class UsersContrActivity : AppCompatActivity() , SingleListCLickListener, LongCl
         popup.menuInflater.inflate(R.menu.sub_gallery_menu, popup.getMenu())
         popup.setOnMenuItemClickListener{
             if (it.itemId == R.id.item_select_items){
-                startActivity(
-                    Intent(this,UserContractSelectedItemActivity::class.java)
-                        .putExtra("selectType","single"))
+                mcheckBoxModelList.clear()
+                for(i in mList)
+                {
+                    mcheckBoxModelList.add(CheckModel(false))
+                }
+                activeSlectMenu=true
+                checkBoxVisibility=true
+                selectedIdArray.clear()
+                mUsersContractAdapter.checkboxVisibility=true
+                mUsersContractAdapter.notifyDataSetChanged()
+
+//                startActivity(
+//                    Intent(this,UserContractSelectedItemActivity::class.java)
+//                        .putExtra("selectType","single"))
+
             }else if (it.itemId == R.id.item_select_all){
-                startActivity(
-                    Intent(this,UserContractSelectedItemActivity::class.java)
-                        .putExtra("selectType","all"))
+//                startActivity(
+//                    Intent(this,UserContractSelectedItemActivity::class.java)
+//                        .putExtra("selectType","all"))
+
+                mcheckBoxModelList.clear()
+                for(i in mList)
+                {
+                    mcheckBoxModelList.add(CheckModel(true))
+                }
+                checkBoxVisibility=true
+                activeSlectMenu=true
+                selectedIdArray.clear()
+
+                mUsersContractAdapter.checkboxVisibility=true
+                mUsersContractAdapter.allCheckBoxSelect=true
+                    //No Add List
+                mUsersContractAdapter.notifyDataSetChanged()
+
+//                Toast.makeText(this,mList.size.toString(),Toast.LENGTH_SHORT).show()
+                if(mList.size<=1)
+                {
+                    selectedPositionArray.add(0)
+                }
+
             }
             return@setOnMenuItemClickListener true
         }
@@ -140,6 +217,78 @@ class UsersContrActivity : AppCompatActivity() , SingleListCLickListener, LongCl
         return true
     }
 
+    private fun  showSecondRightMenu(anchor: View): Boolean {
+        val popup = PopupMenu(this, anchor)
+        popup.menuInflater.inflate(R.menu.select_item_proposal_menu, popup.getMenu())
+        popup.menu.findItem(R.id.item_download).isVisible = false
+
+//        selectionResult = increment - decrement
+
+        if (selectedIdArray.size > 1) {
+            popup.menu.findItem(R.id.item_share).isVisible = false
+            popup.menu.findItem(R.id.item_edit).isVisible = false
+        }
+
+//        if (selectType.equals("all")) {
+//            popup.menu.findItem(R.id.item_share).isVisible = false
+//        }
+
+        popup.setOnMenuItemClickListener {
+
+            if (it.itemId == R.id.item_share) {
+                if (selectedIdArray.size <= 1 && !selectedIdArray.isEmpty()) {
+                    shareData()
+                } else {
+                    toast("Select an item")
+                }
+            }
+            else if (it.itemId == R.id.item_delete) {
+                if (!selectedIdArray.isEmpty()) {
+                    AllinOneDialog(ttle = "Delete",
+                        msg = "Are you sure you want to Delete it ?",
+                        onLeftClick = {/*btn No click*/ },
+                        onRightClick = {/*btn Yes click*/
+                            if (isInternetConnected(this)) {
+                                val selectedIds = SelectedIds(selectedIdArray)
+                                Constants.showLoading(this)
+                                CoroutineScope(Dispatchers.IO).launch {
+                                    viewModel.deleteSelectedSales(selectedIds)
+                                }
+//                                Log.d(TAG, "showRightMenu: "+selectedIdArray)
+                            }
+                        })
+                } else{
+                    toast("Select an item")
+                }
+            }
+            else if (it.itemId == R.id.item_edit) {
+                if (!selectedPositionArray.isEmpty() && selectedIdArray.size <= 1) {
+                    startActivity(
+                        Intent(this, AddSalesPersonActivity::class.java)
+                            .putExtra("title", "Edit Users")
+                            .putExtra("id", mList.get(selectedPositionArray.get(0))._id)
+                            .putExtra("type", mList.get(selectedPositionArray.get(0)).type)
+                    )
+                }else{
+                    toast("Select an item")
+                }
+            }
+            return@setOnMenuItemClickListener true
+        }
+        popup.show()
+        return true
+    }
+    override fun onCheckBoxClick(position: Int) {
+//        Toast.makeText(this,position.toString(),Toast.LENGTH_SHORT).show()
+        selectedPositionArray.add(position)
+        selectedIdArray.add(mList[position]._id)
+        Log.e("G_id",mList[position]._id) //63ecbd8f0303fe4963eee984
+    }
+    override fun onCheckBoxUnCheckClick(item: Any, position: Int) {
+//        Toast.makeText(this,position.toString(),Toast.LENGTH_SHORT).show()
+        selectedPositionArray.removeAll(setOf(position))
+        selectedIdArray.removeAll(setOf(mList[position]._id))
+    }
     override fun onSingleListClick(item: Any, position: Int) {
         if (item.equals("Edit")) {
             startActivity(
@@ -191,7 +340,7 @@ class UsersContrActivity : AppCompatActivity() , SingleListCLickListener, LongCl
     override fun onLongClickListener(item: Any, position: Int) {
         showRightMenuOnLong(item as View,position)
     }
-    private fun showRightMenuOnLong(anchor: View,selectedPosition:Int): Boolean {
+    private fun showRightMenuOnLong(anchor: View,selectedPosition1:Int): Boolean {
         val popup = PopupMenu(this, anchor)
         popup.menuInflater.inflate(R.menu.select_item_proposal_menu, popup.getMenu())
         popup.menu.findItem(R.id.item_download).isVisible = false
@@ -200,28 +349,32 @@ class UsersContrActivity : AppCompatActivity() , SingleListCLickListener, LongCl
             popup.gravity = Gravity.END
         }
 
-        popup.setOnDismissListener {
-            if (selectedPosition != null) {
-                selectedIdArray.removeAll(setOf(mList[selectedPosition]._id))
-            }
-        }
+        selectedPositionArray.clear()
+        selectedIdArray.clear()
+        selectedPositionArray.add(selectedPosition1)
 
+//        popup.setOnDismissListener {
+//            if (selectedPositionArray.removeAll(setOf(position))) {
+//                selectedIdArray.removeAll(setOf(mList[selectedPosition!!]._id))
+//            }
+//        }
+//        selectedPosition=selectedPosition1
         popup.setOnMenuItemClickListener {
             if (it.itemId == R.id.item_share) {
-                if (selectedPosition != null ) {
-                    shareData(selectedPosition)
+                if (!selectedPositionArray.isEmpty()) {
+                    shareData()
                 } else {
                     toast("Select an item")
                 }
             } else if (it.itemId == R.id.item_delete) {
-                if (selectedPosition != null) {
+                if (!selectedPositionArray.isEmpty()) {
                     AllinOneDialog(ttle = "Delete",
                         msg = "Are you sure you want to Delete it ?",
                         onLeftClick = {/*btn No click*/ },
                         onRightClick = {/*btn Yes click*/
-                            if (isInternetConnected(this) && selectedPosition != null) {
-                                itemPosition = selectedPosition
-                                selectedIdArray.add(mList[selectedPosition]._id)
+                            if (isInternetConnected(this)) {
+//                                itemPosition = selectedPosition
+                                selectedIdArray.add(mList[selectedPositionArray.get(0)]._id)
                                 val selectedIds = SelectedIds(selectedIdArray)
                                 Constants.showLoading(this)
                                 CoroutineScope(Dispatchers.IO).launch {
@@ -233,12 +386,12 @@ class UsersContrActivity : AppCompatActivity() , SingleListCLickListener, LongCl
                     toast("Select an item")
                 }
             } else if (it.itemId == R.id.item_edit) {
-                if (selectedPosition!=null) {
+                if (!selectedPositionArray.isEmpty()) {
                     startActivity(
                         Intent(this, AddSalesPersonActivity::class.java)
                             .putExtra("title", "Edit Users")
-                            .putExtra("id", mList.get(selectedPosition)._id)
-                            .putExtra("type", mList.get(selectedPosition).type)
+                            .putExtra("id", mList.get(selectedPositionArray.get(0))._id)
+                            .putExtra("type", mList.get(selectedPositionArray.get(0)).type)
                     )
                     //   finish()
                 }else{
@@ -252,16 +405,23 @@ class UsersContrActivity : AppCompatActivity() , SingleListCLickListener, LongCl
         return true
     }
 
-    private fun shareData(selectedPosition: Int){
-        if (selectedPosition!=null) {
+    private fun shareData(){
+        if (!selectedPositionArray.isEmpty()) {
             val shareIntent = Intent(Intent.ACTION_SEND)
             shareIntent.type = "text/plain"
             shareIntent.putExtra(Intent.EXTRA_SUBJECT, "Tradesk\nLead Detail")
+
+            var phone = Constants.insertString(mList[selectedPositionArray.get(0)].phone_no, "", 0)
+            phone = Constants.insertString(phone!!, ")", 2)
+            phone = Constants.insertString(phone!!, " ", 3)
+            phone = Constants.insertString(phone!!, "-", 7)
+            phone = "+1(" + phone!!
+
             var shareMessage = """
                     ${
-                "\n" + mList[selectedPosition].name + "\n" +
-                        mList[selectedPosition].email + "\n" +
-                        mList[selectedPosition].phone_no + "\n"
+                "\n" + mList[selectedPositionArray.get(0)].name + "\n" +
+                        mList[selectedPositionArray.get(0)].email + "\n" +
+                        phone + "\n"
             }        
                """.trimIndent()
             shareMessage = """
@@ -274,6 +434,11 @@ class UsersContrActivity : AppCompatActivity() , SingleListCLickListener, LongCl
 
     override fun onResume() {
         super.onResume()
+        FirstTimeCallFunction()
+    }
+
+    fun FirstTimeCallFunction()
+    {
         if (isInternetConnected(this)) {
             Constants.showLoading(this)
             CoroutineScope(Dispatchers.IO).launch {

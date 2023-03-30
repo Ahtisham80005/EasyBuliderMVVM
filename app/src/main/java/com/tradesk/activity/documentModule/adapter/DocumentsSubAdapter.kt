@@ -1,10 +1,12 @@
-package com.tradesk.activity.documentModule
+package com.tradesk.activity.documentModule.adapter
 
 import android.content.Context
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.webkit.WebView
+import android.webkit.WebViewClient
 import android.widget.Filterable
 import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.RecyclerView
@@ -13,6 +15,7 @@ import com.tradesk.Interface.LongClickListener
 import com.tradesk.Interface.SingleListCLickListener
 import com.tradesk.Interface.UnselectCheckBoxListener
 import com.tradesk.Model.AdditionalImageDocuments
+import com.tradesk.Model.CheckModel
 import com.tradesk.R
 import com.tradesk.databinding.RowAllDocumentsBinding
 
@@ -24,7 +27,8 @@ class DocumentsSubAdapter (
     var customCheckBoxListener: CustomCheckBoxListener,
     val unselectCheckBoxListener: UnselectCheckBoxListener,
     var checkboxVisibility:Boolean,
-    var allCheckBoxSelect:Boolean
+    var allCheckBoxSelect:Boolean,
+    var mcheckBoxModelList: MutableList<CheckModel>
 ) : RecyclerView.Adapter<DocumentsSubAdapter.MyViewHolder>() {
 
     class MyViewHolder (var binding: RowAllDocumentsBinding): RecyclerView.ViewHolder((binding.root))
@@ -57,12 +61,16 @@ class DocumentsSubAdapter (
                 binding.mCheckBox.isChecked = true
                 binding.mCheckBox.isClickable = false
             }
+            //in some cases, it will prevent unwanted situations
+            binding.mCheckBox.setOnCheckedChangeListener(null)
+            binding.mCheckBox.tag=position
+            binding.mCheckBox.isChecked=mcheckBoxModelList.get(position).check
             binding.mCheckBox.setOnCheckedChangeListener { _, isChecked ->
+                mcheckBoxModelList.get(position).check=isChecked
                 if (isChecked) {
                     customCheckBoxListener.onCheckBoxClick(position)
                 } else {
                     unselectCheckBoxListener.onCheckBoxUnCheckClick(0, position)
-
                 }
             }
             binding.mTitle.text = mTasksDataFiltered[position].image.substringAfterLast("/")
@@ -83,6 +91,14 @@ class DocumentsSubAdapter (
                 return@setOnLongClickListener true
             }
             Log.e("Image Link",mTasksDataFiltered[position].image)
+            binding.myWebView.getSettings().setDisplayZoomControls(false)
+            binding.myWebView.setWebViewClient(object : WebViewClient() {
+                override fun onPageFinished(view: WebView?, url: String?) {
+                    binding.myWebView.visibility=View.VISIBLE
+                    binding.shimmerViewContainer.stopShimmer()
+                    binding.shimmerViewContainer.visibility=View.GONE
+                }
+            })
         }
     }
 }

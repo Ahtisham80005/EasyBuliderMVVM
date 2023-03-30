@@ -1,28 +1,29 @@
-package com.tradesk.activity.documentModule
+package com.tradesk.activity.documentModule.adapter
 
 import android.annotation.SuppressLint
-import android.content.Context
 import android.view.LayoutInflater
 import android.view.MotionEvent
 import android.view.View
 import android.view.ViewGroup
+import android.webkit.WebView
+import android.webkit.WebViewClient
 import android.widget.Filter
 import android.widget.Filterable
 import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.RecyclerView
-import com.socialgalaxyApp.util.extension.loadWallImage
 import com.tradesk.Interface.SingleListCLickListener
-import com.tradesk.Model.Users
+import com.tradesk.Model.AdditionalDocument
 import com.tradesk.R
-import com.tradesk.databinding.AddClientListItemBinding
+import com.tradesk.activity.documentModule.DocumentsActivity
 import com.tradesk.databinding.RowAllDocumentsBinding
 import java.util.*
 
-class LicenseAndInsDocumentsAdapter(
-    context: Context,
+class UserDocumentsAdapter (
+    var activity: DocumentsActivity,
     val listener: SingleListCLickListener,
-    var mTasksDataFiltered: MutableList<Users>
-) : RecyclerView.Adapter<LicenseAndInsDocumentsAdapter.MyViewHolder>(), Filterable {
+    var mTasksDataFiltered: MutableList<AdditionalDocument>,
+    var mTasksDataOrginal: MutableList<AdditionalDocument>
+) : RecyclerView.Adapter<UserDocumentsAdapter.MyViewHolder>(), Filterable {
 
     class MyViewHolder (var binding: RowAllDocumentsBinding): RecyclerView.ViewHolder((binding.root))
     {
@@ -39,18 +40,28 @@ class LicenseAndInsDocumentsAdapter(
         return MyViewHolder(binding)
     }
     override fun getItemCount(): Int =  mTasksDataFiltered.size
-    override fun onBindViewHolder(holder: MyViewHolder, position: Int) {
+    override fun onBindViewHolder(holder: MyViewHolder, @SuppressLint("RecyclerView") position: Int) {
         holder.bind()
         holder.apply {
-            for (i in 0 until mTasksDataFiltered[position].license_and_ins.docs_url.size)
-            {
+
+            var title = if(mTasksDataFiltered[position].folder_name != null) {
+                mTasksDataFiltered[position].folder_name.capitalize()
+            } else {
+                mTasksDataFiltered[position].folder_name.capitalize()
+            }
+            binding.mTitle.text = title
+            binding.mTitle.setOnClickListener {
+                listener.onSingleListClick("UserDocumentsAdapter", position)
+            }
+
+            for (i in 0 until mTasksDataFiltered[position].documents.size) {
 //                  if (mTasksDataFiltered[position].additional_images[i].status == "permit"){
 //                    //  mIvPic.loadWallRound(mTasksDataFiltered[position].additional_images[i].image)
 //                      break
 //                  }
             }
-            binding.mTitle.text = "License and insurance"
-            binding.mIvPic.setOnClickListener { listener.onSingleListClick("LicenseAndInsDocumentsAdapter", position) }
+
+            binding.mIvPic.setOnClickListener { listener.onSingleListClick("UserDocumentsAdapter", position) }
             binding.mIvPic.visibility= View.GONE
             binding.myWebView.visibility= View.VISIBLE
             binding.myWebView.getSettings().setJavaScriptEnabled(true)
@@ -62,32 +73,39 @@ class LicenseAndInsDocumentsAdapter(
                         return false
                     }
                     if (event.action == MotionEvent.ACTION_UP) {
-                        listener.onSingleListClick("LicenseAndInsDocumentsAdapter", position)
+                        listener.onSingleListClick("UserDocumentsAdapter", position)
                     }
                     return false
                 }
             })
-
-            if(!mTasksDataFiltered[position].license_and_ins.docs_url.isEmpty())
+            binding.myWebView.getSettings().setDisplayZoomControls(false)
+            binding.myWebView.setWebViewClient(object : WebViewClient() {
+                override fun onPageFinished(view: WebView?, url: String?) {
+                    binding.myWebView.visibility=View.VISIBLE
+                    binding.shimmerViewContainer.stopShimmer()
+                    binding.shimmerViewContainer.visibility=View.GONE
+                }
+            })
+            if(!mTasksDataFiltered[position].documents.isEmpty())
             {
-                binding.myWebView.loadUrl("https://drive.google.com/viewerng/viewer?embedded=true&url="+mTasksDataFiltered[position].license_and_ins.docs_url.get(0))
+                binding.myWebView.loadUrl("https://drive.google.com/viewerng/viewer?embedded=true&url="+mTasksDataFiltered[position].documents.get(0))
             }
+
         }
     }
-
     override fun getFilter(): Filter {
         return object : Filter(){
             var result= FilterResults()
             override fun performFiltering(p0: CharSequence?): FilterResults {
                 if (p0!!.isEmpty()){
 //                    mClientListFiltered=mTasksData
-                    result.count=mTasksDataFiltered.size
-                    result.values=mTasksDataFiltered
+                    result.count=mTasksDataOrginal.size
+                    result.values=mTasksDataOrginal
                     return result
                 }else{
-                    val listing= mutableListOf<Users>()
-                    mTasksDataFiltered.forEach {
-                        if (it.name.toLowerCase(Locale.ENGLISH).contains(p0.toString().toLowerCase(
+                    val listing= mutableListOf<AdditionalDocument>()
+                    mTasksDataOrginal.forEach {
+                        if (it.folder_name.toLowerCase(Locale.ENGLISH).contains(p0.toString().toLowerCase(
                                 Locale.ENGLISH))
                         /*|| it.client_details.name.toLowerCase(Locale.ENGLISH).contains(p0.toString().toLowerCase(Locale.ENGLISH))*/){
                             listing.add(it)
@@ -102,9 +120,11 @@ class LicenseAndInsDocumentsAdapter(
 
             @SuppressLint("NotifyDataSetChanged")
             override fun publishResults(p0: CharSequence?, p1: FilterResults?) {
-                mTasksDataFiltered= p1!!.values as MutableList<Users>
+                activity.mUserAdditionalDocumentsList=p1!!.values as MutableList<AdditionalDocument>
+                mTasksDataFiltered= p1!!.values as MutableList<AdditionalDocument>
                 notifyDataSetChanged()
             }
         }
     }
+
 }

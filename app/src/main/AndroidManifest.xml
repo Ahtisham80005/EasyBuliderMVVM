@@ -34,7 +34,37 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.EasyBuliderMVVM"
         android:usesCleartextTraffic="true"
+        tools:replace="android:theme"
         tools:targetApi="31">
+
+        <activity
+            android:name=".filemanager.FullViewActivity"
+            android:exported="false" />
+        <activity
+            android:name=".filemanager.FileExplorerActivity"
+            android:exported="false" />
+
+        <activity
+            android:name=".activity.clientModule.SelectedItemCustomerActivity"
+            android:exported="false" />
+        <activity
+            android:name=".activity.jobModule.Expense.AddExpenseActivity"
+            android:exported="false" />
+        <activity
+            android:name=".activity.jobModule.Expense.MainExpenseActivity"
+            android:exported="false" />
+        <activity
+            android:name=".activity.jobModule.notes.AddNotesActivity"
+            android:exported="false" />
+        <activity
+            android:name=".activity.jobModule.JobTimeSheetActivity"
+            android:exported="false" />
+        <activity
+            android:name=".activity.jobModule.task.AddTasksActivity"
+            android:exported="false" />
+        <activity
+            android:name=".activity.jobModule.task.LeadTasksActivity"
+            android:exported="false" />
         <activity
             android:name=".activity.auth.ChangePasswordActivity"
             android:exported="false" />
@@ -137,7 +167,7 @@
             android:name=".activity.salesPerson.AllSalesPersonActivity"
             android:exported="false" />
         <activity
-            android:name=".activity.LeadNotesActivity"
+            android:name=".activity.jobModule.notes.LeadNotesActivity"
             android:exported="false" />
         <activity
             android:name=".activity.galleryModule.GallaryActivity"
@@ -165,21 +195,24 @@
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
-        </activity> <!-- <activity -->
-        <!-- android:name="com.theartofdev.edmodo.cropper.CropImageActivity" -->
-        <!-- android:configChanges="orientation|screenSize|keyboardHidden" -->
-        <!-- android:screenOrientation="portrait" -->
-        <!-- android:theme="@style/Base.Theme.AppCompat" -->
-        <!-- android:windowSoftInputMode="stateHidden|adjustResize" /> -->
+        </activity>
+
         <provider
             android:name="androidx.core.content.FileProvider"
-            android:authorities="com.tradesk"
+            android:authorities="${applicationId}.provider"
             android:exported="false"
             android:grantUriPermissions="true">
             <meta-data
                 android:name="android.support.FILE_PROVIDER_PATHS"
                 android:resource="@xml/provider_paths" />
         </provider>
+
+        <activity
+            android:name="com.theartofdev.edmodo.cropper.CropImageActivity"
+            android:configChanges="orientation|screenSize|keyboardHidden"
+            android:screenOrientation="portrait"
+            android:theme="@style/Base.Theme.AppCompat"
+            android:windowSoftInputMode="stateHidden|adjustResize" />
 
         <meta-data
             android:name="com.facebook.sdk.ApplicationId"

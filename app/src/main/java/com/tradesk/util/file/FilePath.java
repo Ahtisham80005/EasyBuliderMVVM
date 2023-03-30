@@ -1,4 +1,4 @@
-package com.tradesk.util;
+package com.tradesk.util.file;
 
 import android.content.ContentUris;
 import android.content.Context;
@@ -44,8 +44,7 @@ public class FilePath {
             else if (isDownloadsDocument(uri)) {
 
                 final String id = DocumentsContract.getDocumentId(uri);
-                final Uri contentUri = ContentUris.withAppendedId(
-                        Uri.parse("content://downloads/public_downloads"), Long.parseLong(id));
+                final Uri contentUri = ContentUris.withAppendedId(Uri.parse("content://downloads/public_downloads"), Long.parseLong(id));
 
                 return getDataColumn(context, contentUri, null, null);
             }

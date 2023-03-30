@@ -501,7 +501,7 @@
                     android:background="@android:color/transparent"
                     android:fontFamily="@font/normal_poppins"
                     android:gravity="center_vertical"
-                    android:hint="09-28-2021."
+                    android:hint="Select date..."
                     android:inputType="textPersonName"
                     android:paddingTop="@dimen/margin_1_1x"
                     android:paddingBottom="@dimen/margin_1_1x"

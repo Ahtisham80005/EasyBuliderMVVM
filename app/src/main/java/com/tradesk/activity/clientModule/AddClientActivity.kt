@@ -64,6 +64,7 @@ class AddClientActivity : AppCompatActivity() {
         }
 
         if (intent.hasExtra("id")) {
+            Constants.showLoading(this)
             CoroutineScope(Dispatchers.IO).launch {
                 viewModel.getClientDetail(
                     intent.getStringExtra("id").toString(),
@@ -81,7 +82,8 @@ class AddClientActivity : AppCompatActivity() {
         }
         binding.mIvBack.setOnClickListener { finish() }
         binding.mBtnSubmit.setOnClickListener {
-            if(intent.hasExtra("id")){
+            if(intent.hasExtra("id"))
+            {
 
                 if (binding.mEtName.text.toString().trim().isEmpty()) {
                     toast(getString(R.string.enter_name), false)
@@ -100,7 +102,6 @@ class AddClientActivity : AppCompatActivity() {
             }*/ else if (binding.mEtAddress.text.toString().trim().isEmpty()) {
                     toast(getString(R.string.enter_address), false)
                 } else {
-
 
                     if (isInternetConnected(this)) hashMapOf<String, RequestBody>().also {
                         it.put(
@@ -323,7 +324,6 @@ class AddClientActivity : AppCompatActivity() {
                                 lat + "," + lng
                             )
                         )
-
                         it.put(
                             "trade",
                             RequestBody.create(
@@ -451,9 +451,11 @@ class AddClientActivity : AppCompatActivity() {
         if (resultCode == Activity.RESULT_OK) {
             if (requestCode == Constants.PLACE_AUTOCOMPLETE_REQUEST_CODE) {
                 try {
+                    Log.e("Any Error 1","fake")
                     val place = Autocomplete.getPlaceFromIntent(data!!)
                     setPlaceData(place)
                 } catch (e: java.lang.Exception) {
+                    Log.e("Any Error",e.message.toString())
                 }
             }
         }
@@ -522,6 +524,12 @@ class AddClientActivity : AppCompatActivity() {
 
                 lng = placeData.latLng!!.longitude.toString()
                 lat = placeData.latLng!!.latitude.toString()
+
+                Log.e("Latitude",lat)
+                Log.e("Longitude",lat)
+                Log.e("state",state)
+                Log.e("city",city)
+                Log.e("zipcode",post_code)
             }
         } catch (e: java.lang.Exception) {
             Log.e("Exce......", e.toString())

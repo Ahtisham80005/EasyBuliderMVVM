@@ -1,13 +1,18 @@
 package com.tradesk
 
 import android.content.Intent
+import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.os.Environment
 import android.os.SystemClock
+import android.view.View
 import androidx.databinding.DataBindingUtil
 import com.tradesk.activity.auth.LoginActivity
 import com.tradesk.databinding.ActivityMainBinding
 import com.tradesk.databinding.ActivitySignupBinding
+import com.tradesk.filemanager.checkStoragePermission
+import com.tradesk.filemanager.requestStoragePermission
 import com.tradesk.fragment.CalendarFragment
 import com.tradesk.fragment.HomeFragment
 import com.tradesk.fragment.JobsFragment
@@ -31,12 +36,20 @@ class MainActivity : AppCompatActivity() {
     lateinit var mPrefs: PreferenceHelper
     @Inject
     lateinit var permissionFile: PermissionFile
+    private var hasPermission = false
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding=DataBindingUtil.setContentView(this,R.layout.activity_main)
         if (mPrefs.getKeyValue(PreferenceConstants.LANGUAGE).isEmpty()) {
             mPrefs.setKeyValue(PreferenceConstants.LANGUAGE, "en")
         }
+
+        hasPermission = checkStoragePermission(this)
+        if (!hasPermission)
+        {
+            requestStoragePermission(this)
+        }
+
 //        val extras = intent.extras
 //        if (extras != null)
 //        {

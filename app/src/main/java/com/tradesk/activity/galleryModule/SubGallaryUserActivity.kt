@@ -11,9 +11,11 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.os.Environment
 import android.provider.MediaStore
+import android.provider.Settings
 import android.util.Log
 import android.view.*
 import android.widget.*
+import androidx.activity.result.PickVisualMediaRequest
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.view.isVisible
 import androidx.databinding.DataBindingUtil
@@ -29,15 +31,16 @@ import com.tradesk.R
 import com.tradesk.activity.ImageActivity
 import com.tradesk.activity.galleryModule.adapter.SubGallaryUserAdapter
 import com.tradesk.data.entity.MoveImagesInFolderModel
-import com.tradesk.databinding.ActivitySubGallaryBinding
 import com.tradesk.databinding.ActivitySubGallaryUserBinding
 import com.tradesk.network.NetworkResult
 import com.tradesk.util.Constants
 import com.tradesk.util.Constants.isInternetConnected
-import com.tradesk.util.FilePath
+import com.tradesk.util.FileFinder
+import com.tradesk.util.file.FilePath
 import com.tradesk.util.PermissionFile
 import com.tradesk.util.extension.AllinOneDialog
 import com.tradesk.util.extension.toast
+import com.tradesk.util.file.PathUtil
 import com.tradesk.viewModel.GallaryViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.CoroutineScope
@@ -275,26 +278,59 @@ class SubGallaryUserActivity : AppCompatActivity() , SingleListCLickListener, Lo
         }
         mBuilder.findViewById<View>(R.id.view11).isVisible = intent.hasExtra("permits")
         mBuilder.findViewById<TextView>(R.id.titleGallery).also {
-            it.isVisible = !intent.hasExtra("permits")
+//            it.isVisible = !intent.hasExtra("permits")
             //       it.isVisible = false
+
             it.setOnClickListener {
                 mBuilder.dismiss()
-                // dispatchTakeGalleryIntent()
-//                ImagePicker.with(this)
-//                    .galleryOnly()
-//                    .compress(1024)
-//                    .maxResultSize(1080, 1080)
-//                    .start()
-                val intent = Intent()
-                intent.type = "image/*"
-                intent.putExtra(Intent.EXTRA_ALLOW_MULTIPLE, true)
-                intent.action = Intent.ACTION_GET_CONTENT
-                resultLauncher.launch(intent)
+                if (Build.VERSION.SDK_INT >= 30) {
+                    if (!Environment.isExternalStorageManager())
+                    {
+                        val getpermission = Intent()
+                        getpermission.action = Settings.ACTION_MANAGE_ALL_FILES_ACCESS_PERMISSION
+                        startActivity(getpermission)
+                    } else {
+                        if (permissionFile.checkLocStorgePermission(this))
+                        {
+                            pickMultipleMedia.launch(PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.ImageOnly))
+                        }
+                    }
+                }
+                else
+                {
+                    if (permissionFile.checkLocStorgePermission(this)) {
+                        pickMultipleMedia.launch(PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.ImageOnly))
+                    }
+                }
+
+//                // dispatchTakeGalleryIntent()
+////                ImagePicker.with(this)
+////                    .galleryOnly()
+////                    .compress(1024)
+////                    .maxResultSize(1080, 1080)
+////                    .start()
+//                val intent = Intent()
+//                intent.type = "image/*"
+//                intent.putExtra(Intent.EXTRA_ALLOW_MULTIPLE, true)
+//                intent.action = Intent.ACTION_GET_CONTENT
+//                resultLauncher.launch(intent)
             }
         }
         mBuilder.findViewById<TextView>(R.id.titleCancel)
             .setOnClickListener { mBuilder.dismiss() }
         mBuilder.show();
+    }
+
+    val pickMultipleMedia = registerForActivityResult(ActivityResultContracts.PickMultipleVisualMedia(15)) { uris ->
+        // Callback is invoked after the user selects media items or closes the
+        // photo picker.
+        if (uris.isNotEmpty()) {
+            Log.d("PhotoPicker", "Number of items selected: ${uris.size}")
+            saveCaptureImageResults(uris!!)
+        } else {
+            toast("No media selected Permission not allow")
+            Log.d("PhotoPicker", "No media selected")
+        }
     }
 
     var resultLauncher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
@@ -336,16 +372,36 @@ class SubGallaryUserActivity : AppCompatActivity() , SingleListCLickListener, Lo
         }
     }
 
-    private fun saveCaptureImageResults(uriList: ArrayList<Uri>) = try {
+    private fun saveCaptureImageResults(uriList: List<Uri>) = try {
         Log.e("List Size final",uriList.size.toString())
         var parts1: ArrayList<MultipartBody.Part> = ArrayList<MultipartBody.Part>()
+//        for(data in uriList)
+//        {
+//            var path= FilePath.getPath(applicationContext,data)
+//            Log.e("file Path",path.toString())
+//            var image=Constants.getRequestParam("image",path)
+//            parts1.add(image!!)
+//        }
+
         for(data in uriList)
         {
-            var path= FilePath.getPath(applicationContext,data)
-            Log.e("file Path",path.toString())
+            var path = FilePath.getPath(this@SubGallaryUserActivity,data)
+            if(path==null)
+            {
+                path= PathUtil.getPath(this@SubGallaryUserActivity,data)
+//                Log.e("My File 2",path)
+            }
+            if(path==null)
+            {
+                path= FileFinder.getFilePath(this@SubGallaryUserActivity,data)
+//                Log.e("My File 3",path)
+            }
             var image=Constants.getRequestParam("image",path)
             parts1.add(image!!)
         }
+
+
+
         hashMapOf<String, RequestBody>().also {
 //            it.put("image\"; filename=\"image.jpg", RequestBody.create(MediaType.parse("image/*"), file))
             it.put("index", RequestBody.create(
@@ -357,6 +413,7 @@ class SubGallaryUserActivity : AppCompatActivity() , SingleListCLickListener, Lo
             }
         }
     } catch (e: Exception) {
+        toast(e.message.toString())
         Log.e("GalleryActivity", e.message.toString())
     }
 
@@ -395,46 +452,72 @@ class SubGallaryUserActivity : AppCompatActivity() , SingleListCLickListener, Lo
         popup.setOnMenuItemClickListener {
             if (it.itemId == R.id.item_share)
             {
-                shareImage()
+                if (!selectedIdArray.isEmpty()) {
+                    shareImage()
+                }
+                else{
+                    toast("Select an item")
+                }
             }
             else if (it.itemId == R.id.item_move)
             {
-                showMoveItemToAlbumDialog()
+                if (!selectedIdArray.isEmpty()) {
+                    showMoveItemToAlbumDialog()
+                }
+                else{
+                    toast("Select an item")
+                }
+
             }
             else if (it.itemId == R.id.item_delete)
             {
-                AllinOneDialog(ttle = "Delete",
-                    msg = "Are you sure you want to Delete it ?",
-                    onLeftClick = {/*btn No click*/ },
-                    onRightClick = {/*btn Yes click*/
+                if (!selectedIdArray.isEmpty()) {
+                    AllinOneDialog(ttle = "Delete",
+                        msg = "Are you sure you want to Delete it ?",
+                        onLeftClick = {/*btn No click*/ },
+                        onRightClick = {/*btn Yes click*/
 //                            if (isInternetConnected() && selectedPosition != null && selectionResult >= 1) {
-                        val selectedUrlsUser = SelectedUrlsUser(index!!, selectedImageArray)
-                        Constants.showLoading(this)
-                        CoroutineScope(Dispatchers.IO).launch {
-                            viewModel.userDelSelectedImages(selectedUrlsUser)
-                        }
+                            val selectedUrlsUser = SelectedUrlsUser(index!!, selectedImageArray)
+                            Constants.showLoading(this)
+                            CoroutineScope(Dispatchers.IO).launch {
+                                viewModel.userDelSelectedImages(selectedUrlsUser)
+                            }
 
 //                        Log.d(TAG, "showRightMenu: " + selectedImageArray)
 //                            }
-                    })
+                        })
+                }
+                else{
+                    toast("Select an item")
+                }
+
 
             }
             else if (it.itemId == R.id.item_download) {
-                if(selectedIdArray.isEmpty())
-                {
-                    Toast.makeText(this,"selectedIdArray is empty",Toast.LENGTH_SHORT).show()
+                if (!selectedIdArray.isEmpty()) {
+                    selectedIdArray.zip(selectedImageArray).forEach { pair ->
+                        Log.e("File Name",pair.first)
+                        Log.e("File URL",pair.second)
+                        downloadImage(pair.first, pair.second)
+                    }
                 }
-                selectedIdArray.zip(selectedImageArray).forEach { pair ->
-                    Log.e("File Name",pair.first)
-                    Log.e("File URL",pair.second)
-                    downloadImage(pair.first, pair.second)
+                else{
+                    toast("Select an item")
                 }
+
+
 
 //                selectedIdArray.zip(selectedImageArray).forEach { pair ->
 //                    downloadImage(pair.first, pair.second)
 //                }
             } else if (it.itemId == R.id.item_make_an_album) {
-                showCreateAlbumDialog()
+                if (!selectedIdArray.isEmpty()) {
+                    showCreateAlbumDialog()
+                }
+                else{
+                    toast("Select an item")
+                }
+
             }
             return@setOnMenuItemClickListener true
         }

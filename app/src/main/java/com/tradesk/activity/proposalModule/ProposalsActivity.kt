@@ -17,8 +17,11 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.tabs.TabLayout
 import com.google.gson.GsonBuilder
+import com.tradesk.Interface.CustomCheckBoxListener
 import com.tradesk.Interface.LongClickListener
 import com.tradesk.Interface.SingleListCLickListener
+import com.tradesk.Interface.UnselectCheckBoxListener
+import com.tradesk.Model.CheckModel
 import com.tradesk.Model.Proposal
 import com.tradesk.Model.ProposalDetailModel
 import com.tradesk.Model.SelectedIds
@@ -37,12 +40,23 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import java.io.File
+import java.util.*
+import kotlin.collections.ArrayList
 
 @AndroidEntryPoint
 class ProposalsActivity : AppCompatActivity(), SingleListCLickListener,
-    LongClickListener {
+    LongClickListener, CustomCheckBoxListener, UnselectCheckBoxListener {
+
+
+    var checkBoxVisibility:Boolean=false
+    var allCheckBoxSelect:Boolean=false
+    var activeSlectMenu:Boolean=false
+
+    var selectedPositionArray = java.util.ArrayList<Int>()
+
     val mList = mutableListOf<Proposal>()
-    val mProposalsAdapter by lazy { ProposalsAdapter(this, mList, mList, this,this) }
+    var mcheckBoxModelList=mutableListOf<CheckModel>()
+    val mProposalsAdapter by lazy { ProposalsAdapter(this, mList, mList, this,this,this,this,checkBoxVisibility,allCheckBoxSelect,mcheckBoxModelList) }
     var selected_position = 0
     var clicked = "0"
     var proposal_count = ""
@@ -208,8 +222,15 @@ class ProposalsActivity : AppCompatActivity(), SingleListCLickListener,
         binding.mIvBack.setOnClickListener { finish() }
 
         binding.mIvRightMenuProposal.setOnClickListener {
-            if (mList.isNotEmpty()){
-                showRightMenu(it)
+            if(!activeSlectMenu)
+            {
+                if (mList.isNotEmpty()){
+                    showRightMenu(it)
+                }
+            }
+            else
+            {
+                showSecondRightMenu(it)
             }
         }
         binding.mIvAddProposal.setOnClickListener {
@@ -283,6 +304,19 @@ class ProposalsActivity : AppCompatActivity(), SingleListCLickListener,
                     if (it.data!!.data.proposal_list.isNotEmpty()) {
                         mList.clear()
                         mList.addAll(it.data.data.proposal_list)
+                        binding.rvProposals.layoutManager = LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
+                        activeSlectMenu=false
+                        checkBoxVisibility=false
+                        selectedIdArray.clear()
+                        selectedImageArray.clear()
+                        selectedPositionArray.clear()
+                        mcheckBoxModelList.clear()
+                        for(i in mList)
+                        {
+                            mcheckBoxModelList.add(CheckModel(false))
+                        }
+                        mProposalsAdapter.checkboxVisibility=false
+                        binding.rvProposals.adapter =mProposalsAdapter
                         mProposalsAdapter.notifyDataSetChanged()
                     } else {
                         if (intent.getStringExtra("title").equals("Proposals")) {
@@ -324,8 +358,7 @@ class ProposalsActivity : AppCompatActivity(), SingleListCLickListener,
             when (it) {
                 is NetworkResult.Success -> {
                     toast("Deleted Successfully")
-                    mList.removeAt(itemPosition!!)
-                    mProposalsAdapter.notifyItemRemoved(itemPosition!!)
+                    FirstRunCode()
                 }
                 is NetworkResult.Error -> {
                     toast(it.message)
@@ -340,8 +373,7 @@ class ProposalsActivity : AppCompatActivity(), SingleListCLickListener,
             when (it) {
                 is NetworkResult.Success -> {
                     toast("Deleted Successfully")
-                    mList.clear()
-                    mProposalsAdapter.notifyDataSetChanged()
+                    FirstRunCode()
                 }
                 is NetworkResult.Error -> {
                     toast(it.message)
@@ -356,8 +388,7 @@ class ProposalsActivity : AppCompatActivity(), SingleListCLickListener,
             when (it) {
                 is NetworkResult.Success -> {
                     toast("Deleted Successfully")
-                    mList.removeAt(itemPosition!!)
-                    mProposalsAdapter.notifyItemRemoved(itemPosition!!)
+                    FirstRunCode()
                 }
                 is NetworkResult.Error -> {
                     toast(it.message)
@@ -417,6 +448,221 @@ class ProposalsActivity : AppCompatActivity(), SingleListCLickListener,
 
     }
 
+    fun showRightMenu(anchor: View ): Boolean {
+        val popup = PopupMenu(this, anchor)
+        popup.menuInflater.inflate(R.menu.sub_gallery_menu, popup.getMenu())
+        popup.setOnMenuItemClickListener{
+            if (it.itemId == R.id.item_select_items){
+//                if (clicked.equals("0") && intent.getStringExtra("title").equals("Proposals")){
+//                    startActivity(Intent(this, SelectItemPropsalActivity::class.java)
+//                        .putExtra("clicked", "0").putExtra("title","Proposals")
+//                        .putExtra("selectType","single").putExtra("job_id",intent.getStringExtra("job_id")))
+//                }else if (clicked.equals("1") && intent.getStringExtra("title").equals("Proposals")){
+//                    startActivity(Intent(this, SelectItemPropsalActivity::class.java)
+//                        .putExtra("clicked", "1").putExtra("title","Proposals")
+//                        .putExtra("selectType","single").putExtra("job_id",intent.getStringExtra("job_id")))
+//                }else if (clicked.equals("0") && intent.getStringExtra("title").equals("Invoices")){
+//                    startActivity(Intent(this, SelectItemPropsalActivity::class.java)
+//                        .putExtra("clicked", "0").putExtra("title","Invoices")
+//                        .putExtra("selectType","single").putExtra("job_id",intent.getStringExtra("job_id")))
+//                }else if (clicked.equals("1") && intent.getStringExtra("title").equals("Invoices")){
+//                    startActivity(Intent(this, SelectItemPropsalActivity::class.java)
+//                        .putExtra("clicked", "1").putExtra("title","Invoices")
+//                        .putExtra("selectType","single").putExtra("job_id",intent.getStringExtra("job_id")))
+//                }
+
+                mcheckBoxModelList.clear()
+                for(i in mList)
+                {
+                    mcheckBoxModelList.add(CheckModel(false))
+                }
+                activeSlectMenu=true
+                checkBoxVisibility=true
+                selectedIdArray.clear()
+                mProposalsAdapter.checkboxVisibility=true
+                mProposalsAdapter.notifyDataSetChanged()
+
+            }else if (it.itemId == R.id.item_select_all){
+//                if (clicked.equals("0") && intent.getStringExtra("title").equals("Proposals")){
+//                    startActivity(Intent(this, SelectItemPropsalActivity::class.java)
+//                        .putExtra("clicked", "0").putExtra("title","Proposals")
+//                        .putExtra("selectType","all").putExtra("job_id",intent.getStringExtra("job_id")))
+//                }else if (clicked.equals("1") && intent.getStringExtra("title").equals("Proposals")){
+//                    startActivity(Intent(this, SelectItemPropsalActivity::class.java)
+//                        .putExtra("clicked", "1").putExtra("title","Proposals")
+//                        .putExtra("selectType","all").putExtra("job_id",intent.getStringExtra("job_id")))
+//                }else if (clicked.equals("0") && intent.getStringExtra("title").equals("Invoices")){
+//                    startActivity(Intent(this, SelectItemPropsalActivity::class.java)
+//                        .putExtra("clicked", "0").putExtra("title","Invoices")
+//                        .putExtra("selectType","all").putExtra("job_id",intent.getStringExtra("job_id")))
+//                }else if (clicked.equals("1") && intent.getStringExtra("title").equals("Invoices")){
+//                    startActivity(Intent(this, SelectItemPropsalActivity::class.java)
+//                        .putExtra("clicked", "1").putExtra("title","Invoices")
+//                        .putExtra("selectType","all").putExtra("job_id",intent.getStringExtra("job_id")))
+//                }
+
+                mcheckBoxModelList.clear()
+                for(i in mList)
+                {
+                    mcheckBoxModelList.add(CheckModel(true))
+                }
+
+                checkBoxVisibility=true
+                activeSlectMenu=true
+                selectedIdArray.clear()
+
+                mProposalsAdapter.checkboxVisibility=true
+                mProposalsAdapter.allCheckBoxSelect=true
+                //No Add List
+                mProposalsAdapter.notifyDataSetChanged()
+//                For only one Item
+                if(mList.size<=1)
+                {
+                    selectedPositionArray.add(0)
+                }
+
+            }
+            else if(it.itemId == R.id.item_delete_all){
+
+                AllinOneDialog(ttle = "Delete",
+                    msg = "Are you sure you want to Delete all ?",
+                    onLeftClick = {/*btn No click*/ },
+                    onRightClick = {/*btn Yes click*/
+                        if (isInternetConnected(this)) {
+                            if (clicked.equals("0")) {
+                                if (intent.getStringExtra("title").equals("Proposals")) {
+                                    CoroutineScope(Dispatchers.IO).launch {
+                                        viewModel.deleteAllProposal("proposal", "pending")
+                                    }
+                                }else{
+                                    CoroutineScope(Dispatchers.IO).launch {
+                                        viewModel.deleteAllProposal("invoice", "pending")
+                                    }
+                                }
+                            }
+
+                            if (clicked.equals("1")) {
+                                if (intent.getStringExtra("title").equals("Proposals")) {
+                                    CoroutineScope(Dispatchers.IO).launch {
+                                        viewModel.deleteAllProposal("proposal", "completed")
+                                    }
+                                }else{
+                                    CoroutineScope(Dispatchers.IO).launch {
+                                        viewModel.deleteAllProposal("invoice", "completed")
+                                    }
+
+                                }
+                            }
+                        }
+                    })
+            }
+
+            return@setOnMenuItemClickListener true
+        }
+        popup.show()
+        return true
+    }
+
+    private fun showSecondRightMenu(anchor: View): Boolean {
+        val popup = PopupMenu(this, anchor)
+        popup.menuInflater.inflate(R.menu.select_item_proposal_menu, popup.getMenu())
+
+//        selectionResult = increment - decrement
+//        Log.d(TAG, "showRightMenu: " + selectionResult.toString())
+//        Log.d(TAG, "selectedposition: " + selectedPosition.toString())
+//        Log.d(TAG, "unselectedposition: " + unSelectedPosition.toString())
+
+
+        if (intent.getStringExtra("title").equals("Invoices")) {
+            popup.menu.findItem(R.id.item_edit).isVisible = false
+        }
+
+        if (selectedIdArray.size > 1) {
+            popup.menu.findItem(R.id.item_share).isVisible = false
+            popup.menu.findItem(R.id.item_edit).isVisible = false
+            popup.menu.findItem(R.id.item_delete).isVisible = true
+        }
+
+        popup.setOnMenuItemClickListener {
+
+            if (it.itemId == R.id.item_share) {
+                if (selectedIdArray.size <= 1 && !selectedIdArray.isEmpty()) {
+                    shareImage()
+                } else {
+                    toast("Select an item")
+                }
+            } else if (it.itemId == R.id.item_delete) {
+                if (!selectedIdArray.isEmpty()) {
+                    AllinOneDialog(ttle = "Delete",
+                        msg = "Are you sure you want to Delete it ?",
+                        onLeftClick = {/*btn No click*/ },
+                        onRightClick = {/*btn Yes click*/
+                            if (isInternetConnected(this)) {
+                                //presenter.deleteproposal(mList[selectedPosition!!]._id)
+                                val selectedIds = SelectedIds(selectedIdArray)
+                                Constants.showLoading(this)
+                                CoroutineScope(Dispatchers.IO).launch {
+                                    viewModel.deleteSelectedProposal(selectedIds)
+                                }
+                                Log.d(TAG, "showRightMenu: "+selectedIdArray)
+                            }
+                        })
+                }
+//                else if (selectType.equals("all") && selectionResult >= 1) {
+//                    deleteAll()
+//                }
+                else{
+                    toast("Select an item")
+                }
+
+            } else if (it.itemId == R.id.item_download) {
+                if (!selectedPositionArray.isEmpty() && selectedIdArray.size >= 1) {
+//                    if (selectType.equals("all")) {
+//                        mList.forEach { pair ->
+//                            downloadFile(pair._id, pair.invoice_url)
+//                        }
+//                    } else {
+                        selectedIdArray.zip(selectedImageArray).forEach { pair ->
+                            downloadFile(pair.first, pair.second)
+//                        }
+                    }
+                } else {
+                    toast("Select an item")
+                }
+                //  downloadFile(mList[selectedPosition]._id,mList[selectedPosition].invoice_url)
+
+            } else if (it.itemId == R.id.item_edit) {
+                if (intent.getStringExtra("title").equals("Proposals")) {
+                    if (isInternetConnected(this) && !selectedPositionArray.isEmpty() && selectedIdArray.size <= 1) {
+                        Constants.showLoading(this)
+                        CoroutineScope(Dispatchers.IO).launch {
+                            viewModel.getDetail(mList[selectedPositionArray.get(0)]._id)
+                        }
+                        Log.d(TAG, "showRightMenu: " + mList[selectedPositionArray.get(0)]._id)
+                    } else {
+                        toast("Select an item")
+                    }
+                }
+            }
+
+            return@setOnMenuItemClickListener true
+        }
+        popup.show()
+        return true
+    }
+
+    override fun onCheckBoxClick(position: Int) {
+        selectedPositionArray.add(position)
+        selectedIdArray.add(mList[position]._id)
+        selectedImageArray.add(mList[position].invoice_url)
+        Log.e("G_id",mList[position]._id) //63ecbd8f0303fe4963eee984
+    }
+    override fun onCheckBoxUnCheckClick(item: Any, position: Int) {
+        selectedPositionArray.removeAll(setOf(position))
+        selectedIdArray.removeAll(setOf(mList[position]._id))
+        selectedImageArray.removeAll(setOf(mList[position].invoice_url))
+    }
+
     override fun onSingleListClick(item: Any, position: Int) {
         if (item.equals("Delete")) {
             AllinOneDialog(ttle = "Delete",
@@ -461,125 +707,50 @@ class ProposalsActivity : AppCompatActivity(), SingleListCLickListener,
         }
     }
 
-    fun showRightMenu(anchor: View ): Boolean {
-        val popup = PopupMenu(this, anchor)
-        popup.menuInflater.inflate(R.menu.sub_gallery_menu, popup.getMenu())
-        popup.setOnMenuItemClickListener{
-
-            if (it.itemId == R.id.item_select_items){
-                if (clicked.equals("0") && intent.getStringExtra("title").equals("Proposals")){
-                    startActivity(Intent(this, SelectItemPropsalActivity::class.java)
-                        .putExtra("clicked", "0").putExtra("title","Proposals")
-                        .putExtra("selectType","single").putExtra("job_id",intent.getStringExtra("job_id")))
-                }else if (clicked.equals("1") && intent.getStringExtra("title").equals("Proposals")){
-                    startActivity(Intent(this, SelectItemPropsalActivity::class.java)
-                        .putExtra("clicked", "1").putExtra("title","Proposals")
-                        .putExtra("selectType","single").putExtra("job_id",intent.getStringExtra("job_id")))
-                }else if (clicked.equals("0") && intent.getStringExtra("title").equals("Invoices")){
-                    startActivity(Intent(this, SelectItemPropsalActivity::class.java)
-                        .putExtra("clicked", "0").putExtra("title","Invoices")
-                        .putExtra("selectType","single").putExtra("job_id",intent.getStringExtra("job_id")))
-                }else if (clicked.equals("1") && intent.getStringExtra("title").equals("Invoices")){
-                    startActivity(Intent(this, SelectItemPropsalActivity::class.java)
-                        .putExtra("clicked", "1").putExtra("title","Invoices")
-                        .putExtra("selectType","single").putExtra("job_id",intent.getStringExtra("job_id")))
-                }
-
-            }else if (it.itemId == R.id.item_select_all){
-                if (clicked.equals("0") && intent.getStringExtra("title").equals("Proposals")){
-                    startActivity(Intent(this, SelectItemPropsalActivity::class.java)
-                        .putExtra("clicked", "0").putExtra("title","Proposals")
-                        .putExtra("selectType","all").putExtra("job_id",intent.getStringExtra("job_id")))
-                }else if (clicked.equals("1") && intent.getStringExtra("title").equals("Proposals")){
-                    startActivity(Intent(this, SelectItemPropsalActivity::class.java)
-                        .putExtra("clicked", "1").putExtra("title","Proposals")
-                        .putExtra("selectType","all").putExtra("job_id",intent.getStringExtra("job_id")))
-                }else if (clicked.equals("0") && intent.getStringExtra("title").equals("Invoices")){
-                    startActivity(Intent(this, SelectItemPropsalActivity::class.java)
-                        .putExtra("clicked", "0").putExtra("title","Invoices")
-                        .putExtra("selectType","all").putExtra("job_id",intent.getStringExtra("job_id")))
-                }else if (clicked.equals("1") && intent.getStringExtra("title").equals("Invoices")){
-                    startActivity(Intent(this, SelectItemPropsalActivity::class.java)
-                        .putExtra("clicked", "1").putExtra("title","Invoices")
-                        .putExtra("selectType","all").putExtra("job_id",intent.getStringExtra("job_id")))
-                }
-            }else if(it.itemId == R.id.item_delete_all){
-
-                AllinOneDialog(ttle = "Delete",
-                    msg = "Are you sure you want to Delete all ?",
-                    onLeftClick = {/*btn No click*/ },
-                    onRightClick = {/*btn Yes click*/
-                        if (isInternetConnected(this)) {
-                            if (clicked.equals("0")) {
-                                if (intent.getStringExtra("title").equals("Proposals")) {
-                                    CoroutineScope(Dispatchers.IO).launch {
-                                        viewModel.deleteAllProposal("proposal", "pending")
-                                    }
-                                }else{
-                                    CoroutineScope(Dispatchers.IO).launch {
-                                        viewModel.deleteAllProposal("invoice", "pending")
-                                    }
-                                }
-                            }
-
-                            if (clicked.equals("1")) {
-                                if (intent.getStringExtra("title").equals("Proposals")) {
-                                    CoroutineScope(Dispatchers.IO).launch {
-                                        viewModel.deleteAllProposal("proposal", "completed")
-                                    }
-                                }else{
-                                    CoroutineScope(Dispatchers.IO).launch {
-                                        viewModel.deleteAllProposal("invoice", "completed")
-                                    }
-
-                                }
-                            }
-                        }
-                    })
-            }
-
-            return@setOnMenuItemClickListener true
-        }
-        popup.show()
-        return true
-    }
-
     override fun onLongClickListener(item: Any, position: Int) {
         showRightMenuLongClick(item as View,position)
     }
-    private fun showRightMenuLongClick(anchor: View,selectedPosition:Int): Boolean {
+    private fun showRightMenuLongClick(anchor: View,selectedPosition1:Int): Boolean {
         val popup = PopupMenu(this, anchor)
         popup.menuInflater.inflate(R.menu.select_item_proposal_menu, popup.getMenu())
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             popup.gravity = Gravity.END
         }
-        popup.setOnDismissListener {
-            if (selectedPosition != null) {
-                selectedIdArray.removeAll(setOf(mList[selectedPosition]._id))
-                selectedImageArray.removeAll(setOf(mList[selectedPosition].invoice_url))
-            }
-        }
+//        popup.setOnDismissListener {
+//            if (selectedPosition != null) {
+//                selectedIdArray.removeAll(setOf(mList[selectedPosition]._id))
+//                selectedImageArray.removeAll(setOf(mList[selectedPosition].invoice_url))
+//            }
+//        }
+
         if (intent.getStringExtra("title").equals("Invoices")) {
             popup.menu.findItem(R.id.item_edit).isVisible = false
         }
+
+        selectedPositionArray.clear()
+        selectedIdArray.clear()
+        selectedPositionArray.add(selectedPosition1)
+
         popup.setOnMenuItemClickListener {
 
             if (it.itemId == R.id.item_share) {
-                if (selectedPosition!=null) {
-                    shareImage(selectedPosition)
+                if (!selectedPositionArray.isEmpty()) {
+                    shareImage()
                 } else {
                     toast("Select an item")
                 }
-            } else if (it.itemId == R.id.item_delete) {
-                if (selectedPosition != null) {
+            }
+            else if (it.itemId == R.id.item_delete) {
+                if (!selectedPositionArray.isEmpty()) {
                     AllinOneDialog(ttle = "Delete",
                         msg = "Are you sure you want to Delete it ?",
                         onLeftClick = {/*btn No click*/ },
                         onRightClick = {/*btn Yes click*/
-                            if (isInternetConnected(this) && selectedPosition != null) {
-                                itemPosition = selectedPosition
-                                selectedIdArray.add(mList[selectedPosition]._id)
+                            if (isInternetConnected(this)) {
+//                                itemPosition = selectedPosition
+                                selectedIdArray.add(mList[selectedPositionArray.get(0)]._id)
                                 val selectedIds = SelectedIds(selectedIdArray)
+                                Constants.showLoading(this)
                                 CoroutineScope(Dispatchers.IO).launch {
                                     viewModel.deleteSelectedProposal(selectedIds)
                                 }
@@ -589,11 +760,11 @@ class ProposalsActivity : AppCompatActivity(), SingleListCLickListener,
                 }else{
                     toast("Select an item")
                 }
-
-            } else if (it.itemId == R.id.item_download) {
-                if (selectedPosition !=null) {
-                    selectedIdArray.add(mList[selectedPosition]._id)
-                    selectedImageArray.add(mList[selectedPosition].invoice_url)
+            }
+            else if (it.itemId == R.id.item_download) {
+                if (!selectedPositionArray.isEmpty()) {
+                    selectedIdArray.add(mList[selectedPositionArray.get(0)]._id)
+                    selectedImageArray.add(mList[selectedPositionArray.get(0)].invoice_url)
                     selectedIdArray.zip(selectedImageArray).forEach { pair ->
                         downloadFile(pair.first, pair.second) }
                 } else {
@@ -602,12 +773,12 @@ class ProposalsActivity : AppCompatActivity(), SingleListCLickListener,
 
             } else if (it.itemId == R.id.item_edit) {
                 if (intent.getStringExtra("title").equals("Proposals")) {
-                    if (isInternetConnected(this) && selectedPosition != null) {
+                    if (isInternetConnected(this) && !selectedPositionArray.isEmpty()) {
                         Constants.showLoading(this)
                         CoroutineScope(Dispatchers.IO).launch {
-                            viewModel.getDetail(mList[selectedPosition]._id)
+                            viewModel.getDetail(mList[selectedPositionArray.get(0)]._id)
                         }
-                        Log.d(TAG, "showRightMenu: " + mList[selectedPosition]._id)
+                        Log.d(TAG, "showRightMenu: " + mList[selectedPositionArray.get(0)]._id)
                     } else {
                         toast("Select an item")
                     }
@@ -620,11 +791,11 @@ class ProposalsActivity : AppCompatActivity(), SingleListCLickListener,
         return true
     }
 
-    private fun shareImage(selectedPosition:Int) {
-        if (selectedPosition != null) {
+    private fun shareImage() {
+        if (!selectedPositionArray.isEmpty()) {
             val shareIntent = Intent(Intent.ACTION_SEND)
             shareIntent.type = "text/plain"
-            shareIntent.putExtra(Intent.EXTRA_TEXT, mList[selectedPosition!!].invoice_url)
+            shareIntent.putExtra(Intent.EXTRA_TEXT, mList[selectedPositionArray.get(0)].invoice_url)
             startActivity(Intent.createChooser(shareIntent, "Share link using"))
         }
     }
@@ -652,6 +823,11 @@ class ProposalsActivity : AppCompatActivity(), SingleListCLickListener,
 
     override fun onResume() {
         super.onResume()
+        FirstRunCode()
+    }
+
+    fun FirstRunCode()
+    {
         if (clicked.equals("0")) {
             if (intent.getStringExtra("title").equals("Proposals")) {
                 if (isInternetConnected(this)) {
@@ -755,6 +931,5 @@ class ProposalsActivity : AppCompatActivity(), SingleListCLickListener,
 //                }
 //            }
 //        }
-
     }
 }

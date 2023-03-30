@@ -63,6 +63,7 @@ class CalendarFragment : Fragment() , SingleListCLickListener, SingleItemCLickLi
     private val sdf = SimpleDateFormat("MMMM yyyy", Locale.ENGLISH)
     private val cal = Calendar.getInstance(Locale.ENGLISH)
 
+    
     // current date
     private val currentDate = Calendar.getInstance(Locale.ENGLISH)
     private val currentDay = currentDate[Calendar.DAY_OF_MONTH]
@@ -100,7 +101,6 @@ class CalendarFragment : Fragment() , SingleListCLickListener, SingleItemCLickLi
         savedInstanceState: Bundle?
     ): View? {
         binding=FragmentCalendarBinding.inflate(inflater, container, false)
-        Constants.showLoading(requireActivity())
         setUp()
         initObserve()
         return binding.getRoot()
@@ -188,6 +188,7 @@ class CalendarFragment : Fragment() , SingleListCLickListener, SingleItemCLickLi
                 selectedMonth = (binding.viewCal.month).plus(1)
                 selectedDay = binding.viewCal.selectedDay?.day ?: 0
 //                presenter.getremindersdate("$selectedYear-$selectedMonth-$selectedDay 00:00:00","1","100",tz.id)
+                Constants.showLoading(requireActivity())
                 CoroutineScope(Dispatchers.IO).launch {
                     viewModel.getremindersdate("$selectedYear-$selectedMonth-$selectedDay 00:00:00","1","100","America/Los_Angeles")
                 }
@@ -223,6 +224,7 @@ class CalendarFragment : Fragment() , SingleListCLickListener, SingleItemCLickLi
             }
 
             val date = "${binding.viewCal.year}-${month}-0${date}"
+            Constants.showLoading(requireActivity())
             CoroutineScope(Dispatchers.IO).launch {
                 viewModel.calendardetail(tz.id, date, "month")
             }
@@ -257,6 +259,7 @@ class CalendarFragment : Fragment() , SingleListCLickListener, SingleItemCLickLi
                         val todaydate = sdf.format(Date())
                         val date = "$selectedYear-$selectedMonth-$selectedDay"
                         System.out.println(" C DATE is  "+currentDate)
+                        Constants.showLoading(requireActivity())
                         CoroutineScope(Dispatchers.IO).launch {
                             viewModel.getremindersdate(date+ " 00:00:00","1","20",tz.id)
                         }
@@ -299,6 +302,7 @@ class CalendarFragment : Fragment() , SingleListCLickListener, SingleItemCLickLi
                         val todaydate = sdf.format(Date())
                         val date = "$selectedYear-$selectedMonth-$selectedDay"
                         System.out.println(" C DATE is  "+currentDate)
+                        Constants.showLoading(requireActivity())
                         CoroutineScope(Dispatchers.IO).launch {
                             viewModel.getremindersdate(date+ " 00:00:00","1","20",tz.id)
                         }
@@ -325,6 +329,7 @@ class CalendarFragment : Fragment() , SingleListCLickListener, SingleItemCLickLi
                         val todaydate = sdf.format(Date())
                         val date = "$selectedYear-$selectedMonth-$selectedDay"
                         System.out.println(" C DATE is  "+currentDate)
+                        Constants.showLoading(requireActivity())
                         CoroutineScope(Dispatchers.IO).launch {
                            viewModel.getremindersdate(date+ " 00:00:00","1","20",tz.id)
                         }
@@ -439,18 +444,22 @@ class CalendarFragment : Fragment() , SingleListCLickListener, SingleItemCLickLi
                 val tz = TimeZone.getDefault()
                 if (isInternetConnected(requireActivity())){
                     if (newselectedMonth.toString().length==1) {
+                        Constants.showLoading(requireActivity())
                         CoroutineScope(Dispatchers.IO).launch {
                             viewModel.getremindersdate("$newselectedYear-0$newselectedMonth-$selectedDay 00:00:00","1","20",tz.id)
                         }
                     }else if (selectedDay.toString().length==1){
+                        Constants.showLoading(requireActivity())
                         CoroutineScope(Dispatchers.IO).launch {
                             viewModel.getremindersdate("$newselectedYear-$newselectedMonth-0$selectedDay 00:00:00","1","20",tz.id)
                         }
                     }else if(newselectedMonth.toString().length==1 && selectedDay.toString().length==1){
+                        Constants.showLoading(requireActivity())
                         CoroutineScope(Dispatchers.IO).launch {
                             viewModel.getremindersdate("$newselectedYear-0$newselectedMonth-0$selectedDay 00:00:00","1","20",tz.id)
                         }
                     }else{
+                        Constants.showLoading(requireActivity())
                         CoroutineScope(Dispatchers.IO).launch {
                             viewModel.getremindersdate("$newselectedYear-$newselectedMonth-$selectedDay 00:00:00","1","20",tz.id)
                         }
@@ -591,6 +600,7 @@ class CalendarFragment : Fragment() , SingleListCLickListener, SingleItemCLickLi
 
                 if (selected.isNotEmpty() && !isEditClick){
                     if (selected.equals("1")){
+                        Constants.showLoading(requireActivity())
                         CoroutineScope(Dispatchers.IO).launch {
                             viewModel.addreminderCal(
                                 "phone",
@@ -599,6 +609,7 @@ class CalendarFragment : Fragment() , SingleListCLickListener, SingleItemCLickLi
                             )
                         }
                     }else{
+                        Constants.showLoading(requireActivity())
                         CoroutineScope(Dispatchers.IO).launch {
                             viewModel.addreminderCal(
                                 "appointment",
@@ -613,6 +624,7 @@ class CalendarFragment : Fragment() , SingleListCLickListener, SingleItemCLickLi
                     isEditClick = false
 
                     if (selected.equals("1")){
+                        Constants.showLoading(requireActivity())
                         CoroutineScope(Dispatchers.IO).launch {
                             viewModel.editreminder(
                                 mList[selected_position]._id,
@@ -621,9 +633,8 @@ class CalendarFragment : Fragment() , SingleListCLickListener, SingleItemCLickLi
                                 _pickedDate + " " + _pickedTime+":00", mInfoBuilderTwo.findViewById<EditText>(R.id.mEtDescription).text.toString().trim(),tz.id
                             )
                         }
-
-
                     }else{
+                        Constants.showLoading(requireActivity())
                         CoroutineScope(Dispatchers.IO).launch {
                             viewModel.editreminder(
                                 mList[selected_position]._id,
@@ -664,6 +675,7 @@ class CalendarFragment : Fragment() , SingleListCLickListener, SingleItemCLickLi
                     msg = "Are you sure you want to Delete it ?",
                     onLeftClick = {/*btn No click*/ },
                     onRightClick = {/*btn Yes click*/
+                        Constants.showLoading(requireActivity())
                         CoroutineScope(Dispatchers.IO).launch {
                             viewModel.deletereminder(mList[position]._id)
                         }

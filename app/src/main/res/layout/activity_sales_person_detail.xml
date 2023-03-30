@@ -128,7 +128,7 @@
                             android:layout_marginStart="16dp"
                             android:layout_marginLeft="16dp"
                             android:layout_marginTop="16dp"
-                            android:src="@drawable/ic_home_one"
+                            android:src="@drawable/ic_user_default"
                             app:layout_constraintStart_toStartOf="parent"
                             app:layout_constraintTop_toTopOf="parent"
 
@@ -328,7 +328,7 @@
                             android:drawablePadding="@dimen/margin_1x"
                             android:drawableTint="@color/colorPrimary"
                             android:fontFamily="@font/normal_poppins"
-                            android:text="Trade"
+                            android:text="Job Title"
                             android:textColor="@color/black_color"
                             android:textSize="@dimen/text_mediumLarge"
                             app:layout_constraintStart_toStartOf="@+id/textView102"
@@ -471,7 +471,7 @@
                     app:layout_constraintEnd_toEndOf="parent"
                     android:paddingBottom="@dimen/margin_1x"
                     app:layout_constraintStart_toStartOf="parent"
-                    tools:listitem="@layout/row_item_comnpletedjobscontracts" />
+                     />
 
 
                 <ImageView

@@ -1,5 +1,6 @@
 package com.tradesk.activity.proposalModule
 
+import android.app.Activity
 import android.app.Dialog
 import android.content.BroadcastReceiver
 import android.content.Context
@@ -20,9 +21,13 @@ import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.ViewModelProvider
 import androidx.localbroadcastmanager.content.LocalBroadcastManager
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.fxn.pix.Options
+import com.fxn.pix.Pix
+import com.google.android.libraries.places.widget.Autocomplete
 import com.google.android.material.textfield.TextInputEditText
 import com.google.gson.GsonBuilder
 import com.socialgalaxyApp.util.extension.loadWallImage
+import com.theartofdev.edmodo.cropper.CropImage
 import com.tradesk.Interface.OnItemRemove
 import com.tradesk.Interface.SingleItemCLickListener
 import com.tradesk.Model.AddItemDataProposal
@@ -42,7 +47,8 @@ import com.tradesk.util.extension.customCenterDialog
 import com.tradesk.util.extension.customFullDialog
 import com.tradesk.util.extension.toast
 import com.tradesk.viewModel.ProposalsViewModel
-import io.ak1.pix.helpers.PixBus
+import dagger.hilt.android.AndroidEntryPoint
+import id.zelory.compressor.Compressor
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -57,7 +63,7 @@ import java.text.SimpleDateFormat
 import java.util.*
 import javax.inject.Inject
 import kotlin.collections.ArrayList
-
+@AndroidEntryPoint
 class InvoicesActivity : AppCompatActivity(), SingleItemCLickListener, OnItemRemove {
 
     companion object {
@@ -80,6 +86,7 @@ class InvoicesActivity : AppCompatActivity(), SingleItemCLickListener, OnItemRem
     var city = ""
     var state = ""
     var post_code = ""
+
     var type = ""
     var todaydate = ""
     var status = "pending"
@@ -104,11 +111,25 @@ class InvoicesActivity : AppCompatActivity(), SingleItemCLickListener, OnItemRem
     val mProSelectedItemsAdapter by lazy { ProSelectedItemsAdapter(this, this, this, mAddItemDataUpdate
     )
     }
+    val options by lazy {
+        Options.init()
+            .setRequestCode(1010) //Request code for activity results
+            .setCount(3) //Number of images to restict selection count
+            .setFrontfacing(false) //Front Facing camera on start
+            .setPreSelectedUrls(arrayListOf()) //Pre selected Image Urls
+            .setSpanCount(4) //Span count for gallery min 1 & max 5
+            .setMode(Options.Mode.All) //Option to select only pictures or videos or both
+            .setVideoDurationLimitinSeconds(30) //Duration for video recording
+            .setScreenOrientation(Options.SCREEN_ORIENTATION_PORTRAIT) //Orientaion
+            .setPath("/pix/images") //Custom Path For media Storage
+
+    }
     lateinit var datePicker: DatePickerHelper
     lateinit var binding: ActivityInvoicesBinding
     lateinit var viewModel:ProposalsViewModel
     @Inject
     lateinit var permissionFile: PermissionFile
+
     @RequiresApi(Build.VERSION_CODES.O)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -240,9 +261,11 @@ class InvoicesActivity : AppCompatActivity(), SingleItemCLickListener, OnItemRem
                 toast("Please select client")
             } else if (binding.mTvDates.text.isEmpty()) {
                 toast("Please select date")
-            } else if (mAddItemDataUpdate.isEmpty()) {
+            }
+            else if (mAddItemDataUpdate.isEmpty()) {
                 toast("Please add invoice items")
-            } else {
+            }
+            else {
                 if (isInternetConnected(this))
                     hashMapOf<String, RequestBody>().also {
 
@@ -372,6 +395,7 @@ class InvoicesActivity : AppCompatActivity(), SingleItemCLickListener, OnItemRem
                             )
                         }
                         if (!isEditMode) {
+                            Constants.showLoading(this)
                             CoroutineScope(Dispatchers.IO).launch {
                                 viewModel.addProposals(it)
                             }
@@ -383,6 +407,7 @@ class InvoicesActivity : AppCompatActivity(), SingleItemCLickListener, OnItemRem
                                     proposalDetailModel.data.proposal_details._id
                                 )
                             )
+                            Constants.showLoading(this)
                             CoroutineScope(Dispatchers.IO).launch {
                                 viewModel.updateProposal(it)
                             }
@@ -482,8 +507,6 @@ class InvoicesActivity : AppCompatActivity(), SingleItemCLickListener, OnItemRem
                                 )
                             )
                         }
-
-
                         it.put(
                             "client_id",
                             RequestBody.create(
@@ -582,16 +605,12 @@ class InvoicesActivity : AppCompatActivity(), SingleItemCLickListener, OnItemRem
                                 date_pass
                             )
                         )
-
-
                         if (mFile != null) {
                             it.put(
                                 "image\"; filename=\"image.jpg",
                                 RequestBody.create(MediaType.parse("image/*"), mFile!!)
                             )
                         }
-
-
                         if (mFileSignature != null) {
                             it.put(
                                 "client_signature\"; filename=\"image.jpg",
@@ -599,6 +618,7 @@ class InvoicesActivity : AppCompatActivity(), SingleItemCLickListener, OnItemRem
                             )
                         }
                         if (!isEditMode) {
+                            Constants.showLoading(this)
                             CoroutineScope(Dispatchers.IO).launch {
                                 viewModel.addProposals(it)
                             }
@@ -610,15 +630,16 @@ class InvoicesActivity : AppCompatActivity(), SingleItemCLickListener, OnItemRem
                                     proposalDetailModel.data.proposal_details._id
                                 )
                             )
+                            Constants.showLoading(this)
                             CoroutineScope(Dispatchers.IO).launch {
                                 viewModel.updateProposal(it)
                             }
                         }
-
                     }
-
             }
         }
+
+        initObserve()
     }
 
     fun initObserve()
@@ -681,6 +702,7 @@ class InvoicesActivity : AppCompatActivity(), SingleItemCLickListener, OnItemRem
     fun showTaxDialog() {
         customCenterDialog(R.layout.addtax_dialog, true) { v, d ->
             val taxRateEdit = v.findViewById<EditText>(R.id.mEtTaxes)
+            taxRateEdit.setText(binding.mEtTaxes.text.toString())
             val button: Button =v.findViewById(R.id.done_button);
             button.setOnClickListener() {
                 if (!taxRateEdit.text.isNullOrEmpty()) {
@@ -807,17 +829,16 @@ class InvoicesActivity : AppCompatActivity(), SingleItemCLickListener, OnItemRem
         }
     }
     fun showImagePop() {
-
-//        Pix.start(this@InvoicesActivity, options)
+        Pix.start(this@InvoicesActivity, options)
 
     }
     private fun saveCaptureImageResults(path: String) = try {
-//        val file = File(path)
-//        mFile = Compressor(this@InvoicesActivity)
-//            .setMaxHeight(1000).setMaxWidth(1000)
-//            .setQuality(99)
-//            .setCompressFormat(Bitmap.CompressFormat.JPEG)
-//            .compressToFile(file)
+        val file = File(path)
+        mFile = Compressor(this@InvoicesActivity)
+            .setMaxHeight(1000).setMaxWidth(1000)
+            .setQuality(99)
+            .setCompressFormat(Bitmap.CompressFormat.JPEG)
+            .compressToFile(file)
 
         binding.mIvMainImage.loadWallImage(mFile!!.absolutePath)
 
@@ -1014,10 +1035,6 @@ class InvoicesActivity : AppCompatActivity(), SingleItemCLickListener, OnItemRem
         }
     }
 
-    override fun onDestroy() {
-        super.onDestroy()
-        LocalBroadcastManager.getInstance(this).unregisterReceiver(broadCastReceiver)
-    }
 
     override fun onSingleItemClick(item: Any, position: Int) {
         createEditItem(
@@ -1283,6 +1300,77 @@ class InvoicesActivity : AppCompatActivity(), SingleItemCLickListener, OnItemRem
         binding.mTvTotals.text = item_total.toString()
     }
 
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        if (requestCode == 1010) {
+            data?.getStringArrayListExtra(Pix.IMAGE_RESULTS)?.let {
+                if (it.isNotEmpty()) saveCaptureImageResults(it[0])
+            }
+            Log.e("RESULT","RESULT")
+//                saveCaptureImageResults()
+        } else if (resultCode == Activity.RESULT_OK) {
+            if (requestCode == Constants.REQUEST_TAKE_PHOTO) {
+
+            } else if (requestCode == Constants.REQUEST_IMAGE_GET) {
+
+            } else if (requestCode == Constants.PLACE_AUTOCOMPLETE_REQUEST_CODE) {
+                try {
+                    val place = Autocomplete.getPlaceFromIntent(data!!)
+//                    setPlaceData(place)
+                } catch (e: java.lang.Exception) {
+                }
+            } else if (requestCode == 3333) {
+                if (resultCode == Activity.RESULT_OK) {
+                    clients_id = ""
+                    clients_name = ""
+                    clients_email = ""
+                    clients_address = ""
+                    clients_phone = ""
+                    clients_id = data!!.getStringExtra("result").toString()
+                    clients_name = data!!.getStringExtra("name").toString()
+                    binding.mTvClientName.setText("Client : " + clients_name)
+                    binding.mTvClientName.visibility = View.VISIBLE
+                    clients_email = data!!.getStringExtra("email").toString()
+                    clients_address = data!!.getStringExtra("address").toString()
+                    clients_phone = data!!.getStringExtra("phonenumber").toString()
+                }
+                if (resultCode == Activity.RESULT_CANCELED) {
+                    // Write your code if there's no result
+                }
+            } else if (requestCode == 4444) {
+                if (resultCode == Activity.RESULT_OK) {
+                    sales = ""
+                    sales = data!!.getStringExtra("result").toString()
+                    if (data!!.getStringExtra("image").toString().isNotEmpty()) {
+//                        imageView223.loadWallImage(data!!.getStringExtra("image").toString())
+                    }
+                }
+                if (resultCode == Activity.RESULT_CANCELED) {
+                    // Write your code if there's no result
+                }
+            } else if (requestCode == 5555) {
+                if (resultCode == Activity.RESULT_OK) {
+                    mySignatureUri = ""
+                    mySignatureUri = data!!.getStringExtra("result").toString()
+                    if (data!!.getStringExtra("mySignatureUri").toString().isNotEmpty()) {
+//                        imageView223.loadWallImage(data!!.getStringExtra("image").toString())
+                    }
+                }
+                if (resultCode == Activity.RESULT_CANCELED) {
+                    // Write your code if there's no result
+                }
+            }
+            if (requestCode == CropImage.CROP_IMAGE_ACTIVITY_REQUEST_CODE) {
+                val result = CropImage.getActivityResult(data)
+                if (resultCode == AppCompatActivity.RESULT_OK) {
+//                    saveCaptureImageResults(result.uri)
+                } else if (resultCode == CropImage.CROP_IMAGE_ACTIVITY_RESULT_ERROR_CODE) {
+                    val error = result.error
+                }
+            }
+        }
+    }
+
     override fun onRemove(item: Any, position: Int) {
         if (mAddItemDataUpdate.isNotEmpty()) {
             mAddItemDataUpdate.removeAt(position)
@@ -1290,5 +1378,12 @@ class InvoicesActivity : AppCompatActivity(), SingleItemCLickListener, OnItemRem
             mProSelectedItemsAdapter.notifyItemRangeChanged(position, mAddItemDataUpdate.size)
             setTotals()
         }
+    }
+
+
+
+    override fun onDestroy() {
+        super.onDestroy()
+        LocalBroadcastManager.getInstance(this).unregisterReceiver(broadCastReceiver)
     }
 }

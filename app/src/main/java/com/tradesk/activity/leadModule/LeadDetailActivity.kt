@@ -15,6 +15,7 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.PopupMenu
 import android.widget.TextView
+import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.ViewModelProvider
@@ -27,10 +28,9 @@ import com.tradesk.Model.AdditionalImageLeadDetail
 import com.tradesk.Model.LeadDetailModel
 import com.tradesk.Model.Sale
 import com.tradesk.R
-import com.tradesk.activity.*
-import com.tradesk.activity.clientModule.CustomerDetailActivity
 import com.tradesk.activity.galleryModule.GallaryActivity
 import com.tradesk.activity.jobModule.JobDetailActivity
+import com.tradesk.activity.jobModule.notes.LeadNotesActivity
 import com.tradesk.activity.proposalModule.ProposalsActivity
 import com.tradesk.activity.salesPerson.AllSalesPersonActivity
 import com.tradesk.activity.salesPerson.SalesPersonDetailActivity
@@ -390,7 +390,7 @@ class LeadDetailActivity : AppCompatActivity(), SingleItemCLickListener {
                     } else if (status_api.equals("sale")) {
                         toast("Lead converted to Sale")
                     } else {
-                        toast(it.message)
+                        toast(it.data!!.message)
                     }
                 }
                 is NetworkResult.Error -> {
@@ -546,9 +546,13 @@ class LeadDetailActivity : AppCompatActivity(), SingleItemCLickListener {
         popup.setOnMenuItemClickListener {
             binding.tvStatus.text = it!!.title
             if (it.title!!.equals("Follow Up")) {
+                Toast.makeText(this, "From", Toast.LENGTH_SHORT).show()
                 showFollowUpPop(0)
-            } else if (it.title!!.equals("Pending")) {
+            }
+            else if (it.title!!.equals("Pending"))
+            {
                 status_api = binding.tvStatus.text.toString().trim().lowercase()
+                Constants.showLoading(this)
                 CoroutineScope(Dispatchers.IO).launch {
                     viewModel.convertLeads(
                         intent.getStringExtra("id").toString(),
@@ -559,6 +563,7 @@ class LeadDetailActivity : AppCompatActivity(), SingleItemCLickListener {
                 }
             } else if (it.title!!.equals("Sale")) {
                 status_api = binding.tvStatus.text.toString().trim().lowercase()
+                Constants.showLoading(this)
                 CoroutineScope(Dispatchers.IO).launch {
                     viewModel.convertLeads(intent.getStringExtra("id").toString(), "lead", "sale", "false")
 
@@ -571,6 +576,7 @@ class LeadDetailActivity : AppCompatActivity(), SingleItemCLickListener {
                     btnRight = "Yes",
                     onLeftClick = {},
                     onRightClick = {
+                        Constants.showLoading(this)
                         CoroutineScope(Dispatchers.IO).launch {
                             viewModel.convertLeads(intent.getStringExtra("id").toString(), "job", "pending", "true")
                         }
@@ -617,8 +623,7 @@ class LeadDetailActivity : AppCompatActivity(), SingleItemCLickListener {
                             mMinute = minute
                             var _pickedTime = ""
                             if (hourOfDay.toString().length == 1 && minute.toString().length == 1) {
-                                _pickedTime =
-                                    "0" + hourOfDay.toString() + ":" + "0" + minute.toString()
+                                _pickedTime = "0" + hourOfDay.toString() + ":" + "0" + minute.toString()
                             } else if (hourOfDay.toString().length == 1) {
                                 _pickedTime = "0" + hourOfDay.toString() + ":" + minute.toString()
                             } else if (minute.toString().length == 1) {
@@ -633,6 +638,7 @@ class LeadDetailActivity : AppCompatActivity(), SingleItemCLickListener {
 //                            et_show_date_time.setText(date_time.toString() + " " + hourOfDay + ":" + minute)
 
                             val tz = TimeZone.getDefault()
+                            Constants.showLoading(this)
                             CoroutineScope(Dispatchers.IO).launch{
                                 viewModel.addreminder(intent.getStringExtra("id").toString(), client_id, "phone",
                                     "lead", _pickedDate + " " + _pickedTime + ":00", tz.id)
@@ -695,6 +701,7 @@ class LeadDetailActivity : AppCompatActivity(), SingleItemCLickListener {
                             ) //2019-02-12
 //                            et_show_date_time.setText(date_time.toString() + " " + hourOfDay + ":" + minute)
                             val tz = TimeZone.getDefault()
+                            Constants.showLoading(this)
                             CoroutineScope(Dispatchers.IO).launch{
                                 viewModel.addreminder(
                                     intent.getStringExtra("id").toString(),

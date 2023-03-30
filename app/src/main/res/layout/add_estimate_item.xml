@@ -121,6 +121,7 @@
                     android:paddingStart="@dimen/margin_2x"
                     android:paddingLeft="@dimen/margin_2x"
                     android:textColor="@color/text_color"
+                    android:background="@color/white"
                     android:textSize="@dimen/text_mediumLarge" />
             </com.google.android.material.textfield.TextInputLayout>
 
@@ -150,6 +151,7 @@
                     android:paddingStart="@dimen/margin_2x"
                     android:paddingLeft="@dimen/margin_2x"
                     android:textColor="@color/text_color"
+                    android:background="@color/white"
                     android:textSize="@dimen/text_mediumLarge" />
             </com.google.android.material.textfield.TextInputLayout>
 
@@ -179,6 +181,7 @@
                     android:paddingLeft="@dimen/margin_2x"
                     android:imeOptions="actionNext"
                     android:textColor="@color/text_color"
+                    android:background="@color/white"
                     android:textSize="@dimen/text_mediumLarge" />
             </com.google.android.material.textfield.TextInputLayout>
 
@@ -208,6 +211,7 @@
                     android:paddingLeft="@dimen/margin_2x"
                     android:imeOptions="actionDone"
                     android:textColor="@color/text_color"
+                    android:background="@color/white"
                     android:textSize="@dimen/text_mediumLarge" />
             </com.google.android.material.textfield.TextInputLayout>
 
@@ -219,6 +223,7 @@
                 android:layout_marginEnd="@dimen/margin_3x"
                 android:paddingLeft="@dimen/_17sdp"
                 android:text="Item taxable"
+                app:buttonTint="@color/colorAccent"
                 android:textColor="@color/black_color"
                 android:textSize="@dimen/text_mediumLarge"
                 tools:ignore="UseSwitchCompatOrMaterialXml" />

@@ -744,7 +744,7 @@
 
                 <ImageView
                     android:id="@+id/mIvAddUsers"
-                    android:layout_width="@dimen/_100sdp"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="16dp"
                     app:layout_constraintEnd_toEndOf="parent"

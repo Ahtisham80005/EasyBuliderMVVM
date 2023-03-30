@@ -1,5 +1,6 @@
 package com.tradesk.fragment
 
+import android.app.Activity
 import android.content.Intent
 import android.net.Uri
 import android.os.Build
@@ -20,6 +21,7 @@ import com.tradesk.Interface.LongClickListener
 import com.tradesk.Interface.SingleItemCLickListener
 import com.tradesk.Model.LeadsData
 import com.tradesk.R
+import com.tradesk.activity.SettingsActivity
 import com.tradesk.activity.auth.LoginActivity
 import com.tradesk.activity.leadModule.AddLeadActivity
 import com.tradesk.activity.leadModule.LeadDetailActivity
@@ -52,7 +54,7 @@ class HomeFragment : Fragment(),SingleItemCLickListener,LongClickListener {
     lateinit var mPrefs: PreferenceHelper
     @Inject
     lateinit var permissionFile: PermissionFile
-    var mHomeImage = true
+    var mHome = false
     var CheckVersion = true
     var clicked = ""
     val isPortalUser by lazy {
@@ -129,6 +131,7 @@ class HomeFragment : Fragment(),SingleItemCLickListener,LongClickListener {
                         clicked = "0"
                         mList.clear()
                         mHomeLeadsAdapter.notifyDataSetChanged()
+                        binding.mEtSearchName.setText("")
                         if (isInternetConnected(requireActivity())) {
                             Constants.showLoading(requireActivity())
                             CoroutineScope(Dispatchers.IO).launch {
@@ -140,6 +143,7 @@ class HomeFragment : Fragment(),SingleItemCLickListener,LongClickListener {
                         clicked = "1"
                         mList.clear()
                         mHomeLeadsAdapter.notifyDataSetChanged()
+                        binding.mEtSearchName.setText("")
                         if (isInternetConnected(requireActivity())) {
                             Constants.showLoading(requireActivity())
                             CoroutineScope(Dispatchers.IO).launch {
@@ -151,6 +155,7 @@ class HomeFragment : Fragment(),SingleItemCLickListener,LongClickListener {
                         clicked = "2"
                         mList.clear()
                         mHomeLeadsAdapter.notifyDataSetChanged()
+                        binding.mEtSearchName.setText("")
                         if (isInternetConnected(requireActivity())) {
                             Constants.showLoading(requireActivity())
                             CoroutineScope(Dispatchers.IO).launch {
@@ -162,6 +167,7 @@ class HomeFragment : Fragment(),SingleItemCLickListener,LongClickListener {
                         clicked = "3"
                         mList.clear()
                         mHomeLeadsAdapter.notifyDataSetChanged()
+                        binding.mEtSearchName.setText("")
                         if (isInternetConnected(requireActivity())) {
                             Constants.showLoading(requireActivity())
                             CoroutineScope(Dispatchers.IO).launch {
@@ -181,7 +187,7 @@ class HomeFragment : Fragment(),SingleItemCLickListener,LongClickListener {
 
         binding.mIvAdd.setOnClickListener { startActivity(Intent(activity, AddLeadActivity::class.java)) }
         binding.mIvSettingsLead.setOnClickListener {
-//            startActivity(Intent(requireActivity(), SettingsActivity::class.java))
+            startActivity(Intent(requireActivity(), SettingsActivity::class.java))
         }
 //        binding.tvStatuses.setOnClickListener { showDropDownMenu(tvStatuses, 1) }
         binding.rvLeads.layoutManager =
@@ -287,7 +293,7 @@ class HomeFragment : Fragment(),SingleItemCLickListener,LongClickListener {
             Constants.hideLoading()
             when (it) {
                 is NetworkResult.Success -> {
-                    onResume()
+                    callAgain()
                 }
                 is NetworkResult.Error -> {
                     toast(it.message)
@@ -303,8 +309,19 @@ class HomeFragment : Fragment(),SingleItemCLickListener,LongClickListener {
                 is NetworkResult.Success -> {
                     val builder = GsonBuilder()
                     val gson = builder.create()
-                    var string=gson.toJson(it);
-                    startActivity(Intent(requireContext(), AddLeadActivity::class.java).putExtra("edit",true).putExtra("lead",string))
+                    var string=gson.toJson(it.data)
+                    try {
+                        var activity=activity
+                        if(activity!= null && mHome){
+                            startActivity(Intent(requireContext(), AddLeadActivity::class.java)
+                                .putExtra("edit",true)
+                                .putExtra("lead",string))
+                        }
+                    }
+                    catch (e:Exception)
+                    {
+
+                    }
                 }
                 is NetworkResult.Error -> {
                     toast(it.message)
@@ -372,6 +389,7 @@ class HomeFragment : Fragment(),SingleItemCLickListener,LongClickListener {
             }
             else if (it.itemId == R.id.item_delete) {
 //                presenter.junkleads(mList[selectedPosition]._id)
+                Constants.showLoading(requireActivity())
                 CoroutineScope(Dispatchers.IO).launch {
                     viewModel.LeadDelete(mList[selectedPosition]._id)
                 }
@@ -379,6 +397,8 @@ class HomeFragment : Fragment(),SingleItemCLickListener,LongClickListener {
             else if (it.itemId == R.id.item_edit) {
                 if (isInternetConnected(requireActivity())) {
 //                    presenter.getLeadDetail(mList[selectedPosition]._id)
+                    mHome=true
+                    Constants.showLoading(requireActivity())
                     CoroutineScope(Dispatchers.IO).launch {
                         viewModel.getLeadDetail(mList[selectedPosition]._id)
                     }
@@ -393,18 +413,20 @@ class HomeFragment : Fragment(),SingleItemCLickListener,LongClickListener {
         val shareIntent = Intent(Intent.ACTION_SEND)
         shareIntent.type = "text/plain"
         shareIntent.putExtra(Intent.EXTRA_SUBJECT, "Tradesk\nLead Detail")
+
+        var phone = Constants.insertString(mList.get(selectedPosition).client.get(0).phone_no, "", 0)
+        phone = Constants.insertString(phone!!, ")", 2)
+        phone = Constants.insertString(phone!!, " ", 3)
+        phone = Constants.insertString(phone!!, "-", 7)
+        phone = "+1(" + phone!!
+
         var shareMessage = """
                     ${
             "\n" + "Lead Detail" + "\n" + mList.get(selectedPosition).project_name + "\n" +
                     mList.get(selectedPosition).client.get(0).name + "\n" +
                     mList.get(selectedPosition).client.get(0).email + "\n" +
-                    mList.get(selectedPosition).client.get(0).phone_no + "\n" +
+                    phone + "\n" +
                     mList.get(selectedPosition).address.street+ "\n"
-//                         "Job Detail"+"\n"+ "Project Name - "+etTvTitle.getText().toString()+"\n"+
-//                            "Client Name - "+etTvName.getText().toString()+"\n"+
-//                            "Client Email - "+etTvEmail.getText().toString()+"\n"+
-//                            "Client Phone - "+etTvPhone.getText().toString()+"\n"+
-//                            "Client Address - "+address+"\n"
         }
               
                     """.trimIndent()
@@ -417,6 +439,18 @@ class HomeFragment : Fragment(),SingleItemCLickListener,LongClickListener {
 
     override fun onResume() {
         super.onResume()
+        mHome=false
+        try {
+           if(activity!=null)
+            {
+                callAgain()
+            }
+        }
+        catch (e:java.lang.Exception)
+        {
+        }
+    }
+    fun callAgain() {
         binding.mEtSearchName.setText("")
         if (clicked == "0") {
             mList.clear()
@@ -427,7 +461,8 @@ class HomeFragment : Fragment(),SingleItemCLickListener,LongClickListener {
                     viewModel.getAllLeads("lead","1", "100", "all")
                 }
             }
-        } else if (clicked == "1") {
+        }
+        else if (clicked == "1") {
             mList.clear()
             mHomeLeadsAdapter.notifyDataSetChanged()
             if (isInternetConnected(requireActivity())) {
@@ -436,7 +471,8 @@ class HomeFragment : Fragment(),SingleItemCLickListener,LongClickListener {
                     viewModel.getPendingLeads("lead","1", "100", "pending")
                 }
             }
-        } else if (clicked == "2") {
+        }
+        else if (clicked == "2") {
             mList.clear()
             mHomeLeadsAdapter.notifyDataSetChanged()
             if (isInternetConnected(requireActivity())) {
@@ -445,7 +481,8 @@ class HomeFragment : Fragment(),SingleItemCLickListener,LongClickListener {
                     viewModel.getFollowUPLeads("lead","1", "100", "follow_up")
                 }
             }
-        } else if (clicked == "3") {
+        }
+        else if (clicked == "3") {
             if (isInternetConnected(requireActivity())) {
                 Constants.showLoading(requireActivity())
                 CoroutineScope(Dispatchers.IO).launch {

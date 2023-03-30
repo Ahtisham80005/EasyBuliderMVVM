@@ -87,7 +87,8 @@ class AddJobActivity : AppCompatActivity() , AddClientListener, AddSalesListener
 
         binding.clientsRv.adapter = clientAdapter
         binding.salesRv.adapter = salesAdapter
-        if (intent.hasExtra("edit")) {
+        if (intent.hasExtra("edit"))
+        {
             val builder = GsonBuilder()
             val gson = builder.create()
             var projectJsonString = intent.getStringExtra("lead");
@@ -223,14 +224,14 @@ class AddJobActivity : AppCompatActivity() , AddClientListener, AddSalesListener
 //                        RequestBody.create(MediaType.parse("image/*"), mFile!!)
 //                    )
 
-                    if (!isEditMode) {
+                    if (!isEditMode)
+                    {
                         Constants.showLoading(this)
                         CoroutineScope(Dispatchers.IO).launch {
                             viewModel.AddLeads(it, Constants.createPartFromArray(list as ArrayList<String>))
                         }
                     } else {
-                        it.put("id", RequestBody.create(
-                            MediaType.parse("multipart/form-data"), leadDetailModel.data.leadsData._id))
+                        it.put("id", RequestBody.create(MediaType.parse("multipart/form-data"), leadDetailModel.data.leadsData._id))
                         Constants.showLoading(this)
                         CoroutineScope(Dispatchers.IO).launch {
                             viewModel.updateLeads(it, Constants.createPartFromArray(list as ArrayList<String>))
@@ -290,7 +291,7 @@ class AddJobActivity : AppCompatActivity() , AddClientListener, AddSalesListener
         binding.mTvProjectName.setText(leadDetailModel.data.leadsData.project_name.trim())
         binding.mTvDesc.setText(leadDetailModel.data.leadsData.description.trim())
         binding.mTvSource.setText(leadDetailModel.data.leadsData.source.trim())
-        binding.mTvAddress.setText(leadDetailModel.data.leadsData.address.city)
+        binding.mTvAddress.setText(leadDetailModel.data.leadsData.address.street)
         binding.mTvStartDate.text =Constants.convertDateFormatWithTime(leadDetailModel.data.leadsData.startDate)
         if (leadDetailModel.data.leadsData.endDate != null && leadDetailModel.data.leadsData.endDate.isNotEmpty()) binding.mTvEndDate.text =
             Constants.convertDateFormatWithTime(leadDetailModel.data.leadsData.endDate)
@@ -298,7 +299,7 @@ class AddJobActivity : AppCompatActivity() , AddClientListener, AddSalesListener
         lat = leadDetailModel.data.leadsData.address.location.coordinates[0].toString();
         lng = leadDetailModel.data.leadsData.address.location.coordinates[1].toString();
         post_code = leadDetailModel.data.leadsData.address.zipcode
-        state = leadDetailModel.data.leadsData.address.state
+        state = leadDetailModel.data.leadsData.address.street
         binding.mBtnAddJob.setText("Update")
 
         if (leadDetailModel.data.leadsData.client != null && leadDetailModel.data.leadsData.client.isNotEmpty()) {
@@ -608,4 +609,5 @@ class AddJobActivity : AppCompatActivity() , AddClientListener, AddSalesListener
             salesAdapter.notifyItemRangeChanged(position, salesList.size)
         }
     }
+
 }

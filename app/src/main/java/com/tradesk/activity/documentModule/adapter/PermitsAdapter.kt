@@ -1,4 +1,4 @@
-package com.tradesk.activity.documentModule
+package com.tradesk.activity.documentModule.adapter
 
 import android.content.Context
 import android.util.Log
@@ -6,26 +6,28 @@ import android.view.LayoutInflater
 import android.view.MotionEvent
 import android.view.View
 import android.view.ViewGroup
+import android.webkit.WebView
+import android.webkit.WebViewClient
 import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.tradesk.Interface.CustomCheckBoxListener
-import com.tradesk.Interface.LongClickListener
 import com.tradesk.Interface.SingleListCLickListener
 import com.tradesk.Interface.UnselectCheckBoxListener
+import com.tradesk.Model.AdditionalImageLeadDetail
+import com.tradesk.Model.CheckModel
 import com.tradesk.R
 import com.tradesk.databinding.RowAllDocumentsBinding
 
-class UserSubDocumentsAdapter(
+class PermitsAdapter(
     context: Context,
     val listener: SingleListCLickListener,
-    var mList: MutableList<String>,
-    val longClickListener: LongClickListener,
+    var mImages: ArrayList<AdditionalImageLeadDetail>,
     var customCheckBoxListener: CustomCheckBoxListener,
     val unselectCheckBoxListener: UnselectCheckBoxListener,
     var checkboxVisibility:Boolean,
-    var allCheckBoxSelect:Boolean
-) : RecyclerView.Adapter<UserSubDocumentsAdapter.MyViewHolder>() {
-
+    var allCheckBoxSelect:Boolean,
+    var mcheckBoxModelList: MutableList<CheckModel>
+) : RecyclerView.Adapter<PermitsAdapter.MyViewHolder>() {
     class MyViewHolder (var binding: RowAllDocumentsBinding): RecyclerView.ViewHolder((binding.root))
     {
         fun bind() {
@@ -41,7 +43,7 @@ class UserSubDocumentsAdapter(
         return MyViewHolder(binding)
     }
 
-    override fun getItemCount(): Int = mList.size
+    override fun getItemCount(): Int = mImages.size
 
     override fun onBindViewHolder(holder: MyViewHolder, position: Int) {
         holder.apply {
@@ -55,51 +57,57 @@ class UserSubDocumentsAdapter(
                 binding.mCheckBox.isChecked = true
                 binding.mCheckBox.isClickable = false
             }
+            //in some cases, it will prevent unwanted situations
+            binding.mCheckBox.setOnCheckedChangeListener(null)
+            binding.mCheckBox.tag=position
+            binding.mCheckBox.isChecked=mcheckBoxModelList.get(position).check
             binding.mCheckBox.setOnCheckedChangeListener { _, isChecked ->
+                mcheckBoxModelList.get(position).check=isChecked
                 if (isChecked) {
                     customCheckBoxListener.onCheckBoxClick(position)
                 } else {
                     unselectCheckBoxListener.onCheckBoxUnCheckClick(0, position)
-
                 }
             }
-
-            for (i in 0 until mList.size) {
-                binding.mTitle.text = mList[position].substringAfterLast("/")
-//                Log.d(TAG, "onBindViewHolder: " + mList[position])
-                break
-            }
+            binding.mTitle.text = mImages[position].image.substringAfterLast("/")
             binding.mIvPic.setOnLongClickListener { longClick->
-                longClickListener.onLongClickListener(longClick,position)
+//                longClickListener.onLongClickListenerJobDocs(longClick,position)
                 return@setOnLongClickListener true
             }
 
-            itemView.setOnLongClickListener { longClick->
-                longClickListener.onLongClickListener(longClick,position)
+            binding.mTitle.setOnLongClickListener { longClick->
+//                longClickListener.onLongClickListenerJobDocs(longClick,position)
                 return@setOnLongClickListener true
             }
-
             binding.mIvPic.visibility= View.GONE
             binding.myWebView.visibility= View.VISIBLE
             binding.myWebView.getSettings().setJavaScriptEnabled(true)
-            binding.myWebView.setHorizontalScrollBarEnabled(false)
-            binding.myWebView.setVerticalScrollBarEnabled(false)
-            binding.myWebView.loadUrl("https://drive.google.com/viewerng/viewer?embedded=true&url="+mList[position])
+            binding.myWebView.setHorizontalScrollBarEnabled(false);
+            binding.myWebView.setVerticalScrollBarEnabled(false);
             binding.myWebView.setOnTouchListener(object : View.OnTouchListener {
                 override fun onTouch(v: View, event: MotionEvent): Boolean {
                     if (event.action == MotionEvent.ACTION_MOVE) {
                         return false
                     }
                     if (event.action == MotionEvent.ACTION_UP) {
-                        listener.onSingleListClick("UserGalleryAdapter", position)
+//                        longClickListener.onLongClickListenerJobDocs(v,position)
                     }
                     return false
                 }
             })
-            binding.myWebView.setOnLongClickListener { longClick->
-                longClickListener.onLongClickListener(longClick,position)
-                return@setOnLongClickListener true
-            }
+            binding.myWebView.getSettings().setDisplayZoomControls(false)
+            binding.myWebView.setWebViewClient(object : WebViewClient() {
+                override fun onPageFinished(view: WebView?, url: String?) {
+                    binding.myWebView.visibility=View.VISIBLE
+                    binding.shimmerViewContainer.stopShimmer()
+                    binding.shimmerViewContainer.visibility=View.GONE
+                }
+            })
+            Log.e("Image Link",mImages[position].image)
+            binding.myWebView.loadUrl("https://drive.google.com/viewerng/viewer?embedded=true&url="+mImages[position].image)
+            binding.myWebView.setOnLongClickListener{longClick->
+//                longClickListener.onLongClickListenerJobDocs(longClick,position)
+                return@setOnLongClickListener true}
         }
     }
 }

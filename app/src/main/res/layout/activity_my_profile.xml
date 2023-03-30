@@ -441,7 +441,7 @@
                         android:layout_marginLeft="16dp"
                         android:layout_marginTop="16dp"
                         android:fontFamily="@font/normal_poppins"
-                        android:text="Trade"
+                        android:text="Job Title"
                         android:textColor="@color/hint_color"
                         android:textSize="@dimen/text_medium"
                         app:layout_constraintStart_toEndOf="@+id/imageView14"

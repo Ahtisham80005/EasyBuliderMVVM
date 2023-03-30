@@ -21,6 +21,7 @@ import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import java.util.Collections
 
 @AndroidEntryPoint
 class AllSalesPersonActivity : AppCompatActivity() , SingleListCLickListener {
@@ -61,6 +62,7 @@ class AllSalesPersonActivity : AppCompatActivity() , SingleListCLickListener {
                     mList.clear()
                     mSalesPersonsLeadsAdapter.notifyDataSetChanged()
                     mList.addAll(it.data!!.data.client)
+                    Collections.reverse(mList)
                     mSalesPersonsLeadsAdapter.notifyDataSetChanged()
                 }
                 is NetworkResult.Error -> {

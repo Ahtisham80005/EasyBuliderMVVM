@@ -15,6 +15,7 @@ import com.tradesk.Interface.LongClickListener
 import com.tradesk.Interface.SingleListCLickListener
 import com.tradesk.Interface.UnselectCheckBoxListener
 import com.tradesk.Model.AdditionalImageLeadDetail
+import com.tradesk.Model.CheckModel
 import com.tradesk.R
 import com.tradesk.databinding.RowItemGalleryUpdatedBinding
 import kotlinx.coroutines.CoroutineScope
@@ -29,7 +30,8 @@ class GallaryAdapterUpdated  (context: Context,
                               var customCheckBoxListener: CustomCheckBoxListener,
                               val unselectCheckBoxListener: UnselectCheckBoxListener,
                               var checkboxVisibility:Boolean,
-                              var allCheckBoxSelect:Boolean
+                              var allCheckBoxSelect:Boolean,
+                              var mcheckBoxModelList: MutableList<CheckModel>
 ) : RecyclerView.Adapter<GallaryAdapterUpdated.MyViewHolder>() {
 
     class MyViewHolder (var binding: RowItemGalleryUpdatedBinding): RecyclerView.ViewHolder((binding.root))
@@ -59,12 +61,16 @@ class GallaryAdapterUpdated  (context: Context,
                 binding.mCheckBox.isChecked = true
                 binding.mCheckBox.isClickable = false
             }
+            //in some cases, it will prevent unwanted situations
+            binding.mCheckBox.setOnCheckedChangeListener(null)
+            binding.mCheckBox.tag=position
+            binding.mCheckBox.isChecked=mcheckBoxModelList.get(position).check
             binding.mCheckBox.setOnCheckedChangeListener { _, isChecked ->
+                mcheckBoxModelList.get(position).check=isChecked
                 if (isChecked) {
                     customCheckBoxListener.onCheckBoxClick(position)
                 } else {
                     unselectCheckBoxListener.onCheckBoxUnCheckClick(0, position)
-
                 }
             }
 

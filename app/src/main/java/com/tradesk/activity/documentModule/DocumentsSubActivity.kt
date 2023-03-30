@@ -22,8 +22,11 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.tradesk.Interface.*
 import com.tradesk.Model.AdditionalImageDocuments
 import com.tradesk.Model.AdditionalImageLeadDetail
+import com.tradesk.Model.CheckModel
 import com.tradesk.Model.SelectedDocsIds
 import com.tradesk.R
+import com.tradesk.activity.documentModule.adapter.DocumentsSubAdapter
+import com.tradesk.activity.documentModule.adapter.PermitsAdapter
 import com.tradesk.databinding.ActivityDocumentsSubBinding
 import com.tradesk.network.NetworkResult
 import com.tradesk.util.Constants
@@ -63,12 +66,13 @@ class DocumentsSubActivity : AppCompatActivity() , SingleListCLickListener, Sing
     var checkBoxVisibility:Boolean=false
     var allCheckBoxSelect:Boolean=false
     var activeSlectMenu:Boolean=false
+    var mcheckBoxModelList=mutableListOf<CheckModel>()
 
     var mListAllDocuments = mutableListOf<AdditionalImageDocuments>()
-    var documentsSubAdapter:DocumentsSubAdapter? = null
+    var documentsSubAdapter: DocumentsSubAdapter? = null
 
     val mPermits = ArrayList<AdditionalImageLeadDetail>()
-    var mPermitsAdapter:PermitsAdapter? = null
+    var mPermitsAdapter: PermitsAdapter? = null
 
     lateinit var binding: ActivityDocumentsSubBinding
     lateinit var viewModel: DocumentViewModel
@@ -82,12 +86,19 @@ class DocumentsSubActivity : AppCompatActivity() , SingleListCLickListener, Sing
         jobDcment_id = intent.getStringExtra("jobDocument_id").toString()
         binding.tvTitle.text = intent.getStringExtra("project_name").toString()
 
-        if (intent.getParcelableArrayListExtra<AdditionalImageDocuments>("docslist") != null) {
-            mListAllDocuments =
-                intent.getParcelableArrayListExtra<AdditionalImageDocuments>("docslist") as ArrayList<AdditionalImageDocuments>
-            documentsSubAdapter = DocumentsSubAdapter(this, this, mListAllDocuments,this,this,this,checkBoxVisibility,allCheckBoxSelect)
+        if (intent.getParcelableArrayListExtra<AdditionalImageDocuments>("docslist") != null)
+        {
+            mListAllDocuments = intent.getParcelableArrayListExtra<AdditionalImageDocuments>("docslist") as ArrayList<AdditionalImageDocuments>
+            mcheckBoxModelList.clear()
+            for(i in mListAllDocuments)
+            {
+                mcheckBoxModelList.add(CheckModel(false))
+            }
+            documentsSubAdapter = DocumentsSubAdapter(this, this, mListAllDocuments,this,this,this,checkBoxVisibility,allCheckBoxSelect,mcheckBoxModelList)
             binding.mRvDocument.layoutManager = GridLayoutManager(this, 2, LinearLayoutManager.VERTICAL, false)
             binding.mRvDocument.adapter = documentsSubAdapter
+
+
 //            if (isInternetConnected(this)) {
 //                CoroutineScope(Dispatchers.IO).launch {
 //                    viewModel.getAllDocuments()
@@ -97,10 +108,11 @@ class DocumentsSubActivity : AppCompatActivity() , SingleListCLickListener, Sing
         else if (intent.hasExtra("permits"))
         {
 //            job_id=jobDcment_id
-            mPermitsAdapter = PermitsAdapter(this, this, mPermits,this,this,checkBoxVisibility,allCheckBoxSelect)
+            mPermitsAdapter = PermitsAdapter(this, this, mPermits,this,this,checkBoxVisibility,allCheckBoxSelect,mcheckBoxModelList)
             binding.mRvDocument.layoutManager = GridLayoutManager(this, 2, LinearLayoutManager.VERTICAL, false)
             binding.mRvDocument.adapter = mPermitsAdapter
             if (isInternetConnected(this)){
+                Constants.showLoading(this)
                 CoroutineScope(Dispatchers.IO).launch {
                     viewModel.getLeadDetail(intent.getStringExtra("id").toString())
                 }
@@ -151,13 +163,12 @@ class DocumentsSubActivity : AppCompatActivity() , SingleListCLickListener, Sing
         }
     }
 
-    fun initObserve()
-    {
+    fun initObserve() {
         viewModel.responseAllDocumentsModel.observe(this, androidx.lifecycle.Observer {it->
             Constants.hideLoading()
             when (it) {
                 is NetworkResult.Success -> {
-
+//                    finish()
                 }
                 is NetworkResult.Error -> {
                     toast(it.message)
@@ -177,6 +188,11 @@ class DocumentsSubActivity : AppCompatActivity() , SingleListCLickListener, Sing
                         mPermits.clear()
                         mPermits.addAll(it.data.data.leadsData.additional_images!!.filter { it.status!!.equals("permit") })
                         Log.e("Permit List",mPermits.toString())
+                        mcheckBoxModelList.clear()
+                        for(i in mPermits)
+                        {
+                            mcheckBoxModelList.add(CheckModel(false))
+                        }
                         mPermitsAdapter!!.notifyDataSetChanged()
                     }
                 }
@@ -245,34 +261,58 @@ class DocumentsSubActivity : AppCompatActivity() , SingleListCLickListener, Sing
             if (it.itemId == R.id.item_select_items){
                 activeSlectMenu=true
                 checkBoxVisibility=true
+                selectedDocsIdArray.clear()
+                selectedIdArray.clear()
+                selectedImageArray.clear()
                 if (intent.hasExtra("permits"))
                 {
                     //From Job
                     mPermitsAdapter!!.checkboxVisibility=true
+                    mcheckBoxModelList.clear()
+                    for(i in mPermits)
+                    {
+                        mcheckBoxModelList.add(CheckModel(false))
+                    }
                     mPermitsAdapter!!.notifyDataSetChanged()
                 }
                 else
                 {
                     //From Document
                     documentsSubAdapter!!.checkboxVisibility=true
+                    mcheckBoxModelList.clear()
+                    for(i in mListAllDocuments)
+                    {
+                        mcheckBoxModelList.add(CheckModel(false))
+                    }
                     documentsSubAdapter!!.notifyDataSetChanged()
                 }
             }else if (it.itemId == R.id.item_select_all){
                 checkBoxVisibility=true
                 activeSlectMenu=true
-
-
+                selectedDocsIdArray.clear()
+                selectedIdArray.clear()
+                selectedImageArray.clear()
                 if (intent.hasExtra("permits"))
                 {
                     //From Job
                     mPermitsAdapter!!.checkboxVisibility=true
                     mPermitsAdapter!!.allCheckBoxSelect=true
+                    mcheckBoxModelList.clear()
+                    for(i in mPermits)
+                    {
+                        mcheckBoxModelList.add(CheckModel(true))
+                    }
                     mPermitsAdapter!!.notifyDataSetChanged()
                 }
                 else
                 {
                     documentsSubAdapter!!.checkboxVisibility=true
                     documentsSubAdapter!!.allCheckBoxSelect=true
+                    mcheckBoxModelList.clear()
+                    for(i in mListAllDocuments)
+                    {
+                        mcheckBoxModelList.add(CheckModel(true))
+                    }
                     documentsSubAdapter!!.notifyDataSetChanged()
                 }
             }else if(it.itemId == R.id.item_delete_all){
@@ -282,6 +322,7 @@ class DocumentsSubActivity : AppCompatActivity() , SingleListCLickListener, Sing
                         onLeftClick = {/*btn No click*/ },
                         onRightClick = {/*btn Yes click*/
                             //  presenter.deleteAllDocs()
+                            Constants.showLoading(this)
                             CoroutineScope(Dispatchers.IO).launch {
                                 viewModel.deleteAllDocumentsJobs(job_id)
                             }
@@ -320,6 +361,7 @@ class DocumentsSubActivity : AppCompatActivity() , SingleListCLickListener, Sing
                         Log.e("DocsIdArray",selectedDocsIdArray.toString()) //[63f722197aad36fa4d5d317b]
 
                         val selectedDocsIds = SelectedDocsIds(intent.getStringExtra("job_id").toString(), selectedDocsIdArray)
+                        Constants.showLoading(this)
                         CoroutineScope(Dispatchers.IO).launch {
                             viewModel.deleteSelectedDocumentsJobs(selectedDocsIds)
                         }
@@ -420,6 +462,7 @@ class DocumentsSubActivity : AppCompatActivity() , SingleListCLickListener, Sing
 //                it.put("image\"; filename=\"image.${mFile!!.extension}", RequestBody.create(MediaType.parse("application/${mFile!!.extension}"), mFile!!))
                 it.put("_id", RequestBody.create(MediaType.parse("multipart/form-data"),job_id))
                 it.put("status", RequestBody.create(MediaType.parse("multipart/form-data"), "permit"))
+                Constants.showLoading(this)
                 CoroutineScope(Dispatchers.IO).launch {
                     viewModel.addImages(it,parts1)
                 }
@@ -434,6 +477,7 @@ class DocumentsSubActivity : AppCompatActivity() , SingleListCLickListener, Sing
             showRightMenuOnLong(item as View,position)
         }
     }
+
     override fun onCheckBoxClick(selectedPosition: Int) {
         if (intent.hasExtra("permits"))
         {
@@ -492,14 +536,14 @@ class DocumentsSubActivity : AppCompatActivity() , SingleListCLickListener, Sing
 
         popup.setOnMenuItemClickListener {
             if (it.itemId == R.id.item_share) {
-                if (selectedPosition != null) {
+                if (!selectedDocsIdArray.isEmpty()) {
                     shareDocs()
 //                    shareDocs(mListAllDocuments[selectedPosition].image)
                 } else {
                     toast("Select an item")
                 }
             } else if (it.itemId == R.id.item_delete) {
-                if (selectedPosition != null) {
+                if (!selectedDocsIdArray.isEmpty()) {
                     AllinOneDialog(ttle = "Delete",
                         msg = "Are you sure you want to Delete it ?",
                         onLeftClick = {/*btn No click*/ },
@@ -509,6 +553,7 @@ class DocumentsSubActivity : AppCompatActivity() , SingleListCLickListener, Sing
                                 Log.e("job_id",job_id)
                                 Log.e("DocsIdArray",selectedDocsIdArray.toString())
                                 val selectedDocsIds = SelectedDocsIds(job_id,selectedDocsIdArray)
+                                Constants.showLoading(this)
                                 CoroutineScope(Dispatchers.IO).launch {
                                     viewModel.deleteSelectedDocumentsJobs(selectedDocsIds)
                                 }
@@ -519,7 +564,7 @@ class DocumentsSubActivity : AppCompatActivity() , SingleListCLickListener, Sing
                     toast("Select an item")
                 }
             } else if (it.itemId == R.id.item_download) {
-                if (selectedPosition != null) {
+                if (!selectedDocsIdArray.isEmpty()) {
                     selectedIdArray.zip(selectedImageArray).forEach { pair ->
                         downloadFile(pair.first, pair.second)
                     }

@@ -96,6 +96,12 @@ class LoginActivity : AppCompatActivity(){
                     }
             }
         }
+
+        initObserve()
+    }
+
+    fun initObserve()
+    {
         viewModel.responseLoginModel.observe(this, androidx.lifecycle.Observer {it->
             Constants.hideLoading()
             when (it) {

@@ -126,12 +126,13 @@ class SignupActivity : AppCompatActivity() ,LocationListener {
                 toast("Password does not match", false)
             }else if (binding.checkBox.isChecked.not()) {
                 toast("Please accept phone number terms and conditions", false)
-            }else{
-                if (isInternetConnected(this@SignupActivity))
-                    CoroutineScope(Dispatchers.IO).launch {
-                        viewModel.Signup(binding.etName.text.toString().trim(),binding.etEmail.text.toString().trim(),
-                            binding.etAddress.text.toString().trim(),binding.etPassword.text.toString().trim(),"1",city,state,post_code,lat+","+lng,binding.mEtTrade.text.toString().trim())
-                    }
+            }else if (isInternetConnected(this))
+            {
+                Constants.showLoading(this)
+                CoroutineScope(Dispatchers.IO).launch {
+                    viewModel.Signup(binding.etName.text.toString().trim(),binding.etEmail.text.toString().trim(),
+                        binding.etAddress.text.toString().trim(),binding.etPassword.text.toString().trim(),"1",city,state,post_code,lat+","+lng,binding.mEtTrade.text.toString().trim())
+                }
             }
         }
         //google SSO
@@ -234,13 +235,37 @@ class SignupActivity : AppCompatActivity() ,LocationListener {
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
         if (resultCode == Activity.RESULT_OK) {
-           if (requestCode == Constants.PLACE_AUTOCOMPLETE_REQUEST_CODE) {
+            /*if (requestCode == ConstUtils.REQUEST_TAKE_PHOTO) {
+                CropImage.activity(Uri.parse(myImageUri))
+                    .setCropShape(CropImageView.CropShape.RECTANGLE)
+//                    .setMinCropWindowSize(1000,1200)
+//                    .setMinCropWindowSize(displayMetrics.widthPixels,(displayMetrics.widthPixels*.6).toInt())
+//                    .setMaxCropResultSize(displayMetrics.widthPixels,(displayMetrics.widthPixels*.8).toInt())
+                    .setGuidelinesColor(android.R.color.transparent).start(this)
+            } else if (requestCode == ConstUtils.REQUEST_IMAGE_GET) {
+                val uri: Uri = data?.data!!
+                CropImage.activity(uri)
+                    .setCropShape(CropImageView.CropShape.RECTANGLE)
+//                    .setAspectRatio(2, 1)
+//                    .setMinCropWindowSize(1000,1200)
+//                    .setMinCropWindowSize(displayMetrics.widthPixels,(displayMetrics.widthPixels*.6).toInt())
+//                    .setMaxCropResultSize(displayMetrics.widthPixels,(displayMetrics.widthPixels*.8).toInt())
+                    .setGuidelinesColor(android.R.color.transparent).start(this)
+            } else*/ if (requestCode == Constants.PLACE_AUTOCOMPLETE_REQUEST_CODE) {
                 try {
                     val place = Autocomplete.getPlaceFromIntent(data!!)
                     setPlaceData(place)
                 } catch (e: java.lang.Exception) {
                 }
             }
+            /*if (requestCode == CropImage.CROP_IMAGE_ACTIVITY_REQUEST_CODE) {
+                val result = CropImage.getActivityResult(data)
+                if (resultCode == AppCompatActivity.RESULT_OK) {
+                    saveCaptureImageResults(result.uri)
+                } else if (resultCode == CropImage.CROP_IMAGE_ACTIVITY_RESULT_ERROR_CODE) {
+                    val error = result.error
+                }
+            }*/
             callbackManager.onActivityResult(requestCode, resultCode, data)
             // Result returned from launching the Intent from GoogleSignInClient.getSignInIntent(...);
             if (resultCode == RESULT_OK && requestCode == RC_SIGN_IN) {
@@ -252,6 +277,7 @@ class SignupActivity : AppCompatActivity() ,LocationListener {
         }
     }
     private fun setPlaceData(placeData: Place) {
+        Log.e("Call 1","setPlaceData")
         try {
             if (placeData != null) {
                 binding.etAddress.setText("")
@@ -303,11 +329,14 @@ class SignupActivity : AppCompatActivity() ,LocationListener {
                     state=address.adminArea
                     city=address.locality
                 }
-
-
                 lng = placeData.latLng!!.longitude.toString();
                 lat = placeData.latLng!!.latitude.toString();
             }
+
+            Log.e("City",city)
+            Log.e("ZipCode",post_code)
+            Log.e("lat",lat)
+            Log.e("lng",lng)
         } catch (e: java.lang.Exception) {
             Log.e("Exce......", e.toString())
         }
@@ -342,6 +371,7 @@ class SignupActivity : AppCompatActivity() ,LocationListener {
 
         return if (addr.getPostalCode() == null) "" else addr.getPostalCode()
     }
+
     private fun getAddressFromLocation(lat: Double, long: Double): Address {
         val geocoder = Geocoder(this)
         var address = Address(Locale.getDefault())
@@ -419,9 +449,11 @@ class SignupActivity : AppCompatActivity() ,LocationListener {
                 }
                 lat = userLocation!!.latitude.toString()
                 lng = userLocation!!.longitude.toString()
+                Constants.showLoading(this)
                 CoroutineScope(Dispatchers.IO).launch {
-                    viewModel.SocialLogin(address,accessToken,token, "android",post_code,city,state,lat+","+lng,loginType)
+                    viewModel.SocialLogin(address,accessToken,token, "android",post_code,city,state,lat+","+lng,loginType);
                 }
+
             } catch (e: java.lang.Exception) {
                 toast("Something went wrong")
             }
@@ -431,11 +463,8 @@ class SignupActivity : AppCompatActivity() ,LocationListener {
         }
     }
 
-    override fun onRequestPermissionsResult(
-        requestCode: Int,
-        permissions: Array<out String>,
-        grantResults: IntArray
-    ) {
+    override fun onRequestPermissionsResult(requestCode: Int,
+        permissions: Array<out String>, grantResults: IntArray) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
         if (requestCode == PERMISSION_REQUEST_ACCESS_FINE_LOCATION) {
             when (grantResults[0]) {

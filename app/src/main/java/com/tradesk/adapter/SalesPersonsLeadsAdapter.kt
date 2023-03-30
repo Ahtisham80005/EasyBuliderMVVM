@@ -36,9 +36,9 @@ class SalesPersonsLeadsAdapter (
     override fun onBindViewHolder(holder: MyViewHolder, position: Int) {
         holder.bind()
         holder.apply {
-            if (mClients.get(position).image.isNotEmpty()) {
-                binding.mIvPic.loadWallImage(mClients.get(position).image)
-            }
+//            if (mClients.get(position).image.isNotEmpty()) {
+//                binding.mIvPic.loadWallImage(mClients.get(position).image)
+//            }
             binding.mTvName.text = mClients[position].name
             binding.mTvEmail.text = mClients[position].email
             binding.mTvAddress.text =

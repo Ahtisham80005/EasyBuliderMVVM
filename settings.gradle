@@ -1,7 +1,8 @@
 pluginManagement {
     repositories {
         google()
-        mavenCentral()
+        jcenter()
+//        mavenCentral()
         gradlePluginPortal()
         maven { url='https://jitpack.io'}
         maven {  url 'https://maven.google.com' }
@@ -11,7 +12,8 @@ dependencyResolutionManagement {
     repositoriesMode.set(RepositoriesMode.FAIL_ON_PROJECT_REPOS)
     repositories {
         google()
-        mavenCentral()
+        jcenter()
+//        mavenCentral()
         maven { url "https://jitpack.io" }
         maven { url 'https://dl.bintray.com/kotlin/kotlin-eap' }
         maven {  url 'https://maven.google.com' }
@@ -19,3 +21,4 @@ dependencyResolutionManagement {
 }
 rootProject.name = "EasyBuliderMVVM"
 include ':app'
+include ':SectorProgressView'

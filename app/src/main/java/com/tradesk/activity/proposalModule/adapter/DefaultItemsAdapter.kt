@@ -39,6 +39,12 @@ class DefaultItemsAdapter(
     override fun onBindViewHolder(holder: MyViewHolder, position: Int) {
         holder.bind()
         holder.apply {
+            itemView.setOnClickListener { listener.onSingleItemClick("1",position)  }
+            binding.mTvDesc.setOnClickListener { listener.onSingleItemClick("1",position)  }
+            binding.mTvTitle.setOnClickListener { listener.onSingleItemClick("1",position)  }
+            binding.mTvDesc.setOnClickListener { listener.onSingleItemClick("1",position)  }
+            binding.clParent.setOnClickListener { listener.onSingleItemClick("1",position)  }
+
             binding.mTvTitle.setText(mTasksDataFiltered[position].title)
 
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
@@ -46,7 +52,6 @@ class DefaultItemsAdapter(
             } else {
                 binding.mTvDesc.setText(Html.fromHtml(mTasksDataFiltered[position].description));
             }
-            binding.clParent.setOnClickListener { listener.onSingleItemClick("1",position)  }
         }
     }
 

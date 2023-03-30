@@ -11,6 +11,7 @@ import android.os.Handler
 import android.util.Log
 import android.view.View
 import android.widget.ImageView
+import android.window.OnBackInvokedDispatcher
 import androidx.annotation.RequiresApi
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.ViewModelProvider
@@ -224,9 +225,10 @@ class AddLeadActivity : AppCompatActivity() , AddClientListener, AddSalesListene
             Constants.hideLoading()
             when (it) {
                 is NetworkResult.Success -> {
+                    toast("successful")
                     Handler().postDelayed({
-                        Constants.showSuccessDialog(this,"Lead Added")
-//                        toast("successful")
+//                        Constants.showSuccessDialog(this,"Lead Added")
+
                         finish()
                     }, 800)
 
@@ -247,7 +249,7 @@ class AddLeadActivity : AppCompatActivity() , AddClientListener, AddSalesListene
         binding.mEtName.setText(leadDetailModel.data.leadsData.project_name)
         binding.mEtDesc.setText(leadDetailModel.data.leadsData.description.trim())
         binding.mEtName2.setText(leadDetailModel.data.leadsData.source.trim())
-        binding.mEtAddress.setText(leadDetailModel.data.leadsData.address.city)
+        binding.mEtAddress.setText(leadDetailModel.data.leadsData.address.street)
 
 //        Toast.makeText(applicationContext,leadDetailModel.data.leadsData.startDate,Toast.LENGTH_SHORT).show()
         binding.mTvDate.text = convertDateFormatWithTime(leadDetailModel.data.leadsData.startDate)
@@ -588,4 +590,10 @@ class AddLeadActivity : AppCompatActivity() , AddClientListener, AddSalesListene
             }
         }
     }
+
+    override fun onBackPressed() {
+        onBackPressedDispatcher.onBackPressed()
+        finish()
+    }
+
 }

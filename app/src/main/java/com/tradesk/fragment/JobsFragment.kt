@@ -52,6 +52,7 @@ class JobsFragment : Fragment() , SingleListCLickListener, LongClickListener {
     lateinit var viewModel: JobsViewModel
     var clicked = ""
     var mHomeImage = true
+    var home=false
     var CheckVersion = true
     val isPortalUser by lazy {
         mPrefs.getKeyValue(PreferenceConstants.USER_TYPE).contains("charity").not()
@@ -108,6 +109,7 @@ class JobsFragment : Fragment() , SingleListCLickListener, LongClickListener {
                         clicked = "0x"
                         mList.clear()
                         mJobsAdapter.notifyDataSetChanged()
+                        binding.mEtSearchName.setText("")
                         if (isInternetConnected(requireActivity())) {
                             Constants.showLoading(requireActivity())
                             CoroutineScope(Dispatchers.IO).launch {
@@ -119,6 +121,7 @@ class JobsFragment : Fragment() , SingleListCLickListener, LongClickListener {
                         clicked = "1"
                         mList.clear()
                         mJobsAdapter.notifyDataSetChanged()
+                        binding.mEtSearchName.setText("")
                         if (isInternetConnected(requireActivity())) {
                             Constants.showLoading(requireActivity())
                             CoroutineScope(Dispatchers.IO).launch {
@@ -130,6 +133,7 @@ class JobsFragment : Fragment() , SingleListCLickListener, LongClickListener {
                         clicked = "2"
                         mList.clear()
                         mJobsAdapter.notifyDataSetChanged()
+                        binding.mEtSearchName.setText("")
                         if (isInternetConnected(requireActivity())) {
                             Constants.showLoading(requireActivity())
                             CoroutineScope(Dispatchers.IO).launch {
@@ -141,6 +145,7 @@ class JobsFragment : Fragment() , SingleListCLickListener, LongClickListener {
                         clicked = "3"
                         mList.clear()
                         mJobsAdapter.notifyDataSetChanged()
+                        binding.mEtSearchName.setText("")
                         if (isInternetConnected(requireActivity())) {
                             Constants.showLoading(requireActivity())
                             CoroutineScope(Dispatchers.IO).launch {
@@ -283,8 +288,36 @@ class JobsFragment : Fragment() , SingleListCLickListener, LongClickListener {
                 is NetworkResult.Success -> {
                     val builder = GsonBuilder()
                     val gson = builder.create()
-                    var string=gson.toJson(it);
-                    startActivity(Intent(requireContext(), AddLeadActivity::class.java).putExtra("edit",true).putExtra("lead",string))
+                    var string=gson.toJson(it.data!!)
+                    try {
+                        var activity=activity
+                        if(activity!= null && home){
+                            startActivity(Intent(requireContext(), AddJobActivity::class.java)
+                                .putExtra("edit",true)
+                                .putExtra("lead",string))
+                        }
+                    }
+                    catch (e:Exception)
+                    {
+
+                    }
+
+
+                }
+                is NetworkResult.Error -> {
+                    toast(it.message)
+                }
+                is NetworkResult.Loading ->{
+                    Constants.showLoading(requireActivity())
+                }
+            }
+        })
+        viewModel.responseJobConvertSuccessModel.observe(requireActivity(), androidx.lifecycle.Observer {it->
+            Constants.hideLoading()
+            when (it) {
+                is NetworkResult.Success -> {
+                    toast(it.data!!.message)
+                    onResume()
                 }
                 is NetworkResult.Error -> {
                     toast(it.message)
@@ -355,6 +388,7 @@ class JobsFragment : Fragment() , SingleListCLickListener, LongClickListener {
             else if (it.itemId == R.id.item_delete) {
                 if (isInternetConnected(requireActivity())) {
                     status_api = "Cancel Job"
+                    Constants.showLoading(requireActivity())
                     CoroutineScope(Dispatchers.IO).launch {
                         viewModel.convertJobs(mList.get(selectedPosition)._id, "job", "cancel", "false")
                     }
@@ -363,6 +397,8 @@ class JobsFragment : Fragment() , SingleListCLickListener, LongClickListener {
             }
             else if (it.itemId == R.id.item_edit) {
                 if (isInternetConnected(requireActivity())) {
+                    Constants.showLoading(requireActivity())
+                    home=true
                     CoroutineScope(Dispatchers.IO).launch {
                         viewModel.getLeadDetail(mList.get(selectedPosition)._id)
                     }
@@ -375,24 +411,23 @@ class JobsFragment : Fragment() , SingleListCLickListener, LongClickListener {
         return true
     }
 
-    private fun shareData(selectedPosition: Int)
-    {
+    private fun shareData(selectedPosition: Int) {
 
         val shareIntent = Intent(Intent.ACTION_SEND)
         shareIntent.type = "text/plain"
         shareIntent.putExtra(Intent.EXTRA_SUBJECT, "Tradesk\nJob Detail")
+        var phone = Constants.insertString(mList.get(selectedPosition).client.get(0).phone_no, "", 0)
+        phone = Constants.insertString(phone!!, ")", 2)
+        phone = Constants.insertString(phone!!, " ", 3)
+        phone = Constants.insertString(phone!!, "-", 7)
+        phone = "+1(" + phone!!
         var shareMessage = """
                     ${
             "\n" + "Job Detail" + "\n" + mList.get(selectedPosition).project_name + "\n" +
                     mList.get(selectedPosition).client.get(0).name + "\n" +
                     mList.get(selectedPosition).client.get(0).email + "\n" +
-                    mList.get(selectedPosition).client.get(0).phone_no + "\n" +
+                    phone+ "\n" +
                     mList.get(selectedPosition).address.street+ "\n"
-//                         "Job Detail"+"\n"+ "Project Name - "+etTvTitle.getText().toString()+"\n"+
-//                            "Client Name - "+etTvName.getText().toString()+"\n"+
-//                            "Client Email - "+etTvEmail.getText().toString()+"\n"+
-//                            "Client Phone - "+etTvPhone.getText().toString()+"\n"+
-//                            "Client Address - "+address+"\n"
         }
                
                     """.trimIndent()
@@ -423,6 +458,7 @@ class JobsFragment : Fragment() , SingleListCLickListener, LongClickListener {
 
     override fun onResume() {
         super.onResume()
+        home=false
         binding.mEtSearchName.setText("")
         if (clicked == "0") {
             mList.clear()
@@ -430,7 +466,7 @@ class JobsFragment : Fragment() , SingleListCLickListener, LongClickListener {
             if (isInternetConnected(requireActivity())) {
                 Constants.showLoading(requireActivity())
                 CoroutineScope(Dispatchers.IO).launch {
-                    viewModel.getAllLeads("job","1", "30", "all")
+                    viewModel.getAllLeads("job","1", "190", "all")
                 }
             }
         } else if (clicked == "1") {

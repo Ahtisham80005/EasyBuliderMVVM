@@ -30,12 +30,14 @@ import com.tradesk.util.Constants.isInternetConnected
 import com.tradesk.util.extension.AllinOneDialog
 import com.tradesk.util.extension.toast
 import com.tradesk.viewModel.SalesPersonViewModel
+import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import java.util.*
 import javax.inject.Inject
 
+@AndroidEntryPoint
 class UserContractSelectedItemActivity : AppCompatActivity() , SingleListCLickListener,
     UnselectCheckBoxListener {
     var tab_click = "All"
@@ -64,7 +66,8 @@ class UserContractSelectedItemActivity : AppCompatActivity() , SingleListCLickLi
     }
 
     fun initObserve() {
-        viewModel.responsAllSalesList.observe(this, androidx.lifecycle.Observer { it ->
+        viewModel.responsAllSalesPerson.observe(this, androidx.lifecycle.Observer
+        { it ->
             Constants.hideLoading()
             when (it) {
                 is NetworkResult.Success -> {
@@ -83,22 +86,40 @@ class UserContractSelectedItemActivity : AppCompatActivity() , SingleListCLickLi
                 }
             }
         })
-//        viewModel.responsDeleteSelectedSales.observe(this, androidx.lifecycle.Observer { it ->
-//            Constants.hideLoading()
-//            when (it) {
-//                is NetworkResult.Success -> {
-//                    toast("Deleted successfully")
-//                    mList.removeAt(itemPosition!!)
-//                    mUsersContractAdapter.notifyItemRemoved(itemPosition!!)
-//                }
-//                is NetworkResult.Error -> {
-//                    toast(it.message)
-//                }
-//                is NetworkResult.Loading -> {
-//                    Constants.showLoading(this)
-//                }
-//            }
-//        })
+        viewModel.responsDeleteSelectedSales.observe(this, androidx.lifecycle.Observer { it ->
+            Constants.hideLoading()
+            when (it) {
+                is NetworkResult.Success -> {
+                    toast("Deleted successfully")
+                    mList.clear()
+                    mUsersSelectContractAdapter.notifyDataSetChanged()
+                    finish()
+                }
+                is NetworkResult.Error -> {
+                    toast(it.message)
+                }
+                is NetworkResult.Loading -> {
+                    Constants.showLoading(this)
+                }
+            }
+        })
+        viewModel.responsDeleteAllSales.observe(this, androidx.lifecycle.Observer { it ->
+            Constants.hideLoading()
+            when (it) {
+                is NetworkResult.Success -> {
+                    toast("Deleted successfully")
+                    mList.clear()
+                    mUsersSelectContractAdapter.notifyDataSetChanged()
+                    finish()
+                }
+                is NetworkResult.Error -> {
+                    toast(it.message)
+                }
+                is NetworkResult.Loading -> {
+                    Constants.showLoading(this)
+                }
+            }
+        })
     }
 
     fun setData() {
@@ -115,6 +136,7 @@ class UserContractSelectedItemActivity : AppCompatActivity() , SingleListCLickLi
 //        }
 
         if (isInternetConnected(this)) {
+            Constants.showLoading(this)
             CoroutineScope(Dispatchers.IO).launch {
                 viewModel.getAllSalesList("sales","1", " 20", "")
             }
@@ -201,8 +223,35 @@ class UserContractSelectedItemActivity : AppCompatActivity() , SingleListCLickLi
                 } else {
                     toast("Select an item")
                 }
-            }
-            else if (it.itemId == R.id.item_edit) {
+            } else if (it.itemId == R.id.item_delete) {
+                if (selectedPosition != null && selectionResult >= 1 && selectType.equals("single")) {
+                    AllinOneDialog(ttle = "Delete",
+                        msg = "Are you sure you want to Delete it ?",
+                        onLeftClick = {/*btn No click*/ },
+                        onRightClick = {/*btn Yes click*/
+                            if (isInternetConnected(this) && selectedPosition != null && selectionResult >= 1) {
+                                val selectedIds = SelectedIds(selectedIdArray)
+                                Constants.showLoading(this)
+                                CoroutineScope(Dispatchers.IO).launch {
+                                    viewModel.deleteSelectedSales(selectedIds)
+                                }
+                                Log.d(TAG, "showRightMenu: "+selectedIdArray)
+                            }
+                        })
+                } else if (isInternetConnected(this) && selectType.equals("all")) {
+                    AllinOneDialog(ttle = "Delete",
+                        msg = "Are you sure you want to Delete all ?",
+                        onLeftClick = {/*btn No click*/ },
+                        onRightClick = {/*btn Yes click*/
+                            Constants.showLoading(this)
+                            CoroutineScope(Dispatchers.IO).launch {
+                                viewModel.deleteAllSales("sales")
+                            }
+                        })
+                }else{
+                    toast("Select an item")
+                }
+            } else if (it.itemId == R.id.item_edit) {
                 if (selectedPosition!=null && selectionResult >= 1) {
                     startActivity(
                         Intent(this, AddSalesPersonActivity::class.java)
@@ -222,16 +271,24 @@ class UserContractSelectedItemActivity : AppCompatActivity() , SingleListCLickLi
         return true
     }
 
+
     private fun shareData(){
         if (selectedPosition!=null) {
             val shareIntent = Intent(Intent.ACTION_SEND)
             shareIntent.type = "text/plain"
             shareIntent.putExtra(Intent.EXTRA_SUBJECT, "Tradesk\nLead Detail")
+
+            var phone = Constants.insertString( mList[selectedPosition!!].phone_no, "", 0)
+            phone = Constants.insertString(phone!!, ")", 2)
+            phone = Constants.insertString(phone!!, " ", 3)
+            phone = Constants.insertString(phone!!, "-", 7)
+            phone = "(" + phone!!
+
             var shareMessage = """
                     ${
                 "\n" + mList[selectedPosition!!].name + "\n" +
                         mList[selectedPosition!!].email + "\n" +
-                        mList[selectedPosition!!].phone_no + "\n"
+                        phone + "\n"
             }        
                """.trimIndent()
             shareMessage = """

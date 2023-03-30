@@ -126,6 +126,8 @@ class ProfileFragment : Fragment() {
     }
 
     fun setData(it:ProfileModel) {
+
+        mPrefs.setKeyValue(PreferenceConstants.USER_NAME, it.data.name)
         if (it.data.image.isNotEmpty()){
             binding.imageView334.loadWallImage(it.data.image)
         }

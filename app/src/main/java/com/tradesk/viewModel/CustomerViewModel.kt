@@ -2,6 +2,7 @@ package com.tradesk.viewModel
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import com.tradesk.Model.ClientSalesModelNew
 import com.tradesk.Model.ClientsListModel
 import com.tradesk.Model.SelectedIds
@@ -9,6 +10,7 @@ import com.tradesk.Model.SuccessModel
 import com.tradesk.network.NetworkResult
 import com.tradesk.network.Repository
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.launch
 import okhttp3.RequestBody
 import javax.inject.Inject
 
@@ -26,6 +28,10 @@ class CustomerViewModel @Inject constructor(val repository: Repository) : ViewMo
 
     val responsDeleteSelectedClient: LiveData<NetworkResult<SuccessModel>>
         get()=repository.responsDeleteSelectedSales
+
+    val responsDeleteAllClient: LiveData<NetworkResult<SuccessModel>>
+        get()=repository.responsDeleteAllClient
+
 
     val responseClientUpdateSuccessModel: LiveData<NetworkResult<SuccessModel>>
         get()=repository.responseClientUpdateSuccessModel
@@ -48,4 +54,10 @@ class CustomerViewModel @Inject constructor(val repository: Repository) : ViewMo
     suspend fun deleteSelectedClient(selectedIds: SelectedIds) {
         repository.deleteSelectedSales(selectedIds)
     }
+    suspend fun deleteAllClient(type: String) {
+        viewModelScope.launch {
+            repository.deleteAllClient(type)
+        }
+    }
+
 }

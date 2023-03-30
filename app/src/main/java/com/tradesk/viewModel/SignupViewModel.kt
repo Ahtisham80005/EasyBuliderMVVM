@@ -22,7 +22,7 @@ class SignupViewModel @Inject constructor(val repository: Repository) : ViewMode
     suspend fun Signup(name:String,email:String,addres:String,password:String,userType:String,city:String,state:String,postal_code:String,latLong:String,trade:String)
     {
         viewModelScope.launch {
-            repository.Signup(name,email,addres,password,userType,city,state,postal_code,trade,latLong)
+            repository.Signup(name,email,addres,password,userType,city,state,postal_code,latLong,trade)
         }
     }
 
